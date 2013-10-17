@@ -1,25 +1,31 @@
 package com.xgame.server.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.common.IntervalTimer;
+
 public class BattleRoom
 {
-	private int				id;
-	private String			title;
-	private int				peopleLimit;
-	private int				peopleCount;
-	private Player			owner;
-	private List< Player >	playerList;
-	private RoomStatus		status;
-	private int				rounds;
-	private Player			currentPlayer;
-	private long			startTime;
-	private long			endTime;
-	private static Log		log	= LogFactory.getLog( BattleRoom.class );
+	private int								id;
+	private String							title;
+	private int								peopleLimit;
+	private int								peopleCount;
+	private Player							owner;
+	private List< Player >					playerList;
+	private Map< Player, IntervalTimer >	timerMap;
+	private RoomStatus						status;
+	private int								rounds;
+	private Player							currentPlayer;
+	private long							startTime;
+	private long							endTime;
+	private static Log						log	= LogFactory
+														.getLog( BattleRoom.class );
 
 	public BattleRoom()
 	{
@@ -31,6 +37,7 @@ public class BattleRoom
 		if ( peopleLimit > 0 )
 		{
 			playerList = new ArrayList< Player >();
+			timerMap = new HashMap< Player, IntervalTimer >();
 		}
 		else
 		{
@@ -76,10 +83,10 @@ public class BattleRoom
 			log.error( "Íæ¼Ò²»´æÔÚ" );
 		}
 	}
-	
+
 	public void startGame()
 	{
-		
+
 	}
 
 	public int getId()
