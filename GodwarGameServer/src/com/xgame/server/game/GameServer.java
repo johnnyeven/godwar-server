@@ -34,11 +34,10 @@ public class GameServer
 	    System.out.println( "                 MMM MM    MM\n");
 	    System.out.println( "GameServer\n\n");
 	    
-	    World.getInstance().setInitialWorldSettings();
+	    BattleHall.getInstance().setInitialWorldSettings();
+	    MeleeHall.getInstance().setInitialWorldSettings();
 	    
-	    Thread wt = new Thread(new WorldThread());
-	    wt.setPriority(10);
-	    wt.start();
+	    Hall.getInstance().startHall();
 	    
 		AIOSocketMgr.getInstance().startCompletionPort();
 	}

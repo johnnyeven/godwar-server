@@ -8,13 +8,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.CommandCenter;
+import com.xgame.server.cards.Player;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.game.GameServer;
 import com.xgame.server.game.ProtocolPackage;
-import com.xgame.server.network.WorldSession;
-import com.xgame.server.objects.Player;
+import com.xgame.server.network.GameSession;
 import com.xgame.server.pool.PlayerPool;
 import com.xgame.server.pool.ServerPackagePool;
 
@@ -27,7 +27,7 @@ public class ProtocolRequestAccountRole implements IProtocol
 	public void Execute( Object param1, Object param2 )
 	{
 		ProtocolPackage parameter = (ProtocolPackage) param1;
-		WorldSession session = (WorldSession) param2;
+		GameSession session = (GameSession) param2;
 
 		long guid = Long.MIN_VALUE;
 		for ( int i = parameter.offset; i < parameter.receiveDataLength; )
@@ -111,13 +111,9 @@ public class ProtocolRequestAccountRole implements IProtocol
 					p.accountId = accountId;
 					p.level = level;
 					p.name = nickName;
-					p.setSpeed( speed );
 					p.accountCash = accountCash;
 					p.direction = direction;
 					p.action = action;
-					p.setMapId( mapId );
-					p.setX( currentX );
-					p.setX( currentY );
 					p.healthMax = maxHealth;
 					p.health = currentHealth;
 					p.manaMax = maxMana;

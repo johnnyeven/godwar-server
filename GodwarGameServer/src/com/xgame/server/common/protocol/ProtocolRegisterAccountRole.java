@@ -10,14 +10,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.CommandCenter;
+import com.xgame.server.cards.Player;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.game.ObjectManager;
 import com.xgame.server.game.ProtocolPackage;
-import com.xgame.server.game.map.MapManager;
-import com.xgame.server.network.WorldSession;
-import com.xgame.server.objects.ObjectManager;
-import com.xgame.server.objects.Player;
+import com.xgame.server.network.GameSession;
 import com.xgame.server.pool.PlayerPool;
 
 public class ProtocolRegisterAccountRole implements IProtocol
@@ -29,7 +28,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 	public void Execute( Object param1, Object param2 )
 	{
 		ProtocolPackage parameter = (ProtocolPackage) param1;
-		WorldSession session = (WorldSession) param2;
+		GameSession session = (GameSession) param2;
 
 		long guid = Long.MIN_VALUE;
 		String nickName = null;
@@ -101,13 +100,13 @@ public class ProtocolRegisterAccountRole implements IProtocol
 
 				}
 
-				if ( !MapManager.getInstance().getMap( p.getMapId() ).add( p ) )
-				{
-					log.error( "Map::add() Ê§°Ü£¬Player=" + p.name );
-					return;
-				}
+//				if ( !MapManager.getInstance().getMap( p.getMapId() ).add( p ) )
+//				{
+//					log.error( "Map::add() Ê§°Ü£¬Player=" + p.name );
+//					return;
+//				}
 
-				ObjectManager.getInstance().addObject( p );
+				ObjectManager.getInstance().addPlayer( p );
 
 				rs.close();
 			}

@@ -1,4 +1,4 @@
-package com.xgame.server.objects;
+package com.xgame.server.cards;
 
 import java.nio.channels.AsynchronousSocketChannel;
 import java.sql.PreparedStatement;
@@ -14,17 +14,14 @@ import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.enums.Direction;
 import com.xgame.server.enums.Action;
 import com.xgame.server.enums.PlayerStatus;
-import com.xgame.server.game.WorldThread;
-import com.xgame.server.game.map.Map;
-import com.xgame.server.network.WorldSession;
+import com.xgame.server.network.GameSession;
 
-public class Player extends InteractiveObject
+public class Player
 {
+	private UUID						guid;
 	public long							accountId	= Long.MIN_VALUE;
 	public int							level		= 0;
 	public String						name		= "";
-	private float						speed		= 0;
-	private double						moveSpeed	= 0;
 	public long							accountCash	= Long.MIN_VALUE;
 	public int							direction	= Direction.DOWN;
 	public int							action		= Action.STOP;
@@ -36,9 +33,8 @@ public class Player extends InteractiveObject
 	public int							energy		= Integer.MIN_VALUE;
 	public PlayerStatus					status		= PlayerStatus.PENDING;
 
-	private Motion						motion;
 	private AsynchronousSocketChannel	channel;
-	private WorldSession				session;
+	private GameSession					session;
 
 	private static Log					log			= LogFactory
 															.getLog( Player.class );
@@ -46,7 +42,6 @@ public class Player extends InteractiveObject
 	public Player()
 	{
 		super();
-		motion = new Motion( this );
 	}
 
 	public boolean loadFromDatabase()
@@ -66,21 +61,17 @@ public class Player extends InteractiveObject
 
 			if ( rs.first() )
 			{
-				setMapId( rs.getInt( "map_id" ) );
 				level = rs.getInt( "level" );
 				name = rs.getString( "nick_name" );
 				accountCash = rs.getLong( "account_cash" );
 				direction = rs.getInt( "direction" );
 				action = rs.getInt( "action" );
-				setSpeed( rs.getFloat( "speed" ) );
 				health = rs.getInt( "current_health" );
 				healthMax = rs.getInt( "max_health" );
 				mana = rs.getInt( "current_mana" );
 				manaMax = rs.getInt( "max_mana" );
 				energy = rs.getInt( "current_energy" );
 				energyMax = rs.getInt( "max_energy" );
-				setX( rs.getDouble( "current_x" ) );
-				setY( rs.getDouble( "current_y" ) );
 			}
 			else
 			{
@@ -106,8 +97,6 @@ public class Player extends InteractiveObject
 						+ "', ";
 			}
 
-			getMap();
-
 			sql = "UPDATE `game_account` SET " + guidSql
 					+ " `account_lastlogin`=" + new Date().getTime()
 					+ " WHERE `account_id`=" + accountId;
@@ -129,9 +118,6 @@ public class Player extends InteractiveObject
 			killPlayer();
 			return;
 		}
-		super.update( timeDiff );
-		motion.update( timeDiff );
-		getMap().check( this );
 	}
 
 	public void killPlayer()
@@ -140,12 +126,12 @@ public class Player extends InteractiveObject
 		action = Action.CORPSE;
 	}
 
-	public WorldSession getSession()
+	public GameSession getSession()
 	{
 		return session;
 	}
 
-	public void setSession( WorldSession session )
+	public void setSession( GameSession session )
 	{
 		this.session = session;
 	}
@@ -160,24 +146,13 @@ public class Player extends InteractiveObject
 		this.channel = channel;
 	}
 
-	public Motion getMotion()
+	public UUID getGuid()
 	{
-		return motion;
+		return guid;
 	}
 
-	public float getSpeed()
+	public void setGuid( UUID guid )
 	{
-		return speed;
-	}
-
-	public void setSpeed( float speed )
-	{
-		this.speed = speed;
-		moveSpeed = speed * ( (double) WorldThread.WORLD_SLEEP_TIME / 1000 );
-	}
-
-	public double getMoveSpeed()
-	{
-		return moveSpeed;
+		this.guid = guid;
 	}
 }

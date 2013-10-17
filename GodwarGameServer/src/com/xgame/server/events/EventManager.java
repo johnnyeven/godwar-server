@@ -2,16 +2,17 @@ package com.xgame.server.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.xgame.server.objects.WorldObject;
+
+import com.xgame.server.cards.Player;
 
 public class EventManager
 {
-	private HashMap< WorldObject, HashMap< String, ArrayList< IEventCallback > >>	eventContainer;
+	private HashMap< Player, HashMap< String, ArrayList< IEventCallback > >>	eventContainer;
 	private static EventManager														instance;
 
 	private EventManager()
 	{
-		eventContainer = new HashMap< WorldObject, HashMap< String, ArrayList< IEventCallback > >>();
+		eventContainer = new HashMap< Player, HashMap< String, ArrayList< IEventCallback > >>();
 	}
 
 	public static EventManager getInstance()
@@ -23,7 +24,7 @@ public class EventManager
 		return instance;
 	}
 
-	public void addEventListener( WorldObject target, String type,
+	public void addEventListener( Player target, String type,
 			IEventCallback callback )
 	{
 		if ( eventContainer.containsKey( target ) )
@@ -51,7 +52,7 @@ public class EventManager
 		}
 	}
 
-	public void removeEventListener( WorldObject target, String type,
+	public void removeEventListener( Player target, String type,
 			IEventCallback callback )
 	{
 		if ( eventContainer.containsKey( target ) )
@@ -65,7 +66,7 @@ public class EventManager
 		}
 	}
 
-	public void removeEvent( WorldObject target, String type )
+	public void removeEvent( Player target, String type )
 	{
 		if ( eventContainer.containsKey( target ) )
 		{
@@ -78,7 +79,7 @@ public class EventManager
 		}
 	}
 
-	public void dispatchEvent( WorldObject target, Event evt )
+	public void dispatchEvent( Player target, Event evt )
 	{
 		if ( eventContainer.containsKey( target ) )
 		{

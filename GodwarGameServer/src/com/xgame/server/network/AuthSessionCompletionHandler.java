@@ -19,7 +19,7 @@ import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.game.ProtocolPackage;
-import com.xgame.server.game.World;
+import com.xgame.server.game.BattleHall;
 import com.xgame.server.pool.BufferPool;
 import com.xgame.server.pool.ServerPackagePool;
 
@@ -87,9 +87,9 @@ public class AuthSessionCompletionHandler implements
 						guid = rs.getLong( "GUID" );
 					}
 
-					WorldSession s = new WorldSession( guid, arg1.channel,
+					GameSession s = new GameSession( guid, arg1.channel,
 							new Date().getTime() );
-					World.getInstance().addSessionQueue( s );
+					BattleHall.getInstance().addSessionQueue( s );
 					s.startRecv();
 
 					ServerPackage pack = ServerPackagePool.getInstance()

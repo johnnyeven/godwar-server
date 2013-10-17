@@ -1,4 +1,4 @@
-package com.xgame.server.objects.hashmap;
+package com.xgame.server.hashmap;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.xgame.server.objects.Player;
+import com.xgame.server.cards.Player;
 
 public class PlayerMap
 {

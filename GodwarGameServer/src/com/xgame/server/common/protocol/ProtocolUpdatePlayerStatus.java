@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.game.ProtocolPackage;
-import com.xgame.server.network.WorldSession;
+import com.xgame.server.network.GameSession;
 
 public class ProtocolUpdatePlayerStatus implements IProtocol
 {
@@ -15,7 +15,7 @@ public class ProtocolUpdatePlayerStatus implements IProtocol
 	public void Execute( Object param1, Object param2 )
 	{
 		ProtocolPackage parameter = (ProtocolPackage) param1;
-		WorldSession session = (WorldSession) param2;
+		GameSession session = (GameSession) param2;
 
 		long accountId = Long.MIN_VALUE;
 
@@ -36,16 +36,16 @@ public class ProtocolUpdatePlayerStatus implements IProtocol
 		}
 		log.info( "[UpdatePlayerStatus] AccountId=" + accountId );
 
-		if ( accountId == session.getPlayer().accountId )
-		{
-			session.getPlayer().getMap()
-					.updatePlayerStatus( session.getPlayer() );
-		}
-		else
-		{
-			log.error( "收到的AccountId与会话中保存的AccountId不符，现有的Id="
-					+ session.getPlayer().accountId + ", 收到的Id=" + accountId );
-		}
+//		if ( accountId == session.getPlayer().accountId )
+//		{
+//			session.getPlayer().getMap()
+//					.updatePlayerStatus( session.getPlayer() );
+//		}
+//		else
+//		{
+//			log.error( "收到的AccountId与会话中保存的AccountId不符，现有的Id="
+//					+ session.getPlayer().accountId + ", 收到的Id=" + accountId );
+//		}
 	}
 
 }

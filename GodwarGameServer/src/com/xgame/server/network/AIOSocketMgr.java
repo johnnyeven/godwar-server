@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
-import com.xgame.server.common.protocol.ProtocolRequestFindPath;
 import com.xgame.server.common.protocol.ProtocolRequestHotkey;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.common.protocol.ProtocolUpdatePlayerStatus;
@@ -85,14 +84,12 @@ public class AIOSocketMgr
 				ProtocolRequestHotkey.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.BASE_UPDATE_STATUS,
 				ProtocolUpdatePlayerStatus.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.REQUEST_FIND_PATH,
-				ProtocolRequestFindPath.class );
 	}
 
 	public void startCompletionPort()
 	{
-		server.accept( this, acceptHandler );
 		log.info( "服务器已启动" );
+		server.accept( this, acceptHandler );
 
 		try
 		{

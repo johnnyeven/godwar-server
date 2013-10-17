@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.AuthSessionPackage;
-import com.xgame.server.game.World;
+import com.xgame.server.game.BattleHall;
 import com.xgame.server.pool.BufferPool;
 
 public class AcceptCompletionHandler implements

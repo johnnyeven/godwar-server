@@ -2,10 +2,7 @@ package com.xgame.server.game;
 
 import java.util.Date;
 
-import com.xgame.server.game.map.MapManager;
-import com.xgame.server.network.AIOSocketMgr;
-
-public class WorldThread implements Runnable
+public class BattleHallThread implements Runnable
 {
 	public static final int	WORLD_SLEEP_TIME	= 200;
 
@@ -17,13 +14,13 @@ public class WorldThread implements Runnable
 		long timeDiff = 0;
 		long prevSleepTime = 0;
 
-		while ( !World.stop )
+		while ( !BattleHall.stop )
 		{
-			World.loopCounter++;
+			BattleHall.loopCounter++;
 			currentTime = new Date().getTime();
 			timeDiff = currentTime - prevTime;
 
-			World.getInstance().update( timeDiff );
+			BattleHall.getInstance().update( timeDiff );
 			prevTime = currentTime;
 
 			if ( timeDiff <= WORLD_SLEEP_TIME + prevSleepTime )
@@ -44,10 +41,9 @@ public class WorldThread implements Runnable
 			}
 		}
 
-		World.getInstance().kickAllPlayer();
-		World.getInstance().updateSessions( 1 );
-		AIOSocketMgr.getInstance().stopCompletionPort();
-		MapManager.getInstance().unloadAllMaps();
+		BattleHall.getInstance().kickAllPlayer();
+		BattleHall.getInstance().updateSessions( 1 );
+//		AIOSocketMgr.getInstance().stopCompletionPort();
 	}
 
 }

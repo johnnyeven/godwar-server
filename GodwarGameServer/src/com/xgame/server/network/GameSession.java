@@ -6,12 +6,12 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xgame.server.cards.Player;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.game.ProtocolPackage;
-import com.xgame.server.objects.Player;
 import com.xgame.server.pool.BufferPool;
 
-public class WorldSession
+public class GameSession
 {
 	private long						accountId;
 	private List< ProtocolPackage >		recvQueue;
@@ -21,7 +21,7 @@ public class WorldSession
 	private long						generateTime;
 	private ByteBuffer					readBuffer;
 
-	public WorldSession( long id, AsynchronousSocketChannel c, long time )
+	public GameSession( long id, AsynchronousSocketChannel c, long time )
 	{
 		accountId = id;
 		channel = c;

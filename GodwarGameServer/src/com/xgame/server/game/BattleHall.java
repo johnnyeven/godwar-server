@@ -12,31 +12,25 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.IntervalTimer;
-import com.xgame.server.network.WorldSession;
-import com.xgame.server.objects.ObjectManager;
+import com.xgame.server.network.GameSession;
 
-enum WorldTimers
+public class BattleHall implements IHall
 {
-	TIMER_OBJECTS, TIMER_SESSIONS, TIMER_EVENTS, TIMER_COUNT
-}
-
-public class World
-{
-	public static Map< Long, WorldSession >	sessionMap		= new HashMap< Long, WorldSession >();
+	public static Map< Long, GameSession >	sessionMap		= new HashMap< Long, GameSession >();
 	public static boolean					stop			= false;
 	public static long						loopCounter		= 0;
 
-	private static World					instance		= null;
+	private static BattleHall				instance		= null;
 	private static boolean					allowInstance	= false;
 
 	private int								playerLimit;
 	private long							serverStartTime;
-	private List< WorldSession >			sessionQueue;
+	private List< GameSession >				sessionQueue;
 	private IntervalTimer					timers[];
 	private static Log						log				= LogFactory
-																	.getLog( World.class );
+																	.getLog( BattleHall.class );
 
-	public World() throws Exception
+	public BattleHall() throws Exception
 	{
 		if ( !allowInstance )
 		{
@@ -44,18 +38,18 @@ public class World
 		}
 		playerLimit = 100;
 		serverStartTime = new Date().getTime();
-		sessionQueue = new ArrayList< WorldSession >();
+		sessionQueue = new ArrayList< GameSession >();
 		timers = new IntervalTimer[WorldTimers.TIMER_COUNT.ordinal()];
 	}
 
-	public static World getInstance()
+	public static BattleHall getInstance()
 	{
 		if ( instance == null )
 		{
 			allowInstance = true;
 			try
 			{
-				instance = new World();
+				instance = new BattleHall();
 			}
 			catch ( Exception e )
 			{
@@ -66,14 +60,14 @@ public class World
 		return instance;
 	}
 
-	public void addSessionQueue( WorldSession session )
+	public void addSessionQueue( GameSession session )
 	{
 		sessionQueue.add( session );
 	}
 
-	public void addSession( WorldSession session )
+	public void addSession( GameSession session )
 	{
-		WorldSession old = sessionMap.get( session.getAccountId() );
+		GameSession old = sessionMap.get( session.getAccountId() );
 		sessionMap.put( session.getAccountId(), session );
 	}
 
@@ -82,7 +76,7 @@ public class World
 
 	}
 
-	public WorldSession getSession( long id )
+	public GameSession getSession( long id )
 	{
 		return null;
 	}
@@ -91,14 +85,14 @@ public class World
 	{
 		while ( !sessionQueue.isEmpty() )
 		{
-			WorldSession s = sessionQueue.remove( 0 );
+			GameSession s = sessionQueue.remove( 0 );
 			addSession( s );
 		}
 
-		Iterator< Entry< Long, WorldSession >> it = sessionMap.entrySet()
+		Iterator< Entry< Long, GameSession >> it = sessionMap.entrySet()
 				.iterator();
-		Entry< Long, WorldSession > e;
-		WorldSession s;
+		Entry< Long, GameSession > e;
+		GameSession s;
 		while ( it.hasNext() )
 		{
 			e = it.next();
@@ -152,17 +146,17 @@ public class World
 		if ( timers[WorldTimers.TIMER_OBJECTS.ordinal()].over() )
 		{
 			timers[WorldTimers.TIMER_OBJECTS.ordinal()].reset();
-			
+
 			ObjectManager.getInstance().update( timeDiff );
 		}
 	}
 
 	public void kickAllPlayer()
 	{
-		Iterator< Entry< Long, WorldSession >> it = sessionMap.entrySet()
+		Iterator< Entry< Long, GameSession >> it = sessionMap.entrySet()
 				.iterator();
-		Entry< Long, WorldSession > e;
-		WorldSession s;
+		Entry< Long, GameSession > e;
+		GameSession s;
 		while ( it.hasNext() )
 		{
 			e = it.next();

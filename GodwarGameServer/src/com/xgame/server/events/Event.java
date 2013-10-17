@@ -1,11 +1,11 @@
 package com.xgame.server.events;
 
-import com.xgame.server.objects.WorldObject;
+import com.xgame.server.cards.Player;
 
 public class Event
 {
 	private String		name;
-	private WorldObject	sender;
+	private Player	sender;
 
 	public Event( String name )
 	{
@@ -17,7 +17,7 @@ public class Event
 		return name;
 	}
 
-	public void setSender( WorldObject sender )
+	public void setSender( Player sender )
 	{
 		if ( this.sender == null )
 		{
@@ -25,7 +25,7 @@ public class Event
 		}
 	}
 
-	public WorldObject getSender()
+	public Player getSender()
 	{
 		return sender;
 	}

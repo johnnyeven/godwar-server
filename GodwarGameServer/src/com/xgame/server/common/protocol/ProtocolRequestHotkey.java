@@ -12,7 +12,7 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.game.ProtocolPackage;
-import com.xgame.server.network.WorldSession;
+import com.xgame.server.network.GameSession;
 import com.xgame.server.pool.ServerPackagePool;
 
 public class ProtocolRequestHotkey implements IProtocol
@@ -23,7 +23,7 @@ public class ProtocolRequestHotkey implements IProtocol
 	public void Execute( Object param1, Object param2 )
 	{
 		ProtocolPackage parameter = (ProtocolPackage) param1;
-		WorldSession session = (WorldSession) param2;
+		GameSession session = (GameSession) param2;
 
 		long accountId = Long.MIN_VALUE;
 		for ( int i = parameter.offset; i < parameter.receiveDataLength; )

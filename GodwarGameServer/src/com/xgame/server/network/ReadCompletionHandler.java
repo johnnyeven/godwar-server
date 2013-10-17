@@ -8,7 +8,7 @@ import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.pool.BufferPool;
 
 public class ReadCompletionHandler implements
-		CompletionHandler< Integer, WorldSession >
+		CompletionHandler< Integer, GameSession >
 {
 
 	public ReadCompletionHandler()
@@ -16,7 +16,7 @@ public class ReadCompletionHandler implements
 	}
 
 	@Override
-	public void completed( Integer result, WorldSession attachment )
+	public void completed( Integer result, GameSession attachment )
 	{
 		if ( result > 0 )
 		{
@@ -57,7 +57,7 @@ public class ReadCompletionHandler implements
 	}
 
 	@Override
-	public void failed( Throwable exc, WorldSession attachment )
+	public void failed( Throwable exc, GameSession attachment )
 	{
 		BufferPool.getInstance().releaseBuffer( attachment.getReadBuffer() );
 	}
