@@ -13,8 +13,8 @@ public class ServerPackagePool implements IPool< ServerPackage >
 	private static Log								log					= LogFactory
 																				.getLog( ServerPackagePool.class );
 
-	private static int								maxBufferPoolSize	= 5000;
-	private static int								minBufferPoolSize	= 2000;
+	private static int								maxBufferPoolSize	= 2000;
+	private static int								minBufferPoolSize	= 1000;
 
 	private AtomicInteger							usableCount			= new AtomicInteger();
 	private AtomicInteger							createCount			= new AtomicInteger();
