@@ -3,7 +3,7 @@ package com.xgame.server.events;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.xgame.server.cards.Player;
+import com.xgame.server.game.Player;
 
 public class EventManager
 {

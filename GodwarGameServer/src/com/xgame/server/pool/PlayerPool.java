@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.xgame.server.cards.Player;
+import com.xgame.server.game.Player;
 
 public class PlayerPool implements IPool< Player >
 {

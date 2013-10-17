@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.UUID;
 import java.util.Map.Entry;
 
-import com.xgame.server.cards.Player;
 import com.xgame.server.hashmap.PlayerMap;
 
 public class ObjectManager

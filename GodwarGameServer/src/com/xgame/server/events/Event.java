@@ -1,6 +1,6 @@
 package com.xgame.server.events;
 
-import com.xgame.server.cards.Player;
+import com.xgame.server.game.Player;
 
 public class Event
 {

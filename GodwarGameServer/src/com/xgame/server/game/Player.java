@@ -1,4 +1,4 @@
-package com.xgame.server.cards;
+package com.xgame.server.game;
 
 import java.nio.channels.AsynchronousSocketChannel;
 import java.sql.PreparedStatement;

@@ -6,8 +6,8 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.xgame.server.cards.Player;
 import com.xgame.server.common.protocol.ProtocolRouter;
+import com.xgame.server.game.Player;
 import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.pool.BufferPool;
 

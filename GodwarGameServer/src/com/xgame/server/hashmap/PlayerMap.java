@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.xgame.server.cards.Player;
+import com.xgame.server.game.Player;
 
 public class PlayerMap
 {
