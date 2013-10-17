@@ -1,3 +1,4 @@
+
 package com.xgame.server.game;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import com.xgame.server.network.GameSession;
 
 public class BattleHall implements IHall
 {
+
 	public static Map< Long, GameSession >	sessionMap		= new HashMap< Long, GameSession >();
 	public static boolean					stop			= false;
 	public static long						loopCounter		= 0;
@@ -23,10 +25,12 @@ public class BattleHall implements IHall
 	private static BattleHall				instance		= null;
 	private static boolean					allowInstance	= false;
 
+	private int								roomCount		= 0;
 	private int								playerLimit;
 	private long							serverStartTime;
 	private List< GameSession >				sessionQueue;
 	private IntervalTimer					timers[];
+	private List< BattleRoom >				roomList;
 	private static Log						log				= LogFactory
 																	.getLog( BattleHall.class );
 
@@ -39,6 +43,7 @@ public class BattleHall implements IHall
 		playerLimit = 100;
 		serverStartTime = new Date().getTime();
 		sessionQueue = new ArrayList< GameSession >();
+		roomList = new ArrayList< BattleRoom >();
 		timers = new IntervalTimer[WorldTimers.TIMER_COUNT.ordinal()];
 	}
 
@@ -163,6 +168,70 @@ public class BattleHall implements IHall
 			s = e.getValue();
 
 			s.dispose();
+		}
+	}
+
+	public void addRoom( BattleRoom room )
+	{
+		if ( roomList.indexOf( room ) > 0 )
+		{
+			log.error( "房间已存在" );
+			return;
+		}
+		for ( int i = 0; i < roomList.size(); i++ )
+		{
+			if ( roomList.get( i ) == null )
+			{
+				roomList.set( i, room );
+				room.setId( i + 1 );
+				roomCount++;
+				return;
+			}
+		}
+		roomList.add( room );
+		room.setId( roomList.size() );
+		roomCount++;
+	}
+
+	public void removeRoom( BattleRoom room )
+	{
+		int index = roomList.indexOf( room );
+		if ( index > 0 )
+		{
+			roomList.set( index, null );
+			if ( roomCount > 0 )
+			{
+				roomCount--;
+			}
+		}
+		else
+		{
+			log.error( "房间不存在" );
+		}
+	}
+
+	public void removeRoom( int id )
+	{
+		if ( id > 0 )
+		{
+			roomList.set( id, null );
+			if ( roomCount > 0 )
+			{
+				roomCount--;
+			}
+		}
+	}
+
+	public BattleRoom getRoom( int id )
+	{
+		if ( id >= roomList.size() )
+		{
+			log.error( "指定id的房间不存在" );
+			return null;
+		}
+		else
+		{
+			return roomList.get( id );
 		}
 	}
 }
