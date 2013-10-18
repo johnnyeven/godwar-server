@@ -17,21 +17,22 @@ import com.xgame.server.network.GameSession;
 public class BattleHall implements IHall
 {
 
-	public static Map< Long, GameSession >	sessionMap		= new HashMap< Long, GameSession >();
-	public static boolean					stop			= false;
-	public static long						loopCounter		= 0;
+	public static boolean				stop			= false;
+	public static long					loopCounter		= 0;
 
-	private static BattleHall				instance		= null;
-	private static boolean					allowInstance	= false;
+	private static BattleHall			instance		= null;
+	private static boolean				allowInstance	= false;
 
-	private int								roomCount		= 0;
-	private int								playerLimit;
-	private long							serverStartTime;
-	private List< GameSession >				sessionQueue;
-	private IntervalTimer					timers[];
-	private List< BattleRoom >				roomList;
-	private static Log						log				= LogFactory
-																	.getLog( BattleHall.class );
+	private Map< Long, GameSession >	sessionMap		= new HashMap< Long, GameSession >();
+	private int							roomCount		= 0;
+	private int							roomLimit		= 100;
+	private int							playerLimit;
+	private long						serverStartTime;
+	private List< GameSession >			sessionQueue;
+	private IntervalTimer				timers[];
+	private List< BattleRoom >			roomList;
+	private static Log					log				= LogFactory
+																.getLog( BattleHall.class );
 
 	public BattleHall() throws Exception
 	{
@@ -172,6 +173,11 @@ public class BattleHall implements IHall
 
 	public void addRoom( BattleRoom room )
 	{
+		if ( roomCount >= roomLimit )
+		{
+			log.error( "房间数量已满，无法继续创建" );
+			return;
+		}
 		if ( roomList.indexOf( room ) > 0 )
 		{
 			log.error( "房间已存在" );
@@ -237,5 +243,15 @@ public class BattleHall implements IHall
 	public ArrayList< BattleRoom > getRooms()
 	{
 		return (ArrayList< BattleRoom >) roomList;
+	}
+
+	public Map< Long, GameSession > getSessionMap()
+	{
+		return sessionMap;
+	}
+
+	public Iterator< Entry< Long, GameSession >> getSessionMapIterator()
+	{
+		return sessionMap.entrySet().iterator();
 	}
 }

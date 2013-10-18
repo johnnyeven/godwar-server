@@ -2,13 +2,19 @@ package com.xgame.server.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.CommandCenter;
 import com.xgame.server.common.IntervalTimer;
+import com.xgame.server.common.PackageItem;
+import com.xgame.server.common.ServerPackage;
+import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class BattleRoom
 {
@@ -45,17 +51,17 @@ public class BattleRoom
 		}
 	}
 
-	public void addPlayer( Player p )
+	public Boolean addPlayer( Player p )
 	{
 		if ( peopleCount >= peopleLimit )
 		{
 			log.error( "房间已满员" );
-			return;
+			return false;
 		}
 		if ( playerList.indexOf( p ) > 0 )
 		{
 			log.error( "玩家已存在于该房间" );
-			return;
+			return false;
 		}
 		for ( int i = 0; i < playerList.size(); i++ )
 		{
@@ -63,11 +69,16 @@ public class BattleRoom
 			{
 				playerList.set( i, p );
 				peopleCount++;
-				return;
+
+				noticePlayerJoin( p );
+				return true;
 			}
 		}
 		playerList.add( p );
 		peopleCount++;
+
+		noticePlayerJoin( p );
+		return true;
 	}
 
 	public void removePlayer( Player p )
@@ -81,6 +92,27 @@ public class BattleRoom
 		else
 		{
 			log.error( "玩家不存在" );
+		}
+	}
+
+	private void noticePlayerJoin( Player p )
+	{
+		Iterator< Player > it = playerList.iterator();
+		Player p1;
+		while ( it.hasNext() )
+		{
+			p1 = it.next();
+			if ( p1 == p )
+			{
+				continue;
+			}
+
+			ServerPackage pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.HALL_PLAYER_ENTER_ROOM;
+			//TODO
+			pack.parameter.add( new PackageItem( 4, -1 ) );
+			CommandCenter.send( p.getChannel(), pack );
 		}
 	}
 

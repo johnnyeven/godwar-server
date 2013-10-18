@@ -1,5 +1,7 @@
-
 package com.xgame.server.common.protocol;
+
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,8 +30,8 @@ public class ProtocolRequestRoom implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = ( ProtocolPackage ) param1;
-		GameSession session = ( GameSession ) param2;
+		ProtocolPackage parameter = (ProtocolPackage) param1;
+		GameSession session = (GameSession) param2;
 
 		int roomType = Integer.MIN_VALUE;
 		for ( int i = parameter.offset; i < parameter.receiveDataLength; )
@@ -38,7 +40,7 @@ public class ProtocolRequestRoom implements IProtocol
 			int type = parameter.receiveData.get();
 			switch ( type )
 			{
-				case EnumProtocol.TYPE_LONG:
+				case EnumProtocol.TYPE_INT:
 					if ( roomType == Integer.MIN_VALUE )
 					{
 						roomType = parameter.receiveData.getInt();
@@ -50,9 +52,14 @@ public class ProtocolRequestRoom implements IProtocol
 		log.info( "[RequestRoom] Room Type = " + roomType );
 
 		int id = 0;
+		BattleRoom room = null;
 		if ( roomType == 0 )
 		{
-			BattleRoom room = BattleRoomPool.getInstance().getObject();
+			room = BattleRoomPool.getInstance().getObject();
+			room.setOwner( session.getPlayer() );
+			room.setPeopleLimit( 4 );
+			room.setPeopleCount( 0 );
+			room.initialize();
 			BattleHall.getInstance().addRoom( room );
 			id = room.getId();
 		}
@@ -73,6 +80,34 @@ public class ProtocolRequestRoom implements IProtocol
 			pack.protocolId = EnumProtocol.HALL_REQUEST_ROOM;
 			pack.parameter.add( new PackageItem( 4, id ) );
 			CommandCenter.send( parameter.client, pack );
+
+			Iterator< Entry< Long, GameSession >> it = BattleHall.getInstance()
+					.getSessionMapIterator();
+			Entry< Long, GameSession > en;
+			GameSession s;
+			while ( it.hasNext() )
+			{
+				en = it.next();
+				s = en.getValue();
+				if ( s == session || s == null )
+				{
+					continue;
+				}
+
+				pack = ServerPackagePool.getInstance().getObject();
+				pack.success = EnumProtocol.ACK_CONFIRM;
+				pack.protocolId = EnumProtocol.HALL_ROOM_CREATED;
+				pack.parameter.add( new PackageItem( 4, id ) );
+				pack.parameter.add( new PackageItem( room.getTitle().length(),
+						room.getTitle() ) );
+				pack.parameter.add( new PackageItem( room.getOwner().name
+						.length(), room.getOwner().name ) );
+				pack.parameter
+						.add( new PackageItem( 4, room.getPeopleCount() ) );
+				pack.parameter
+						.add( new PackageItem( 4, room.getPeopleLimit() ) );
+				CommandCenter.send( s.getChannel(), pack );
+			}
 		}
 	}
 

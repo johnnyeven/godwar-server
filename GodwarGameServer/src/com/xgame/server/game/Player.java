@@ -41,7 +41,7 @@ public class Player
 
 	public Player()
 	{
-		super();
+		guid = UUID.randomUUID();
 	}
 
 	public boolean loadFromDatabase()

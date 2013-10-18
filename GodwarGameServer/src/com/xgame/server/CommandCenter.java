@@ -14,6 +14,7 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.pool.BufferPool;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class CommandCenter
 {
@@ -100,7 +101,7 @@ public class CommandCenter
 		long timestamp = new Date().getTime();
 		buffer.putLong( timestamp );
 		dataLength += 8;
-		
+
 		buffer.putInt( 0, dataLength );
 		dataLength += 4;
 		buffer.flip();
@@ -117,6 +118,10 @@ public class CommandCenter
 		catch ( InterruptedException | ExecutionException e )
 		{
 			e.printStackTrace();
+		}
+		finally
+		{
+			ServerPackagePool.getInstance().returnObject( pack );
 		}
 	}
 

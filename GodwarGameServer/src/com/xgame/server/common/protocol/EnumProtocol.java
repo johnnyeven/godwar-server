@@ -23,6 +23,9 @@ public final class EnumProtocol
 	// HALL
 	public static final int		ACTION_REQUEST_ROOM			= 0;
 	public static final int		ACTION_SHOW_ROOMLIST		= 1;
+	public static final int		ACTION_ROOM_CREATED			= 2;
+	public static final int		ACTION_REQUEST_ENTER_ROOM	= 3;
+	public static final int		ACTION_PLAYER_ENTER_ROOM	= 4;
 
 	public static final int		ACK_CONFIRM					= 1;
 	public static final int		ACK_ERROR					= 0;
@@ -51,5 +54,11 @@ public final class EnumProtocol
 	public static final short	HALL_REQUEST_ROOM			= ACTION_REQUEST_ROOM << 8
 																	| CONTROLLER_HALL;
 	public static final short	HALL_SHOW_ROOM_LIST			= ACTION_SHOW_ROOMLIST << 8
+																	| CONTROLLER_HALL;
+	public static final short	HALL_ROOM_CREATED			= ACTION_ROOM_CREATED << 8
+																	| CONTROLLER_HALL;
+	public static final short	HALL_REQUEST_ENTER_ROOM		= ACTION_REQUEST_ENTER_ROOM << 8
+																	| CONTROLLER_HALL;
+	public static final short	HALL_PLAYER_ENTER_ROOM		= ACTION_PLAYER_ENTER_ROOM << 8
 																	| CONTROLLER_HALL;
 }
