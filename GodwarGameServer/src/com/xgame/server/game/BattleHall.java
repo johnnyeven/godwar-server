@@ -1,4 +1,3 @@
-
 package com.xgame.server.game;
 
 import java.util.ArrayList;
@@ -233,5 +232,10 @@ public class BattleHall implements IHall
 		{
 			return roomList.get( id );
 		}
+	}
+
+	public ArrayList< BattleRoom > getRooms()
+	{
+		return (ArrayList< BattleRoom >) roomList;
 	}
 }
