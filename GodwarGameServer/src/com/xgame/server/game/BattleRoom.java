@@ -1,3 +1,4 @@
+
 package com.xgame.server.game;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import com.xgame.server.pool.ServerPackagePool;
 
 public class BattleRoom
 {
+
 	private int								id;
 	private String							title;
 	private int								peopleLimit;
@@ -110,8 +112,8 @@ public class BattleRoom
 			ServerPackage pack = ServerPackagePool.getInstance().getObject();
 			pack.success = EnumProtocol.ACK_CONFIRM;
 			pack.protocolId = EnumProtocol.HALL_PLAYER_ENTER_ROOM;
-			//TODO
-			pack.parameter.add( new PackageItem( 4, -1 ) );
+			pack.parameter.add( new PackageItem( 8, p.accountId ) );
+			pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
 			CommandCenter.send( p.getChannel(), pack );
 		}
 	}
