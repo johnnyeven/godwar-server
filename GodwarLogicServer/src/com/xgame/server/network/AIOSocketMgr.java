@@ -9,8 +9,7 @@ import java.util.concurrent.Executors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.xgame.server.common.protocol.EnumProtocol;
-import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
+import com.xgame.server.common.protocol.EnumProtocol; 
 import com.xgame.server.common.protocol.ProtocolRouter;
 
 public class AIOSocketMgr
@@ -73,8 +72,8 @@ public class AIOSocketMgr
 
 	private void bindProtocol()
 	{
-		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,
-				ProtocolRegisterAccountRole.class );
+//		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,
+//				ProtocolRegisterAccountRole.class );
 	}
 
 	public void startCompletionPort()

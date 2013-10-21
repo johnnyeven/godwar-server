@@ -88,7 +88,7 @@ public class AuthSessionCompletionHandler implements
 
 					GameSession s = new GameSession( guid, arg1.channel,
 							new Date().getTime() );
-					BattleHall.getInstance().addSessionQueue( s );
+//					BattleHall.getInstance().addSessionQueue( s );
 					s.startRecv();
 
 					ServerPackage pack = ServerPackagePool.getInstance()

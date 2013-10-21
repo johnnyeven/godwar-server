@@ -1,18 +1,49 @@
 package com.xgame.server.logic;
 
+import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.network.AIOSocketMgr;
+
 
 public class LogicServer
 {
 
 	public LogicServer()
 	{
-		// TODO Auto-generated constructor stub
+		DatabaseRouter.getInstance();
+	}
+	
+	public void run()
+	{
+	    System.out.println( "                MMMM");
+	    System.out.println( " MMM    MMM    MMMMMMM                          MMMMMMMM");
+	    System.out.println( " MMM    MMM   MMMMMMMMM                         MMMMMMMM");
+	    System.out.println( "  MMM  MMM   MMMM   MMM                         MM");
+	    System.out.println( "  MMM  MMM   MMM    MMM    MMM    MM MMM  MMM   MM");
+	    System.out.println( "   MMMMMM    MMM     MM   MMMMMM  MMMMMMMMMMMMM MM");
+	    System.out.println( "   MMMMMM    MMM         MMMMMMM  MMMMMMMMMMMMM MM");
+	    System.out.println( "    MMMM     MM          MM   MM  MM   MMM  MMM MMMMMMMM");
+	    System.out.println( "    MMMM     MM   MMMMM       MM  MM   MMM   MM MMMMMMMM");
+	    System.out.println( "    MMMM     MM   MMMMM    MMMMM  MM   MMM   MM MM");
+	    System.out.println( "   MMMMMM    MMM     MM  MMMMMMM  MM   MMM   MM MM");
+	    System.out.println( "   MMMMMM    MMM     MM  MMMM MM  MM   MMM   MM MM");
+	    System.out.println( "  MMM  MMM   MMM     MM  MM   MM  MM   MMM   MM MM");
+	    System.out.println( " MMMM  MMMM  MMM    MMM  MM   MM  MM   MMM   MM MM");
+	    System.out.println( " MMM    MMM   MMMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM");
+	    System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM");
+	    System.out.println( "                 MMM MM    MM\n");
+	    System.out.println( "LogicServer\n\n");
+	    
+//	    BattleHall.getInstance().setInitialWorldSettings();
+//	    MeleeHall.getInstance().setInitialWorldSettings();
+	    
+//	    Hall.getInstance().startHall();
+	    
+		AIOSocketMgr.getInstance().startCompletionPort();
 	}
 
 	public static void main( String[] args )
 	{
-		// TODO Auto-generated method stub
-
+		new LogicServer().run();
 	}
 
 }
