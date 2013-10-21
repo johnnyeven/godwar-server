@@ -14,7 +14,6 @@ import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
-import com.xgame.server.common.protocol.ProtocolUpdatePlayerStatus;
 
 public class AIOSocketMgr
 {
@@ -80,9 +79,8 @@ public class AIOSocketMgr
 				ProtocolRequestAccountRole.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,
 				ProtocolRegisterAccountRole.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.BASE_UPDATE_STATUS,
-				ProtocolUpdatePlayerStatus.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ROOM, ProtocolRequestRoom.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ROOM,
+				ProtocolRequestRoom.class );
 	}
 
 	public void startCompletionPort()

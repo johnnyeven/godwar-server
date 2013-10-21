@@ -4,15 +4,18 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.cards.Card;
 import com.xgame.server.common.database.DatabaseRouter;
-import com.xgame.server.enums.Direction;
-import com.xgame.server.enums.Action;
 import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.network.GameSession;
 
@@ -23,18 +26,15 @@ public class Player
 	public int							level		= 0;
 	public String						name		= "";
 	public long							accountCash	= Long.MIN_VALUE;
-	public int							direction	= Direction.DOWN;
-	public int							action		= Action.STOP;
-	public int							healthMax	= Integer.MIN_VALUE;
-	public int							health		= Integer.MIN_VALUE;
-	public int							manaMax		= Integer.MIN_VALUE;
-	public int							mana		= Integer.MIN_VALUE;
-	public int							energyMax	= Integer.MIN_VALUE;
-	public int							energy		= Integer.MIN_VALUE;
-	public PlayerStatus					status		= PlayerStatus.PENDING;
+	public PlayerStatus					status		= PlayerStatus.NORMAL;
 
 	private AsynchronousSocketChannel	channel;
 	private GameSession					session;
+	private Room						currentRoom;
+	private int							currentCardGroup;
+
+	private List< Card >				currentCard;
+	private Map< UUID, Card >			cardMap;
 
 	private static Log					log			= LogFactory
 															.getLog( Player.class );
@@ -42,6 +42,8 @@ public class Player
 	public Player()
 	{
 		guid = UUID.randomUUID();
+		currentCard = new ArrayList< Card >();
+		cardMap = new HashMap< UUID, Card >();
 	}
 
 	public boolean loadFromDatabase()
@@ -64,14 +66,6 @@ public class Player
 				level = rs.getInt( "level" );
 				name = rs.getString( "nick_name" );
 				accountCash = rs.getLong( "account_cash" );
-				direction = rs.getInt( "direction" );
-				action = rs.getInt( "action" );
-				health = rs.getInt( "current_health" );
-				healthMax = rs.getInt( "max_health" );
-				mana = rs.getInt( "current_mana" );
-				manaMax = rs.getInt( "max_mana" );
-				energy = rs.getInt( "current_energy" );
-				energyMax = rs.getInt( "max_energy" );
 			}
 			else
 			{
@@ -111,19 +105,39 @@ public class Player
 		return true;
 	}
 
+	public Card getCard( UUID id )
+	{
+		if ( cardMap.containsKey( id ) )
+		{
+			return cardMap.get( id );
+		}
+		log.error( "指定ID的卡牌不存在，id = " + id.toString() );
+		return null;
+	}
+
 	public void update( long timeDiff )
 	{
-		if ( action == Action.DIE )
-		{
-			killPlayer();
-			return;
-		}
+
 	}
 
 	public void killPlayer()
 	{
 		// TODO 死亡处理
-		action = Action.CORPSE;
+
+	}
+	public int getCurrentCardGroup()
+	{
+		return currentCardGroup;
+	}
+
+	public void setCurrentCardGroup( int currentCardGroup )
+	{
+		this.currentCardGroup = currentCardGroup;
+	}
+
+	public List< Card > getCurrentCards()
+	{
+		return currentCard;
 	}
 
 	public GameSession getSession()
@@ -154,5 +168,15 @@ public class Player
 	public void setGuid( UUID guid )
 	{
 		this.guid = guid;
+	}
+
+	public Room getCurrentRoom()
+	{
+		return currentRoom;
+	}
+
+	public void setCurrentRoom( Room currentRoom )
+	{
+		this.currentRoom = currentRoom;
 	}
 }

@@ -77,10 +77,6 @@ public class ProtocolRequestAccountRole implements IProtocol
 					int direction = rs.getInt( "direction" );
 					pack.parameter.add( new PackageItem( 4, direction ) );
 
-					int action = rs.getInt( "action" );
-
-					int speed = rs.getInt( "speed" );
-
 					int currentHealth = rs.getInt( "current_health" );
 					pack.parameter.add( new PackageItem( 4, currentHealth ) );
 
@@ -105,21 +101,11 @@ public class ProtocolRequestAccountRole implements IProtocol
 					double currentY = rs.getDouble( "current_y" );
 					pack.parameter.add( new PackageItem( 4, currentY ) );
 
-					int mapId = rs.getInt( "map_id" );
-
 					Player p = PlayerPool.getInstance().getObject();
 					p.accountId = accountId;
 					p.level = level;
 					p.name = nickName;
 					p.accountCash = accountCash;
-					p.direction = direction;
-					p.action = action;
-					p.healthMax = maxHealth;
-					p.health = currentHealth;
-					p.manaMax = maxMana;
-					p.mana = currentMana;
-					p.energyMax = maxEnergy;
-					p.energy = currentEnergy;
 					p.setChannel( parameter.client );
 				}
 				else
