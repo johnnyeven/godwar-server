@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <GameServer>
+        <ip>127.0.0.1</ip>
+        <port>9051</port>
+    </GameServer>
+</config>
