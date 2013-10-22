@@ -41,8 +41,11 @@ public class GameServerConnector
 		bf.putInt( port );
 
 		bf.flip();
+		
+		byte[] dest = new byte[bf.remaining()];
+		bf.get( dest, 0, dest.length );
 
-		p.setData( bf.array() );
+		p.setData( dest );
 
 		socket.send( p );
 	}

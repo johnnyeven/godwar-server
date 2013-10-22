@@ -92,11 +92,6 @@ public class LogicServer
 	    System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM");
 	    System.out.println( "                 MMM MM    MM\n");
 	    System.out.println( "LogicServer\n\n");
-	    
-//	    BattleHall.getInstance().setInitialWorldSettings();
-//	    MeleeHall.getInstance().setInitialWorldSettings();
-	    
-//	    Hall.getInstance().startHall();
 
 		AIOSocketMgr.getInstance().startCompletionPort();
 	}
