@@ -1,0 +1,10 @@
+<config>
+    <LogicServer>
+        <ip>127.0.0.1</ip>
+        <port>9060</port>
+    </LogicServer>
+    <GameServer>
+        <ip>127.0.0.1</ip>
+        <port>9051</port>
+    </GameServer>
+</config>

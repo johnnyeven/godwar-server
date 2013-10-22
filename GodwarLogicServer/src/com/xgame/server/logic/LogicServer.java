@@ -1,7 +1,21 @@
 package com.xgame.server.logic;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
+import com.xgame.server.network.GameServerConnector;
 
 
 public class LogicServer
@@ -10,6 +24,52 @@ public class LogicServer
 	public LogicServer()
 	{
 		DatabaseRouter.getInstance();
+	}
+	
+	private void loadConfig() throws ParserConfigurationException, SAXException, IOException
+	{
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
+		
+		Document doc = dbBuilder.parse( "config.xml" );
+
+		Node serverNode = doc.getElementsByTagName( "GameServer" ).item( 0 );
+		NodeList list = serverNode.getChildNodes();
+		String gameServerIp = null;
+		int gameServerPort = 0;
+		int length = list.getLength();
+		for(int i=0;i<length;i++)
+		{
+			if(list.item( i ).getNodeName() == "ip")
+			{
+				gameServerIp = list.item( i ).getTextContent().trim();
+			}
+			else if(list.item( i ).getNodeName() == "port")
+			{
+				gameServerPort = Integer.parseInt( list.item( i ).getTextContent().trim() );
+			}
+		}
+		
+		serverNode = doc.getElementsByTagName( "LogicServer" ).item( 0 );
+		list = serverNode.getChildNodes();
+		String logicServerIp = null;
+		int logicServerPort = 0;
+		length = list.getLength();
+		for(int i=0;i<length;i++)
+		{
+			if(list.item( i ).getNodeName() == "ip")
+			{
+				logicServerIp = list.item( i ).getTextContent().trim();
+			}
+			else if(list.item( i ).getNodeName() == "port")
+			{
+				logicServerPort = Integer.parseInt( list.item( i ).getTextContent().trim() );
+			}
+		}
+		
+		GameServerConnector.getInstance().setIp( logicServerIp );
+		GameServerConnector.getInstance().setPort( logicServerPort );
+		GameServerConnector.getInstance().initialize( new InetSocketAddress(gameServerIp, gameServerPort) );
 	}
 	
 	public void run()
@@ -37,13 +97,22 @@ public class LogicServer
 //	    MeleeHall.getInstance().setInitialWorldSettings();
 	    
 //	    Hall.getInstance().startHall();
-	    
+
 		AIOSocketMgr.getInstance().startCompletionPort();
 	}
 
 	public static void main( String[] args )
 	{
-		new LogicServer().run();
+		LogicServer me = new LogicServer();
+		try
+		{
+			me.loadConfig();
+		}
+		catch ( ParserConfigurationException | SAXException | IOException e )
+		{
+			e.printStackTrace();
+		}
+		me.run();
 	}
 
 }

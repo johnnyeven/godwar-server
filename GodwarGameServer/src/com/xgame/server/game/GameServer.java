@@ -1,5 +1,9 @@
 package com.xgame.server.game;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
 
@@ -37,8 +41,24 @@ public class GameServer
 	    MeleeHall.getInstance().setInitialWorldSettings();
 	    
 	    Hall.getInstance().startHall();
+		
+		Thread thLogicServerListen = new Thread(new LogicServerListenThread());
+		thLogicServerListen.start();
+		
+		startLogicServerHolderThread();
 	    
 		AIOSocketMgr.getInstance().startCompletionPort();
+	}
+	
+	private void startLogicServerHolderThread()
+	{
+		ExecutorService exe = Executors.newFixedThreadPool( 2 );
+		
+		LogicServerHolderThread th1 = new LogicServerHolderThread();
+		LogicServerHolderThread th2 = new LogicServerHolderThread();
+		
+		exe.execute( th1 );
+		exe.execute( th2 );
 	}
 
 	public static void main( String[] args )
