@@ -31,7 +31,8 @@ public class GameServerConnector
 		p.setSocketAddress( add );
 
 		ByteBuffer bf = BufferPool.getInstance().getBuffer();
-
+		
+		bf.putShort( EnumProtocol.BASE_REGISTER_LOGIC_SERVER );
 		bf.put( (byte) EnumProtocol.TYPE_STRING );
 		byte[] str = ip.getBytes( Charset.forName( "UTF-8" ) );
 		bf.putInt( str.length );
