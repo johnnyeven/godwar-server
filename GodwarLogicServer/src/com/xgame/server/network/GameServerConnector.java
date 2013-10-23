@@ -33,7 +33,7 @@ public class GameServerConnector
 		}
 	}
 
-	public void initialize( InetSocketAddress add ) throws IOException
+	public void initialize( InetSocketAddress add )
 	{
 		DatagramPacket p = DatagramPacketPool.getInstance().getObject();
 		p.setSocketAddress( add );
@@ -62,10 +62,22 @@ public class GameServerConnector
 
 		p.setData( dest );
 
-		socket.send( p );
+		send( p );
 	}
-	
-	public void send(DatagramPacket p)
+
+	public void receive( DatagramPacket p )
+	{
+		try
+		{
+			socket.receive( p );
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void send( DatagramPacket p )
 	{
 		try
 		{

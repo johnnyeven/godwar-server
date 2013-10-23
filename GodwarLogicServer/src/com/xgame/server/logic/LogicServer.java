@@ -16,7 +16,8 @@ import org.xml.sax.SAXException;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
 import com.xgame.server.network.GameServerConnector;
-
+import com.xgame.server.timer.RegisterLogicServerTimerTask;
+import com.xgame.server.timer.TimerManager;
 
 public class LogicServer
 {
@@ -25,12 +26,13 @@ public class LogicServer
 	{
 		DatabaseRouter.getInstance();
 	}
-	
-	private void loadConfig() throws ParserConfigurationException, SAXException, IOException
+
+	private void loadConfig() throws ParserConfigurationException,
+			SAXException, IOException
 	{
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-		
+
 		Document doc = dbBuilder.parse( "config.xml" );
 
 		Node serverNode = doc.getElementsByTagName( "GameServer" ).item( 0 );
@@ -38,66 +40,71 @@ public class LogicServer
 		String gameServerIp = null;
 		int gameServerPort = 0;
 		int length = list.getLength();
-		for(int i=0;i<length;i++)
+		for ( int i = 0; i < length; i++ )
 		{
-			if(list.item( i ).getNodeName() == "ip")
+			if ( list.item( i ).getNodeName() == "ip" )
 			{
 				gameServerIp = list.item( i ).getTextContent().trim();
 			}
-			else if(list.item( i ).getNodeName() == "port")
+			else if ( list.item( i ).getNodeName() == "port" )
 			{
-				gameServerPort = Integer.parseInt( list.item( i ).getTextContent().trim() );
+				gameServerPort = Integer.parseInt( list.item( i )
+						.getTextContent().trim() );
 			}
 		}
-		
+
 		serverNode = doc.getElementsByTagName( "LogicServer" ).item( 0 );
 		list = serverNode.getChildNodes();
 		String logicServerId = null;
 		String logicServerIp = null;
 		int logicServerPort = 0;
 		length = list.getLength();
-		for(int i=0;i<length;i++)
+		for ( int i = 0; i < length; i++ )
 		{
-			if(list.item( i ).getNodeName() == "id")
+			if ( list.item( i ).getNodeName() == "id" )
 			{
 				logicServerId = list.item( i ).getTextContent().trim();
 			}
-			else if(list.item( i ).getNodeName() == "ip")
+			else if ( list.item( i ).getNodeName() == "ip" )
 			{
 				logicServerIp = list.item( i ).getTextContent().trim();
 			}
-			else if(list.item( i ).getNodeName() == "port")
+			else if ( list.item( i ).getNodeName() == "port" )
 			{
-				logicServerPort = Integer.parseInt( list.item( i ).getTextContent().trim() );
+				logicServerPort = Integer.parseInt( list.item( i )
+						.getTextContent().trim() );
 			}
 		}
 
 		GameServerConnector.getInstance().setId( logicServerId );
 		GameServerConnector.getInstance().setIp( logicServerIp );
 		GameServerConnector.getInstance().setPort( logicServerPort );
-		GameServerConnector.getInstance().initialize( new InetSocketAddress(gameServerIp, gameServerPort) );
+
+		RegisterLogicServerTimerTask task = new RegisterLogicServerTimerTask(
+				gameServerIp, gameServerPort );
+		TimerManager.getInstance().schedule( task, 0, 5000 );
 	}
-	
+
 	public void run()
 	{
-	    System.out.println( "                MMMM");
-	    System.out.println( " MMM    MMM    MMMMMMM                          MMMMMMMM");
-	    System.out.println( " MMM    MMM   MMMMMMMMM                         MMMMMMMM");
-	    System.out.println( "  MMM  MMM   MMMM   MMM                         MM");
-	    System.out.println( "  MMM  MMM   MMM    MMM    MMM    MM MMM  MMM   MM");
-	    System.out.println( "   MMMMMM    MMM     MM   MMMMMM  MMMMMMMMMMMMM MM");
-	    System.out.println( "   MMMMMM    MMM         MMMMMMM  MMMMMMMMMMMMM MM");
-	    System.out.println( "    MMMM     MM          MM   MM  MM   MMM  MMM MMMMMMMM");
-	    System.out.println( "    MMMM     MM   MMMMM       MM  MM   MMM   MM MMMMMMMM");
-	    System.out.println( "    MMMM     MM   MMMMM    MMMMM  MM   MMM   MM MM");
-	    System.out.println( "   MMMMMM    MMM     MM  MMMMMMM  MM   MMM   MM MM");
-	    System.out.println( "   MMMMMM    MMM     MM  MMMM MM  MM   MMM   MM MM");
-	    System.out.println( "  MMM  MMM   MMM     MM  MM   MM  MM   MMM   MM MM");
-	    System.out.println( " MMMM  MMMM  MMM    MMM  MM   MM  MM   MMM   MM MM");
-	    System.out.println( " MMM    MMM   MMMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM");
-	    System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM");
-	    System.out.println( "                 MMM MM    MM\n");
-	    System.out.println( "LogicServer\n\n");
+		System.out.println( "                MMMM" );
+		System.out.println( " MMM    MMM    MMMMMMM                          MMMMMMMM" );
+		System.out.println( " MMM    MMM   MMMMMMMMM                         MMMMMMMM" );
+		System.out.println( "  MMM  MMM   MMMM   MMM                         MM" );
+		System.out.println( "  MMM  MMM   MMM    MMM    MMM    MM MMM  MMM   MM" );
+		System.out.println( "   MMMMMM    MMM     MM   MMMMMM  MMMMMMMMMMMMM MM" );
+		System.out.println( "   MMMMMM    MMM         MMMMMMM  MMMMMMMMMMMMM MM" );
+		System.out.println( "    MMMM     MM          MM   MM  MM   MMM  MMM MMMMMMMM" );
+		System.out.println( "    MMMM     MM   MMMMM       MM  MM   MMM   MM MMMMMMMM" );
+		System.out.println( "    MMMM     MM   MMMMM    MMMMM  MM   MMM   MM MM" );
+		System.out.println( "   MMMMMM    MMM     MM  MMMMMMM  MM   MMM   MM MM" );
+		System.out.println( "   MMMMMM    MMM     MM  MMMM MM  MM   MMM   MM MM" );
+		System.out.println( "  MMM  MMM   MMM     MM  MM   MM  MM   MMM   MM MM" );
+		System.out.println( " MMMM  MMMM  MMM    MMM  MM   MM  MM   MMM   MM MM" );
+		System.out.println( " MMM    MMM   MMMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
+		System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
+		System.out.println( "                 MMM MM    MM\n" );
+		System.out.println( "LogicServer\n\n" );
 
 		AIOSocketMgr.getInstance().startCompletionPort();
 	}
