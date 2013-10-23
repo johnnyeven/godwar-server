@@ -52,12 +52,17 @@ public class LogicServer
 		
 		serverNode = doc.getElementsByTagName( "LogicServer" ).item( 0 );
 		list = serverNode.getChildNodes();
+		String logicServerId = null;
 		String logicServerIp = null;
 		int logicServerPort = 0;
 		length = list.getLength();
 		for(int i=0;i<length;i++)
 		{
-			if(list.item( i ).getNodeName() == "ip")
+			if(list.item( i ).getNodeName() == "id")
+			{
+				logicServerId = list.item( i ).getTextContent().trim();
+			}
+			else if(list.item( i ).getNodeName() == "ip")
 			{
 				logicServerIp = list.item( i ).getTextContent().trim();
 			}
@@ -66,7 +71,8 @@ public class LogicServer
 				logicServerPort = Integer.parseInt( list.item( i ).getTextContent().trim() );
 			}
 		}
-		
+
+		GameServerConnector.getInstance().setId( logicServerId );
 		GameServerConnector.getInstance().setIp( logicServerIp );
 		GameServerConnector.getInstance().setPort( logicServerPort );
 		GameServerConnector.getInstance().initialize( new InetSocketAddress(gameServerIp, gameServerPort) );

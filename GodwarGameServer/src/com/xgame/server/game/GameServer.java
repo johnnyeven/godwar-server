@@ -43,6 +43,7 @@ public class GameServer
 	    Hall.getInstance().startHall();
 		
 		Thread thLogicServerListen = new Thread(new LogicServerListenThread());
+		thLogicServerListen.setName( "LogicServerListenThread" );
 		thLogicServerListen.start();
 		
 		startLogicServerHolderThread();

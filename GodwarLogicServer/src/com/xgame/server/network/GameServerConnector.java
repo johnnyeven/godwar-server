@@ -14,27 +14,41 @@ import com.xgame.server.pool.DatagramPacketPool;
 
 public class GameServerConnector
 {
-	private DatagramSocket	socket;
-	private String			ip;
-	private int				port;
+	private DatagramSocket		socket;
+	private String				id;
+	private String				ip;
+	private int					port;
+	private static final String	HOST	= "127.0.0.1";
+	private static final int	PORT	= 9061;
 
 	private GameServerConnector()
 	{
-
+		try
+		{
+			socket = new DatagramSocket( new InetSocketAddress( HOST, PORT ) );
+		}
+		catch ( SocketException e )
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void initialize( InetSocketAddress add ) throws IOException
 	{
-		socket = new DatagramSocket( add );
-
 		DatagramPacket p = DatagramPacketPool.getInstance().getObject();
 		p.setSocketAddress( add );
 
 		ByteBuffer bf = BufferPool.getInstance().getBuffer();
-		
+
 		bf.putShort( EnumProtocol.BASE_REGISTER_LOGIC_SERVER );
+
 		bf.put( (byte) EnumProtocol.TYPE_STRING );
-		byte[] str = ip.getBytes( Charset.forName( "UTF-8" ) );
+		byte[] str = id.getBytes( Charset.forName( "UTF-8" ) );
+		bf.putInt( str.length );
+		bf.put( str );
+
+		bf.put( (byte) EnumProtocol.TYPE_STRING );
+		str = ip.getBytes( Charset.forName( "UTF-8" ) );
 		bf.putInt( str.length );
 		bf.put( str );
 
@@ -42,13 +56,25 @@ public class GameServerConnector
 		bf.putInt( port );
 
 		bf.flip();
-		
+
 		byte[] dest = new byte[bf.remaining()];
 		bf.get( dest, 0, dest.length );
 
 		p.setData( dest );
 
 		socket.send( p );
+	}
+	
+	public void send(DatagramPacket p)
+	{
+		try
+		{
+			socket.send( p );
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public String getIp()
@@ -69,6 +95,16 @@ public class GameServerConnector
 	public void setPort( int port )
 	{
 		this.port = port;
+	}
+
+	public String getId()
+	{
+		return id;
+	}
+
+	public void setId( String id )
+	{
+		this.id = id;
 	}
 
 	public static GameServerConnector getInstance()

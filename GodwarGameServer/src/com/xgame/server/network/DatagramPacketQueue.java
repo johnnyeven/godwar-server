@@ -1,6 +1,7 @@
 package com.xgame.server.network;
 
 import java.net.DatagramPacket;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class DatagramPacketQueue
@@ -21,14 +22,17 @@ public class DatagramPacketQueue
 	{
 		if ( queue.size() > 0 )
 		{
-			DatagramPacket p = queue.poll();
-			queue.remove( 0 );
-			return p;
+			return queue.poll();
 		}
 		else
 		{
 			return null;
 		}
+	}
+	
+	public int size()
+	{
+		return queue.size();
 	}
 
 	public static DatagramPacketQueue getInstance()
