@@ -30,7 +30,6 @@ public class ProtocolShowRoomList implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		log.debug( "当前线程：" + Thread.currentThread().getName() );
 		ProtocolPackage parameter = (ProtocolPackage) param1;
 		GameSession session = (GameSession) param2;
 
