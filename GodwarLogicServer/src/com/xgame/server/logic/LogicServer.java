@@ -1,9 +1,6 @@
 package com.xgame.server.logic;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -82,7 +79,7 @@ public class LogicServer
 
 		RegisterLogicServerTimerTask task = new RegisterLogicServerTimerTask(
 				gameServerIp, gameServerPort );
-		TimerManager.getInstance().schedule( task, 0, 5000 );
+		TimerManager.getInstance().schedule( "GameServerConnectorInitilization", task, 0, 5000 );
 	}
 
 	public void run()
@@ -105,6 +102,14 @@ public class LogicServer
 		System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
 		System.out.println( "                 MMM MM    MM\n" );
 		System.out.println( "LogicServer\n\n" );
+
+		Thread thGameServerListen = new Thread(new GameServerListenThread());
+		thGameServerListen.setName( "GameServerListenThread" );
+		thGameServerListen.start();
+
+		Thread thGameServerHolder = new Thread(new GameServerHolderThread());
+		thGameServerHolder.setName( "GameServerHolderThread" );
+		thGameServerHolder.start();
 
 		AIOSocketMgr.getInstance().startCompletionPort();
 	}

@@ -1,7 +1,10 @@
 package com.xgame.server.game;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.xgame.server.common.LogicServerInfo;
 
@@ -32,6 +35,28 @@ public class LogicServerManager
 		{
 			return null;
 		}
+	}
+
+	public LogicServerInfo getLogicServer()
+	{
+		if ( map.size() > 0 )
+		{
+			Iterator< LogicServerInfo > it = map.values().iterator();
+			LogicServerInfo info;
+			LogicServerInfo minInfo;
+
+			minInfo = it.next();
+			while ( it.hasNext() )
+			{
+				info = it.next();
+				if ( info.load < minInfo.load )
+				{
+					minInfo = info;
+				}
+			}
+			return minInfo;
+		}
+		return null;
 	}
 
 	public void addLoad( String id )

@@ -55,6 +55,14 @@ public class GameServerConnector
 		bf.put( (byte) EnumProtocol.TYPE_INT );
 		bf.putInt( port );
 
+		bf.put( (byte) EnumProtocol.TYPE_STRING );
+		str = HOST.getBytes( Charset.forName( "UTF-8" ) );
+		bf.putInt( str.length );
+		bf.put( str );
+
+		bf.put( (byte) EnumProtocol.TYPE_INT );
+		bf.putInt( PORT );
+
 		bf.flip();
 
 		byte[] dest = new byte[bf.remaining()];

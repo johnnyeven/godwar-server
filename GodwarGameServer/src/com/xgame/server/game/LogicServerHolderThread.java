@@ -2,6 +2,7 @@ package com.xgame.server.game;
 
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
 import org.apache.commons.logging.Log;
@@ -34,7 +35,7 @@ public class LogicServerHolderThread implements Runnable
 				ByteBuffer buffer = ByteBuffer.wrap( p.getData() );
 				buffer.limit( p.getLength() );
 
-				log.debug( "线程捕获DatagramPacket, ip = "
+				log.info( "线程捕获DatagramPacket, ip = "
 						+ p.getAddress().getHostAddress() + ", length = "
 						+ buffer.remaining() + ", ThreadName = "
 						+ Thread.currentThread().getName() );
@@ -52,6 +53,13 @@ public class LogicServerHolderThread implements Runnable
 					bf.putShort( EnumProtocol.BASE_REGISTER_LOGIC_SERVER_CONFIRM );
 					bf.put( (byte) EnumProtocol.TYPE_INT );
 					bf.putInt( 1 );
+
+					bf.flip();
+
+					byte[] dest = new byte[bf.remaining()];
+					bf.get( dest, 0, dest.length );
+
+					pack.setData( dest );
 
 					LogicServerConnector.getInstance().send( pack );
 				}
@@ -76,6 +84,8 @@ public class LogicServerHolderThread implements Runnable
 		String id = null;
 		String ip = null;
 		int port = 0;
+		String udpIp = null;
+		int udpPort = 0;
 		while ( buffer.hasRemaining() )
 		{
 			type = buffer.get();
@@ -96,6 +106,11 @@ public class LogicServerHolderThread implements Runnable
 						ip = new String( dst, "UTF-8" );
 						continue;
 					}
+					if ( udpIp == null )
+					{
+						udpIp = new String( dst, "UTF-8" );
+						continue;
+					}
 				}
 				catch ( UnsupportedEncodingException e )
 				{
@@ -104,17 +119,27 @@ public class LogicServerHolderThread implements Runnable
 			}
 			else if ( type == EnumProtocol.TYPE_INT )
 			{
-				port = buffer.getInt();
+				if ( port == 0 )
+				{
+					port = buffer.getInt();
+					continue;
+				}
+				if ( udpPort == 0 )
+				{
+					udpPort = buffer.getInt();
+					continue;
+				}
 			}
 		}
 		LogicServerInfo info = new LogicServerInfo();
 		info.id = id;
 		info.ip = ip;
 		info.port = port;
+		info.add = new InetSocketAddress( udpIp, udpPort );
 		info.load = 0;
 		LogicServerManager.getInstance().addLogicServer( id, info );
 		log.info( "LogicServer注册信息, id = " + id + ", ip = " + ip + ", port = "
-				+ port );
+				+ port + ", upd ip = " + udpIp + ", udp port = " + udpPort );
 	}
 
 	public void stop()
