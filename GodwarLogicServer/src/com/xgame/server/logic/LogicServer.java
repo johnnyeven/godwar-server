@@ -1,6 +1,7 @@
 package com.xgame.server.logic;
 
 import java.io.IOException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -103,6 +104,11 @@ public class LogicServer
 		System.out.println( "                 MMM MM    MM\n" );
 		System.out.println( "LogicServer\n\n" );
 
+	    BattleHall.getInstance().setInitialWorldSettings();
+	    MeleeHall.getInstance().setInitialWorldSettings();
+	    
+	    Hall.getInstance().startHall();
+	    
 		Thread thGameServerListen = new Thread(new GameServerListenThread());
 		thGameServerListen.setName( "GameServerListenThread" );
 		thGameServerListen.start();

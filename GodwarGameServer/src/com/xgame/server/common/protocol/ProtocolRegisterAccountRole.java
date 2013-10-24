@@ -97,12 +97,6 @@ public class ProtocolRegisterAccountRole implements IProtocol
 
 				}
 
-//				if ( !MapManager.getInstance().getMap( p.getMapId() ).add( p ) )
-//				{
-//					log.error( "Map::add() Ê§°Ü£¬Player=" + p.name );
-//					return;
-//				}
-
 				ObjectManager.getInstance().addPlayer( p );
 
 				rs.close();

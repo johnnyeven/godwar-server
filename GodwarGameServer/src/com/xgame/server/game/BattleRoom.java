@@ -5,7 +5,7 @@ public class BattleRoom extends Room
 
 	public BattleRoom()
 	{
-
+		super();
 	}
 
 }
