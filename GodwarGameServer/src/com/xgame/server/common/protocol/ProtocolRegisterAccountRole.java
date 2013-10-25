@@ -9,12 +9,16 @@ import java.sql.Statement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.CommandCenter;
+import com.xgame.server.common.PackageItem;
+import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.game.ObjectManager;
 import com.xgame.server.game.Player;
 import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.network.GameSession;
 import com.xgame.server.pool.PlayerPool;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class ProtocolRegisterAccountRole implements IProtocol
 {
@@ -74,9 +78,8 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		{
 			try
 			{
-				String sql = "INSERT INTO game_account(account_guid, nick_name, speed, current_health, max_health, current_mana, max_mana, current_energy, max_energy, current_x, current_y)values";
-				sql += "(" + guid + ", '" + nickName
-						+ "', 210.00, 200, 200, 85, 85, 100, 100, 700, 700)";
+				String sql = "INSERT INTO game_account(account_guid, nick_name)VALUES";
+				sql += "(" + guid + ", '" + nickName + "')";
 				PreparedStatement st = DatabaseRouter
 						.getInstance()
 						.getConnection( "gamedb" )
@@ -96,6 +99,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 				{
 
 				}
+				responseUserData( session );
 
 				ObjectManager.getInstance().addPlayer( p );
 
@@ -106,6 +110,21 @@ public class ProtocolRegisterAccountRole implements IProtocol
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void responseUserData( GameSession session )
+	{
+		Player p = session.getPlayer();
+		ServerPackage pack = ServerPackagePool.getInstance().getObject();
+		pack.success = EnumProtocol.ACK_CONFIRM;
+		pack.protocolId = EnumProtocol.REGISTER_ACCOUNT_ROLE;
+		pack.parameter.add( new PackageItem( 8, p.accountId ) );
+		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
+		pack.parameter.add( new PackageItem( 4, p.level ) );
+		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
+		pack.parameter.add( new PackageItem( p.rolePicture.length(),
+				p.rolePicture ) );
+		CommandCenter.send( session.getChannel(), pack );
 	}
 
 }

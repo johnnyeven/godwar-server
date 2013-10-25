@@ -26,6 +26,7 @@ public class Player
 	public int							level		= 0;
 	public String						name		= "";
 	public long							accountCash	= Long.MIN_VALUE;
+	public String						rolePicture	= "";
 	public PlayerStatus					status		= PlayerStatus.NORMAL;
 
 	private AsynchronousSocketChannel	channel;
@@ -66,17 +67,18 @@ public class Player
 				level = rs.getInt( "level" );
 				name = rs.getString( "nick_name" );
 				accountCash = rs.getLong( "account_cash" );
+				rolePicture = rs.getString( "role_picture" );
 			}
 			else
 			{
-				log.error( "loadFromDatabase() 没有找到对应的角色数据 accountId="
+				log.error( "[loadFromDatabase] 没有找到对应的角色数据 accountId="
 						+ accountId );
 				return false;
 			}
 			long accountGuid = rs.getLong( "account_guid" );
 			if ( accountGuid != session.getAccountId() )
 			{
-				log.error( "loadFromDatabase() accountId与WorldSession使用的accountId不匹配" );
+				log.error( "[loadFromDatabase] accountId与WorldSession使用的accountId不匹配" );
 				return false;
 			}
 			String gameGuid = rs.getString( "game_guid" );
@@ -125,6 +127,7 @@ public class Player
 		// TODO 死亡处理
 
 	}
+
 	public int getCurrentCardGroup()
 	{
 		return currentCardGroup;

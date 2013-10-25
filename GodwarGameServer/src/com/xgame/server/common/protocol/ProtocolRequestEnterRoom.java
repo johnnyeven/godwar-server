@@ -12,7 +12,7 @@ import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.network.GameSession;
 import com.xgame.server.pool.ServerPackagePool;
 
-class ProtocolRequestEnterRoom implements IProtocol
+public class ProtocolRequestEnterRoom implements IProtocol
 {
 
 	private static Log	log	= LogFactory

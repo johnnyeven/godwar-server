@@ -12,7 +12,7 @@ public class DatabaseRouter
 	
 	private static final String DRIVER = "com.mysql.jdbc.Driver";
 	private static final String CONNECT_STRING = "jdbc:mysql://localhost/";
-	private static final String DATABASE_NAME = "pulse_db_platform";
+	private static final String DATABASE_NAME = "pulse_platform_db";
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "84@41%%wi96^4";
 	

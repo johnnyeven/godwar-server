@@ -30,6 +30,7 @@ public final class EnumProtocol
 	public static final int		ACTION_REQUEST_ENTER_ROOM					= 3;
 	public static final int		ACTION_PLAYER_ENTER_ROOM					= 4;
 	public static final int		ACTION_PLAYER_SELETED_HERO					= 5;
+	public static final int		ACTION_PLAYER_READY							= 6;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -70,5 +71,7 @@ public final class EnumProtocol
 	public static final short	HALL_PLAYER_ENTER_ROOM						= ACTION_PLAYER_ENTER_ROOM << 8
 																					| CONTROLLER_HALL;
 	public static final short	HALL_PLAYER_SELECTED_HERO					= ACTION_PLAYER_SELETED_HERO << 8
+																					| CONTROLLER_HALL;
+	public static final short	HALL_PLAYER_READY							= ACTION_PLAYER_READY << 8
 																					| CONTROLLER_HALL;
 }

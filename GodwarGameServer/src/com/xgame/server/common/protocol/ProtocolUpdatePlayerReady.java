@@ -42,7 +42,7 @@ public class ProtocolUpdatePlayerReady implements IProtocol
 				
 				ServerPackage pack = ServerPackagePool.getInstance().getObject();
 				pack.success = EnumProtocol.ACK_CONFIRM;
-				pack.protocolId = EnumProtocol.HALL_PLAYER_SELECTED_HERO;
+				pack.protocolId = EnumProtocol.HALL_PLAYER_READY;
 				pack.parameter.add( new PackageItem( 8, session.getPlayer().accountId ) );
 				CommandCenter.send( p1.getChannel(), pack );
 			}

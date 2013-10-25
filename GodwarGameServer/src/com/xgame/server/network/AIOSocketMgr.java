@@ -10,10 +10,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.common.protocol.ProtocolChooseHero;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
+import com.xgame.server.common.protocol.ProtocolShowRoomList;
+import com.xgame.server.common.protocol.ProtocolRequestEnterRoom;
+import com.xgame.server.common.protocol.ProtocolUpdatePlayerReady;
 
 public class AIOSocketMgr
 {
@@ -79,8 +83,16 @@ public class AIOSocketMgr
 				ProtocolRequestAccountRole.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,
 				ProtocolRegisterAccountRole.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_SHOW_ROOM_LIST,
+				ProtocolShowRoomList.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ROOM,
 				ProtocolRequestRoom.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ENTER_ROOM,
+				ProtocolRequestEnterRoom.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_PLAYER_SELECTED_HERO,
+				ProtocolChooseHero.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_PLAYER_READY,
+				ProtocolUpdatePlayerReady.class );
 	}
 
 	public void startCompletionPort()
