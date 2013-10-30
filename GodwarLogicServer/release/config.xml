@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <config>
+    <LogicServer>
+        <id>1001</id>
+        <ip>johnnyeven.3322.org</ip>
+        <port>9060</port>
+    </LogicServer>
     <GameServer>
-        <ip>127.0.0.1</ip>
+        <ip>johnnyeven.3322.org</ip>
         <port>9051</port>
     </GameServer>
 </config>
