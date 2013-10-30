@@ -1,8 +1,13 @@
 package com.xgame.server.network;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.CompletionHandler;
+import java.nio.charset.Charset;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.AuthSessionPackage;
 import com.xgame.server.common.protocol.ProtocolRouter;
@@ -12,6 +17,7 @@ import com.xgame.server.pool.BufferPool;
 public class ReadCompletionHandler implements
 		CompletionHandler< Integer, AuthSessionPackage >
 {
+	private static Log	log	= LogFactory.getLog( ReadCompletionHandler.class );
 
 	public ReadCompletionHandler()
 	{
@@ -20,6 +26,31 @@ public class ReadCompletionHandler implements
 	@Override
 	public void completed( Integer result, AuthSessionPackage attachment )
 	{
+		if ( result == 22 )
+		{
+			attachment.buffer.flip();
+			byte[] dst = new byte[22];
+			attachment.buffer.get( dst );
+			try
+			{
+				String policy = new String( dst, "UTF-8" );
+				if ( policy == "<policy-file-request/>" )
+				{
+					log.info( "捕获策略文件请求" );
+					String policyFile = "<?xml version=\"1.0\"?><cross-domain-policy><site-control permitted-cross-domain-policies=\"all\"/><allow-access-from domain=\"*\" to-ports=\"9999\" /></cross-domain-policy>";
+					byte[] strBytes = policyFile.getBytes( Charset
+							.forName( "UTF-8" ) );
+					ByteBuffer buffer = BufferPool.getInstance().getBuffer();
+					buffer.put( strBytes, 0, strBytes.length );
+
+					attachment.channel.write( buffer );
+				}
+			}
+			catch ( UnsupportedEncodingException e )
+			{
+				e.printStackTrace();
+			}
+		}
 		if ( result > 0 )
 		{
 			attachment.buffer.flip();
