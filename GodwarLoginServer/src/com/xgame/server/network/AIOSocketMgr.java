@@ -18,7 +18,7 @@ public class AIOSocketMgr
 	private AsynchronousServerSocketChannel	server;
 	private AcceptCompletionHandler			acceptHandler;
 	private ReadCompletionHandler			readHandler;
-	public final static String				HOST			= "127.0.0.1";
+	public final static String				HOST			= "54.200.249.33";
 	public final static int					PORT			= 9040;
 	public static int						counter			= 0;
 
