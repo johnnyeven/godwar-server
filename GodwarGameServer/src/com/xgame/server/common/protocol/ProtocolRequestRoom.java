@@ -1,5 +1,6 @@
 package com.xgame.server.common.protocol;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -34,6 +35,8 @@ public class ProtocolRequestRoom implements IProtocol
 		GameSession session = (GameSession) param2;
 
 		int roomType = Integer.MIN_VALUE;
+		int peopleLimit = Integer.MIN_VALUE;
+		String title = null;
 		for ( int i = parameter.offset; i < parameter.receiveDataLength; )
 		{
 			int length = parameter.receiveData.getInt();
@@ -45,19 +48,40 @@ public class ProtocolRequestRoom implements IProtocol
 					{
 						roomType = parameter.receiveData.getInt();
 					}
+					else if ( peopleLimit == Integer.MIN_VALUE )
+					{
+						peopleLimit = parameter.receiveData.getInt();
+					}
 					break;
+				case EnumProtocol.TYPE_STRING:
+					if(title == null)
+					{
+						length = parameter.receiveData.getShort();
+						byte[] dst = new byte[length];
+						parameter.receiveData.get( dst );
+						length += 2;
+						try
+						{
+							title = new String( dst, "UTF-8" );
+						}
+						catch ( UnsupportedEncodingException e )
+						{
+							e.printStackTrace();
+						}
+					}
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[RequestRoom] Room Type = " + roomType );
+		log.info( "[RequestRoom] Room Type = " + roomType + ", Title = " + title + ", People limit = " + peopleLimit );
 
 		int id = 0;
 		BattleRoom room = null;
 		if ( roomType == 0 )
 		{
 			room = BattleRoomPool.getInstance().getObject();
+			room.setTitle( title );
 			room.setOwner( session.getPlayer() );
-			room.setPeopleLimit( 4 );
+			room.setPeopleLimit( peopleLimit );
 			room.setPeopleCount( 0 );
 			room.initialize();
 			BattleHall.getInstance().addRoom( room );
