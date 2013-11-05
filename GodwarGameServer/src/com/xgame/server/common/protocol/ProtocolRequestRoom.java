@@ -104,7 +104,7 @@ public class ProtocolRequestRoom implements IProtocol
 			pack.protocolId = EnumProtocol.HALL_REQUEST_ROOM;
 			pack.parameter.add( new PackageItem( 4, id ) );
 			CommandCenter.send( parameter.client, pack );
-
+			
 			Iterator< Entry< Long, GameSession >> it = BattleHall.getInstance()
 					.getSessionMapIterator();
 			Entry< Long, GameSession > en;
@@ -113,7 +113,7 @@ public class ProtocolRequestRoom implements IProtocol
 			{
 				en = it.next();
 				s = en.getValue();
-				if ( s == session || s == null )
+				if ( s == session || s == null || !s.getChannel().isOpen() )
 				{
 					continue;
 				}
