@@ -89,9 +89,9 @@ public class AIOSocketMgr
 				ProtocolRequestRoom.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ENTER_ROOM,
 				ProtocolRequestEnterRoom.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_PLAYER_SELECTED_HERO,
+		ProtocolRouter.getInstance().Bind( EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
 				ProtocolChooseHero.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_PLAYER_READY,
+		ProtocolRouter.getInstance().Bind( EnumProtocol.BATTLEROOM_PLAYER_READY,
 				ProtocolUpdatePlayerReady.class );
 	}
 

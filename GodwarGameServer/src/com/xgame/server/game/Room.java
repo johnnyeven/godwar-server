@@ -146,7 +146,7 @@ public class Room
 
 			ServerPackage pack = ServerPackagePool.getInstance().getObject();
 			pack.success = EnumProtocol.ACK_CONFIRM;
-			pack.protocolId = EnumProtocol.HALL_PLAYER_SELECTED_HERO;
+			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO;
 			pack.parameter.add( new PackageItem( 8, p.accountId ) );
 			CommandCenter.send( p.getChannel(), pack );
 		}
