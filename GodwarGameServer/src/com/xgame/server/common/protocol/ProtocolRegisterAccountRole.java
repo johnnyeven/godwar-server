@@ -118,6 +118,8 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		ServerPackage pack = ServerPackagePool.getInstance().getObject();
 		pack.success = EnumProtocol.ACK_CONFIRM;
 		pack.protocolId = EnumProtocol.REGISTER_ACCOUNT_ROLE;
+		String uuid = p.getGuid().toString();
+		pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
 		pack.parameter.add( new PackageItem( 8, p.accountId ) );
 		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
 		pack.parameter.add( new PackageItem( 4, p.level ) );

@@ -12,6 +12,7 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.game.GameServer;
+import com.xgame.server.game.ObjectManager;
 import com.xgame.server.game.Player;
 import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.network.GameSession;
@@ -62,51 +63,20 @@ public class ProtocolRequestAccountRole implements IProtocol
 				pack.protocolId = EnumProtocol.REQUEST_ACCOUNT_ROLE;
 				if ( rs.first() )
 				{
-					long accountId = rs.getLong( "account_id" );
-					pack.parameter.add( new PackageItem( 8, accountId ) );
-
-					int level = rs.getInt( "level" );
-
-					String nickName = rs.getString( "nick_name" );
-					pack.parameter.add( new PackageItem( nickName.length(),
-							nickName ) );
-
-					long accountCash = rs.getLong( "account_cash" );
-					pack.parameter.add( new PackageItem( 8, accountCash ) );
-
-					int direction = rs.getInt( "direction" );
-					pack.parameter.add( new PackageItem( 4, direction ) );
-
-					int currentHealth = rs.getInt( "current_health" );
-					pack.parameter.add( new PackageItem( 4, currentHealth ) );
-
-					int maxHealth = rs.getInt( "max_health" );
-					pack.parameter.add( new PackageItem( 4, maxHealth ) );
-
-					int currentMana = rs.getInt( "current_mana" );
-					pack.parameter.add( new PackageItem( 4, currentMana ) );
-
-					int maxMana = rs.getInt( "max_mana" );
-					pack.parameter.add( new PackageItem( 4, maxMana ) );
-
-					int currentEnergy = rs.getInt( "current_energy" );
-					pack.parameter.add( new PackageItem( 4, currentEnergy ) );
-
-					int maxEnergy = rs.getInt( "max_energy" );
-					pack.parameter.add( new PackageItem( 4, maxEnergy ) );
-
-					double currentX = rs.getDouble( "current_x" );
-					pack.parameter.add( new PackageItem( 4, currentX ) );
-
-					double currentY = rs.getDouble( "current_y" );
-					pack.parameter.add( new PackageItem( 4, currentY ) );
-
+					// TODO 创建Player对象
 					Player p = PlayerPool.getInstance().getObject();
-					p.accountId = accountId;
-					p.level = level;
-					p.name = nickName;
-					p.accountCash = accountCash;
+					p.accountId = rs.getLong( "account_id" );
 					p.setChannel( parameter.client );
+					session.setPlayer( p );
+					if ( !p.loadFromDatabase() )
+					{
+
+					}
+					responseUserData( session );
+
+					ObjectManager.getInstance().addPlayer( p );
+
+					rs.close();
 				}
 				else
 				{
@@ -121,6 +91,23 @@ public class ProtocolRequestAccountRole implements IProtocol
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void responseUserData( GameSession session )
+	{
+		Player p = session.getPlayer();
+		ServerPackage pack = ServerPackagePool.getInstance().getObject();
+		pack.success = EnumProtocol.ACK_CONFIRM;
+		pack.protocolId = EnumProtocol.REQUEST_ACCOUNT_ROLE;
+		String uuid = p.getGuid().toString();
+		pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
+		pack.parameter.add( new PackageItem( 8, p.accountId ) );
+		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
+		pack.parameter.add( new PackageItem( 4, p.level ) );
+		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
+		pack.parameter.add( new PackageItem( p.rolePicture.length(),
+				p.rolePicture ) );
+		CommandCenter.send( session.getChannel(), pack );
 	}
 
 }

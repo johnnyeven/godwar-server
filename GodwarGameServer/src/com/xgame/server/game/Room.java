@@ -20,21 +20,20 @@ import com.xgame.server.pool.ServerPackagePool;
 public class Room
 {
 
-	private int								id;
-	private String							title;
-	private int								peopleLimit;
-	private int								peopleCount;
-	private Player							owner;
-	private List< Player >					playerList;
-	private Map< Player, IntervalTimer >	timerMap;
-	private Map< Player, Card >				heroMap;
-	private RoomStatus						status;
-	private int								rounds;
-	private Player							currentPlayer;
-	private long							startTime;
-	private long							endTime;
-	private static Log						log	= LogFactory
-														.getLog( Room.class );
+	private int						id;
+	private String					title;
+	private int						peopleLimit;
+	private int						peopleCount;
+	private Player					owner;
+	private List< Player >			playerList;
+	private Map< Player, Boolean >	statusMap;
+	private Map< Player, Card >		heroMap;
+	private RoomStatus				status;
+	private int						rounds;
+	private Player					currentPlayer;
+	private long					startTime;
+	private long					endTime;
+	private static Log				log	= LogFactory.getLog( Room.class );
 
 	public Room()
 	{
@@ -46,7 +45,7 @@ public class Room
 		if ( peopleLimit > 0 )
 		{
 			playerList = new ArrayList< Player >();
-			timerMap = new HashMap< Player, IntervalTimer >();
+			statusMap = new HashMap< Player, Boolean >();
 			heroMap = new HashMap< Player, Card >();
 		}
 		else
@@ -80,6 +79,7 @@ public class Room
 			}
 		}
 		playerList.add( p );
+		statusMap.put( p, false );
 		peopleCount++;
 
 		noticePlayerJoin( p );
@@ -92,6 +92,7 @@ public class Room
 		if ( index > 0 )
 		{
 			playerList.set( index, null );
+			statusMap.remove( p );
 			peopleCount--;
 		}
 		else
@@ -260,6 +261,16 @@ public class Room
 	public void setPeopleCount( int peopleCount )
 	{
 		this.peopleCount = peopleCount;
+	}
+
+	public Map< Player, Boolean > getStatusMap()
+	{
+		return statusMap;
+	}
+
+	public Map< Player, Card > getHeroMap()
+	{
+		return heroMap;
 	}
 
 }
