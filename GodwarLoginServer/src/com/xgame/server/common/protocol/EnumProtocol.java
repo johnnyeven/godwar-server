@@ -20,4 +20,5 @@ public final class EnumProtocol
     public static final int TYPE_DOUBLE = 5;
     //INFO
     public static final short QUICK_START = ACTION_QUICK_START << 8 | CONTROLLER_INFO;
+    public static final short INFO_LOGIN = ACTION_LOGIN << 8 | CONTROLLER_INFO;
 }
