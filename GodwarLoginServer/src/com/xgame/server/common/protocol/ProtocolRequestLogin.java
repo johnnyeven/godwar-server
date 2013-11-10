@@ -85,7 +85,7 @@ public class ProtocolRequestLogin implements IProtocol
 				ResultSet rs = ps.executeQuery();
 				if(rs.next())
 				{
-					long id = rs.getLong( "account_id" );
+					long id = rs.getLong( "GUID" );
 
 					ServerPackage pack = ServerPackagePool.getInstance()
 							.getObject();
