@@ -97,6 +97,16 @@ public class ProtocolRequestLogin implements IProtocol
 
 					CommandCenter.send( parameter.client, pack );
 				}
+				else
+				{
+					ServerPackage pack = ServerPackagePool.getInstance()
+							.getObject();
+					pack.success = EnumProtocol.ACK_CONFIRM;
+					pack.protocolId = EnumProtocol.INFO_LOGIN;
+					pack.parameter.add( new PackageItem( 4, -1 ) );
+
+					CommandCenter.send( parameter.client, pack );
+				}
 			}
 			catch ( SQLException e )
 			{
