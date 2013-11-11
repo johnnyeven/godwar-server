@@ -10,7 +10,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.common.protocol.ProtocolRequestLogin;
 import com.xgame.server.common.protocol.ProtocolRequestQuickStart;
+import com.xgame.server.common.protocol.ProtocolRequestRegister;
 import com.xgame.server.common.protocol.ProtocolRouter;
 
 public class AIOSocketMgr
@@ -72,6 +74,8 @@ public class AIOSocketMgr
 	private void bindProtocol()
 	{
 		ProtocolRouter.getInstance().Bind(EnumProtocol.QUICK_START, ProtocolRequestQuickStart.class);
+		ProtocolRouter.getInstance().Bind(EnumProtocol.INFO_LOGIN, ProtocolRequestLogin.class);
+		ProtocolRouter.getInstance().Bind(EnumProtocol.INFO_REGISTER, ProtocolRequestRegister.class);
 	}
 
 	public void startCompletionPort()
