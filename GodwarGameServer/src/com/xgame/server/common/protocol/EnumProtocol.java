@@ -28,11 +28,12 @@ public final class EnumProtocol
 	public static final int		ACTION_SHOW_ROOMLIST						= 1;
 	public static final int		ACTION_ROOM_CREATED							= 2;
 	public static final int		ACTION_REQUEST_ENTER_ROOM					= 3;
-	public static final int		ACTION_PLAYER_ENTER_ROOM					= 4;
+	public static final int		ACTION_REQUEST_CARD_GROUP					= 4;
 	// ROOM
 	public static final int		ACTION_INIT_ROOM_DATA						= 0;
-	public static final int		ACTION_PLAYER_SELETED_HERO					= 5;
-	public static final int		ACTION_PLAYER_READY							= 6;
+	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
+	public static final int		ACTION_PLAYER_SELETED_HERO					= 2;
+	public static final int		ACTION_PLAYER_READY							= 3;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -70,13 +71,15 @@ public final class EnumProtocol
 																					| CONTROLLER_HALL;
 	public static final short	HALL_REQUEST_ENTER_ROOM						= ACTION_REQUEST_ENTER_ROOM << 8
 																					| CONTROLLER_HALL;
-	public static final short	HALL_PLAYER_ENTER_ROOM						= ACTION_PLAYER_ENTER_ROOM << 8
+	public static final short	HALL_REQUEST_CARD_GROUP						= ACTION_REQUEST_CARD_GROUP << 8
 																					| CONTROLLER_HALL;
 	// battle ROOM
 	public static final short	BATTLEROOM_INIT_ROOM						= ACTION_INIT_ROOM_DATA << 8
 																					| CONTROLLER_BATTLEROOM;
-	public static final short	BATTLEROOM_PLAYER_SELECTED_HERO					= ACTION_PLAYER_SELETED_HERO << 8
+	public static final short	BATTLEROOM_PLAYER_ENTER_ROOM				= ACTION_PLAYER_ENTER_ROOM_NOTICE << 8
 																					| CONTROLLER_BATTLEROOM;
-	public static final short	BATTLEROOM_PLAYER_READY							= ACTION_PLAYER_READY << 8
+	public static final short	BATTLEROOM_PLAYER_SELECTED_HERO				= ACTION_PLAYER_SELETED_HERO << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_PLAYER_READY						= ACTION_PLAYER_READY << 8
 																					| CONTROLLER_BATTLEROOM;
 }

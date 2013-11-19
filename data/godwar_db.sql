@@ -80,6 +80,21 @@ CREATE TABLE IF NOT EXISTS `godwar_game_db`.`game_order` (
 ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8;
 
+
+-- -----------------------------------------------------
+-- Table `godwar_game_db`.`game_card_group`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `godwar_game_db`.`game_card_group` ;
+
+CREATE TABLE IF NOT EXISTS `godwar_game_db`.`game_card_group` (
+  `group_id` INT NOT NULL AUTO_INCREMENT,
+  `account_id` BIGINT NOT NULL,
+  `group_name` CHAR(32) NOT NULL,
+  `current` TINYINT NOT NULL DEFAULT 0,
+  `card_list` TEXT NOT NULL,
+  PRIMARY KEY (`group_id`))
+ENGINE = InnoDB;
+
 USE `pulse_platform_db` ;
 
 -- -----------------------------------------------------
