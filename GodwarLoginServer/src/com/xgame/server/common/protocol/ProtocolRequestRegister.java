@@ -88,6 +88,8 @@ public class ProtocolRequestRegister implements IProtocol
 				ResultSet rs = st.getGeneratedKeys();
 				rs.next();
 				long insertId = rs.getLong( 1 );
+				
+				initPlayerDatabase(insertId);
 
 				ServerPackage pack = ServerPackagePool.getInstance()
 						.getObject();
@@ -115,6 +117,11 @@ public class ProtocolRequestRegister implements IProtocol
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void initPlayerDatabase(long guid)
+	{
+		
 	}
 
 	private String encode( String algorithm, String str )

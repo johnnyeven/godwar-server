@@ -115,7 +115,7 @@ public class Room
 
 			ServerPackage pack = ServerPackagePool.getInstance().getObject();
 			pack.success = EnumProtocol.ACK_CONFIRM;
-			pack.protocolId = EnumProtocol.HALL_PLAYER_ENTER_ROOM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_ENTER_ROOM;
 			pack.parameter.add( new PackageItem( 8, p.accountId ) );
 			pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
 			CommandCenter.send( p.getChannel(), pack );

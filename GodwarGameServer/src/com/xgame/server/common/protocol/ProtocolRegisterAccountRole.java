@@ -74,7 +74,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		log.info( "[RegisterAccountRole] Guid=" + guid + ", NickName="
 				+ nickName );
 
-		if ( guid != Integer.MIN_VALUE && nickName != null )
+		if ( guid != Long.MIN_VALUE && nickName != null )
 		{
 			try
 			{
@@ -97,8 +97,10 @@ public class ProtocolRegisterAccountRole implements IProtocol
 				session.setPlayer( p );
 				if ( !p.loadFromDatabase() )
 				{
-
+					log.error( "[RegisterAccountRole] Player.loadFromDatabase()Ê§°Ü" );
+					return;
 				}
+				initRoleDatabase( p );
 				responseUserData( session );
 
 				ObjectManager.getInstance().addPlayer( p );
@@ -109,6 +111,24 @@ public class ProtocolRegisterAccountRole implements IProtocol
 			{
 				e.printStackTrace();
 			}
+		}
+	}
+
+	private void initRoleDatabase( Player p )
+	{
+		String sql = "INSERT INTO `game_card_group`(`account_id`, `group_name`)VALUES";
+		sql += "(" + p.accountId + ", 'µÚÒ»¿¨×é')";
+		try
+		{
+			PreparedStatement st = DatabaseRouter
+					.getInstance()
+					.getConnection( "gamedb" )
+					.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS );
+			st.executeUpdate();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
 		}
 	}
 
