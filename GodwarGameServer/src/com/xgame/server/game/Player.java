@@ -76,7 +76,7 @@ public class Player
 				return false;
 			}
 			long accountGuid = rs.getLong( "account_guid" );
-			if ( accountGuid != session.getAccountId() )
+			if ( accountGuid != session.getId() )
 			{
 				log.error( "[loadFromDatabase] accountId与WorldSession使用的accountId不匹配" );
 				return false;

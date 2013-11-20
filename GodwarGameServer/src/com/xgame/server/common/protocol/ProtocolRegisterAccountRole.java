@@ -116,8 +116,8 @@ public class ProtocolRegisterAccountRole implements IProtocol
 
 	private void initRoleDatabase( Player p )
 	{
-		String sql = "INSERT INTO `game_card_group`(`account_id`, `group_name`)VALUES";
-		sql += "(" + p.accountId + ", '第一卡组')";
+		String sql = "INSERT INTO `game_card_group`(`account_id`, `group_name`, `card_list`)VALUES";
+		sql += "(" + p.accountId + ", '第一卡组', '')";
 		try
 		{
 			PreparedStatement st = DatabaseRouter

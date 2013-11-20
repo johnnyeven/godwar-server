@@ -44,22 +44,20 @@ public class ProtocolRequestCardGroup implements IProtocol
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[RequestCardGroup] AccountId = " + session.getAccountId() );
+		log.info( "[RequestCardGroup] AccountId = "
+				+ session.getPlayer().accountId );
 
-		if ( session.getAccountId() > 0 )
+		if ( session.getPlayer().accountId > 0 )
 		{
 			String sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
-					+ session.getAccountId();
+					+ session.getPlayer().accountId;
 
 			PreparedStatement st;
 			try
 			{
-				st = DatabaseRouter
-						.getInstance()
-						.getConnection( "gamedb" )
-						.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS );
-				st.executeUpdate();
-				ResultSet rs = st.getGeneratedKeys();
+				st = DatabaseRouter.getInstance().getConnection( "gamedb" )
+						.prepareStatement( sql );
+				ResultSet rs = st.executeQuery();
 
 				ServerPackage pack = ServerPackagePool.getInstance()
 						.getObject();

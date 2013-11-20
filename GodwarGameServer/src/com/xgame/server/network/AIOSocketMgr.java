@@ -13,6 +13,7 @@ import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.common.protocol.ProtocolChooseHero;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
+import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
 import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.common.protocol.ProtocolShowRoomList;
@@ -87,11 +88,17 @@ public class AIOSocketMgr
 				ProtocolShowRoomList.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ROOM,
 				ProtocolRequestRoom.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ENTER_ROOM,
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.HALL_REQUEST_ENTER_ROOM,
 				ProtocolRequestEnterRoom.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.HALL_REQUEST_CARD_GROUP,
+				ProtocolRequestCardGroup.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
 				ProtocolChooseHero.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.BATTLEROOM_PLAYER_READY,
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.BATTLEROOM_PLAYER_READY,
 				ProtocolUpdatePlayerReady.class );
 	}
 

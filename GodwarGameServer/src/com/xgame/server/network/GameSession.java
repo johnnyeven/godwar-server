@@ -13,7 +13,7 @@ import com.xgame.server.pool.BufferPool;
 
 public class GameSession
 {
-	private long						accountId;
+	private long						id;
 	private List< ProtocolPackage >		recvQueue;
 	private Player						player;
 	private AsynchronousSocketChannel	channel;
@@ -23,7 +23,7 @@ public class GameSession
 
 	public GameSession( long id, AsynchronousSocketChannel c, long time )
 	{
-		accountId = id;
+		this.id = id;
 		channel = c;
 		try
 		{
@@ -66,9 +66,9 @@ public class GameSession
 		return player;
 	}
 
-	public long getAccountId()
+	public long getId()
 	{
-		return accountId;
+		return this.id;
 	}
 
 	public AsynchronousSocketChannel getChannel()

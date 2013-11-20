@@ -67,8 +67,8 @@ public class MeleeHall implements IHall
 
 	public void addSession( GameSession session )
 	{
-		GameSession old = sessionMap.get( session.getAccountId() );
-		sessionMap.put( session.getAccountId(), session );
+		GameSession old = sessionMap.get( session.getId() );
+		sessionMap.put( session.getId(), session );
 	}
 
 	public void removeSession( long id )
