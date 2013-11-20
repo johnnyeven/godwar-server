@@ -2,6 +2,7 @@ package com.xgame.server.common.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DatabaseRouter
 {
@@ -60,6 +61,18 @@ public class DatabaseRouter
 
 	public Connection getDbConnection()
 	{
+		try
+		{
+			if(dbConnection.isClosed())
+			{
+				Class.forName(DRIVER);
+				dbConnection = DriverManager.getConnection(CONNECT_STRING + DATABASE_NAME + "?useUnicode=true&characterEncoding=UTF-8", USERNAME, PASSWORD);
+			}
+		}
+		catch ( SQLException | ClassNotFoundException e )
+		{
+			e.printStackTrace();
+		}
 		return dbConnection;
 	}
 
