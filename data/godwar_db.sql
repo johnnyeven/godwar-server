@@ -95,6 +95,18 @@ CREATE TABLE IF NOT EXISTS `godwar_game_db`.`game_card_group` (
   PRIMARY KEY (`group_id`))
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `godwar_game_db`.`game_card`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `godwar_game_db`.`game_card` ;
+
+CREATE TABLE IF NOT EXISTS `godwar_game_db`.`game_card` (
+  `account_id` BIGINT NOT NULL,
+  `card_list` TEXT NOT NULL,
+  PRIMARY KEY (`account_id`))
+ENGINE = InnoDB;
+
 USE `pulse_platform_db` ;
 
 -- -----------------------------------------------------

@@ -57,10 +57,6 @@ public class ProtocolRequestAccountRole implements IProtocol
 				PreparedStatement st = DatabaseRouter.getInstance()
 						.getConnection( "gamedb" ).prepareStatement( sql );
 				ResultSet rs = st.executeQuery();
-				ServerPackage pack = ServerPackagePool.getInstance()
-						.getObject();
-				pack.success = EnumProtocol.ACK_CONFIRM;
-				pack.protocolId = EnumProtocol.REQUEST_ACCOUNT_ROLE;
 				if ( rs.first() )
 				{
 					// TODO 创建Player对象
@@ -80,11 +76,14 @@ public class ProtocolRequestAccountRole implements IProtocol
 				}
 				else
 				{
+					ServerPackage pack = ServerPackagePool.getInstance()
+							.getObject();
+					pack.success = EnumProtocol.ACK_CONFIRM;
+					pack.protocolId = EnumProtocol.REQUEST_ACCOUNT_ROLE;
 					pack.parameter.add( new PackageItem( 8, (long) ( -1 ) ) );
+					CommandCenter.send( parameter.client, pack );
 				}
 				rs.close();
-
-				CommandCenter.send( parameter.client, pack );
 			}
 			catch ( SQLException e )
 			{

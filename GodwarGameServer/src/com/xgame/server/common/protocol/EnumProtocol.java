@@ -18,6 +18,8 @@ public final class EnumProtocol
 	public static final int		ACTION_REQUEST_CHARACTER					= 4;
 	public static final int		ACTION_REGISTER_CHARACTER					= 5;
 	public static final int		ACTION_BIND_SESSION							= 7;
+	public static final int		ACTION_REQUEST_CARD_GROUP					= 8;
+	public static final int		ACTION_REQUEST_CARD_LIST					= 9;
 	// BASE
 	public static final int		ACTION_REGISTER_LOGIC_SERVER				= 0;
 	public static final int		ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
@@ -28,7 +30,6 @@ public final class EnumProtocol
 	public static final int		ACTION_SHOW_ROOMLIST						= 1;
 	public static final int		ACTION_ROOM_CREATED							= 2;
 	public static final int		ACTION_REQUEST_ENTER_ROOM					= 3;
-	public static final int		ACTION_REQUEST_CARD_GROUP					= 4;
 	// ROOM
 	public static final int		ACTION_INIT_ROOM_DATA						= 0;
 	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
@@ -53,6 +54,10 @@ public final class EnumProtocol
 																					| CONTROLLER_INFO;
 	public static final short	INFO_BIND_SESSION							= ACTION_BIND_SESSION << 8
 																					| CONTROLLER_INFO;
+	public static final short	INFO_REQUEST_CARD_GROUP						= ACTION_REQUEST_CARD_GROUP << 8
+																					| CONTROLLER_INFO;
+	public static final short	INFO_REQUEST_CARD_LIST						= ACTION_REQUEST_CARD_LIST << 8
+																					| CONTROLLER_INFO;
 	// BASE
 	public static final short	BASE_REGISTER_LOGIC_SERVER					= ACTION_REGISTER_LOGIC_SERVER << 8
 																					| CONTROLLER_BASE;
@@ -70,8 +75,6 @@ public final class EnumProtocol
 	public static final short	HALL_ROOM_CREATED							= ACTION_ROOM_CREATED << 8
 																					| CONTROLLER_HALL;
 	public static final short	HALL_REQUEST_ENTER_ROOM						= ACTION_REQUEST_ENTER_ROOM << 8
-																					| CONTROLLER_HALL;
-	public static final short	HALL_REQUEST_CARD_GROUP						= ACTION_REQUEST_CARD_GROUP << 8
 																					| CONTROLLER_HALL;
 	// battle ROOM
 	public static final short	BATTLEROOM_INIT_ROOM						= ACTION_INIT_ROOM_DATA << 8

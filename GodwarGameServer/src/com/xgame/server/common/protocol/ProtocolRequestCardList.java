@@ -3,7 +3,6 @@ package com.xgame.server.common.protocol;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,10 +15,9 @@ import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.network.GameSession;
 import com.xgame.server.pool.ServerPackagePool;
 
-public class ProtocolRequestCardGroup implements IProtocol
+public class ProtocolRequestCardList implements IProtocol
 {
-	private static Log	log	= LogFactory
-									.getLog( ProtocolRequestCardGroup.class );
+	private static Log	log	= LogFactory.getLog( ProtocolRequestCardList.class );
 
 	@Override
 	public void Execute( Object param1, Object param2 )
@@ -44,12 +42,12 @@ public class ProtocolRequestCardGroup implements IProtocol
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[RequestCardGroup] AccountId = "
+		log.info( "[RequestCardList] AccountId = "
 				+ session.getPlayer().accountId );
 
 		if ( session.getPlayer().accountId > 0 )
 		{
-			String sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
+			String sql = "SELECT * FROM `game_card` WHERE `account_id`="
 					+ session.getPlayer().accountId;
 
 			PreparedStatement st;
@@ -62,16 +60,13 @@ public class ProtocolRequestCardGroup implements IProtocol
 				ServerPackage pack = ServerPackagePool.getInstance()
 						.getObject();
 				pack.success = EnumProtocol.ACK_CONFIRM;
-				pack.protocolId = EnumProtocol.INFO_REQUEST_CARD_GROUP;
+				pack.protocolId = EnumProtocol.INFO_REQUEST_CARD_LIST;
 
-				String groupName;
-				while ( rs.next() )
+				if ( rs.next() )
 				{
-					groupName = rs.getString( "group_name" );
-					pack.parameter.add( new PackageItem( 4, rs
-							.getInt( "group_id" ) ) );
-					pack.parameter.add( new PackageItem( groupName.length(),
-							groupName ) );
+					String cardList = rs.getString( "card_list" );
+					pack.parameter.add( new PackageItem( cardList.length(),
+							cardList ) );
 				}
 				CommandCenter.send( parameter.client, pack );
 			}

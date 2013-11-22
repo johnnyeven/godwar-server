@@ -92,7 +92,7 @@ public class AIOSocketMgr
 				EnumProtocol.HALL_REQUEST_ENTER_ROOM,
 				ProtocolRequestEnterRoom.class );
 		ProtocolRouter.getInstance().Bind(
-				EnumProtocol.HALL_REQUEST_CARD_GROUP,
+				EnumProtocol.INFO_REQUEST_CARD_GROUP,
 				ProtocolRequestCardGroup.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
