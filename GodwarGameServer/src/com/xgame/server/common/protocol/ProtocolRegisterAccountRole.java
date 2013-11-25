@@ -130,6 +130,21 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		{
 			e.printStackTrace();
 		}
+		
+		sql = "INSERT INTO `game_card`(`account_id`, `card_list`)VALUES";
+		sql += "(" + p.accountId + ", 'HuWei,XunLuoBing,ShiZhe,XinTu,ChiDunWeiShi,ShengQiShi,MuShi,YuanSuJieJing,ZhongJiaBing')";
+		try
+		{
+			PreparedStatement st = DatabaseRouter
+					.getInstance()
+					.getConnection( "gamedb" )
+					.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS );
+			st.executeUpdate();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private void responseUserData( GameSession session )

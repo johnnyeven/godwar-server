@@ -14,6 +14,7 @@ import com.xgame.server.common.protocol.ProtocolChooseHero;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
+import com.xgame.server.common.protocol.ProtocolRequestCardList;
 import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.common.protocol.ProtocolShowRoomList;
@@ -94,6 +95,9 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.INFO_REQUEST_CARD_GROUP,
 				ProtocolRequestCardGroup.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.INFO_REQUEST_CARD_LIST,
+				ProtocolRequestCardList.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
 				ProtocolChooseHero.class );
