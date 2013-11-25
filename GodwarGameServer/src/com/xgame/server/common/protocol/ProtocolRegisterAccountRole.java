@@ -13,6 +13,7 @@ import com.xgame.server.CommandCenter;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.game.GameServer;
 import com.xgame.server.game.ObjectManager;
 import com.xgame.server.game.Player;
 import com.xgame.server.game.ProtocolPackage;
@@ -132,7 +133,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		}
 		
 		sql = "INSERT INTO `game_card`(`account_id`, `card_list`)VALUES";
-		sql += "(" + p.accountId + ", 'HuWei,XunLuoBing,ShiZhe,XinTu,ChiDunWeiShi,ShengQiShi,MuShi,YuanSuJieJing,ZhongJiaBing')";
+		sql += "(" + p.accountId + ", '" + GameServer.initSoulCardConfig + "')";
 		try
 		{
 			PreparedStatement st = DatabaseRouter
