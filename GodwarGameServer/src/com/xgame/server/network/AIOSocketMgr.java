@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.common.protocol.ProtocolChooseHero;
+import com.xgame.server.common.protocol.ProtocolCreateGroup;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
@@ -92,6 +93,9 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.HALL_REQUEST_ENTER_ROOM,
 				ProtocolRequestEnterRoom.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.INFO_CREATE_GROUP,
+				ProtocolCreateGroup.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.INFO_REQUEST_CARD_GROUP,
 				ProtocolRequestCardGroup.class );

@@ -1,3 +1,4 @@
+
 package com.xgame.server.common.protocol;
 
 public final class EnumProtocol
@@ -20,6 +21,7 @@ public final class EnumProtocol
 	public static final int		ACTION_BIND_SESSION							= 7;
 	public static final int		ACTION_REQUEST_CARD_GROUP					= 8;
 	public static final int		ACTION_REQUEST_CARD_LIST					= 9;
+	public static final int		ACTION_CREATE_GROUP							= 10;
 	// BASE
 	public static final int		ACTION_REGISTER_LOGIC_SERVER				= 0;
 	public static final int		ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
@@ -57,6 +59,8 @@ public final class EnumProtocol
 	public static final short	INFO_REQUEST_CARD_GROUP						= ACTION_REQUEST_CARD_GROUP << 8
 																					| CONTROLLER_INFO;
 	public static final short	INFO_REQUEST_CARD_LIST						= ACTION_REQUEST_CARD_LIST << 8
+																					| CONTROLLER_INFO;
+	public static final short	INFO_CREATE_GROUP							= ACTION_CREATE_GROUP << 8
 																					| CONTROLLER_INFO;
 	// BASE
 	public static final short	BASE_REGISTER_LOGIC_SERVER					= ACTION_REGISTER_LOGIC_SERVER << 8
