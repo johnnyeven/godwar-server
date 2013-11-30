@@ -1,3 +1,4 @@
+
 package com.xgame.server.network;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.common.protocol.ProtocolChooseHero;
 import com.xgame.server.common.protocol.ProtocolCreateGroup;
+import com.xgame.server.common.protocol.ProtocolDeleteGroup;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
@@ -24,6 +26,7 @@ import com.xgame.server.common.protocol.ProtocolUpdatePlayerReady;
 
 public class AIOSocketMgr
 {
+
 	private AsynchronousServerSocketChannel	server;
 	private AcceptCompletionHandler			acceptHandler;
 	private ReadCompletionHandler			readHandler;
@@ -93,14 +96,14 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.HALL_REQUEST_ENTER_ROOM,
 				ProtocolRequestEnterRoom.class );
-		ProtocolRouter.getInstance().Bind(
-				EnumProtocol.INFO_CREATE_GROUP,
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_CREATE_GROUP,
 				ProtocolCreateGroup.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_DELETE_GROUP,
+				ProtocolDeleteGroup.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.INFO_REQUEST_CARD_GROUP,
 				ProtocolRequestCardGroup.class );
-		ProtocolRouter.getInstance().Bind(
-				EnumProtocol.INFO_REQUEST_CARD_LIST,
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_REQUEST_CARD_LIST,
 				ProtocolRequestCardList.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
