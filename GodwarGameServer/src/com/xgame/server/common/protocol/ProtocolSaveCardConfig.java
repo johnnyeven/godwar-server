@@ -1,15 +1,22 @@
 package com.xgame.server.common.protocol;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.CommandCenter;
+import com.xgame.server.common.PackageItem;
+import com.xgame.server.common.ServerPackage;
+import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.common.parameter.CardGroupParameter;
 import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.network.GameSession;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class ProtocolSaveCardConfig implements IProtocol
 {
@@ -67,9 +74,36 @@ public class ProtocolSaveCardConfig implements IProtocol
 		}
 		log.info("[SaveCardConfig] AccountId=" + session.getPlayer().accountId);
 		
-		for(int i = 0; i<list.size(); i++)
+		if(groupId > 0)
 		{
-			
+			String sql = "UPDATE `game_card_group` SET `current`=0 WHERE `account_id`=" + session.getPlayer().accountId;
+			try
+			{
+				PreparedStatement st = DatabaseRouter.getInstance()
+						.getConnection( "gamedb" ).prepareStatement( sql );
+				st.executeUpdate();
+				
+				sql = "UPDATE `game_card_group` SET `current`=1 WHERE `group_id`=" + groupId;
+				st.executeUpdate( sql );
+				
+				CardGroupParameter it;
+				for(int i = 0; i<list.size(); i++)
+				{
+					it = list.get( i );
+					sql = "UPDATE `game_card_group` SET `card_list`='" + it.cardList + "' WHERE `group_id`=" + it.groupId;
+					st.executeUpdate( sql );
+				}
+
+				ServerPackage pack = ServerPackagePool.getInstance()
+						.getObject();
+				pack.success = EnumProtocol.ACK_CONFIRM;
+				pack.protocolId = EnumProtocol.INFO_SAVE_CARD_GROUP;
+				CommandCenter.send( parameter.client, pack );
+			}
+			catch ( SQLException e )
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 

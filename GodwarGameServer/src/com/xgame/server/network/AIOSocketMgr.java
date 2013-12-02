@@ -20,6 +20,7 @@ import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
 import com.xgame.server.common.protocol.ProtocolRequestCardList;
 import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
+import com.xgame.server.common.protocol.ProtocolSaveCardConfig;
 import com.xgame.server.common.protocol.ProtocolShowRoomList;
 import com.xgame.server.common.protocol.ProtocolRequestEnterRoom;
 import com.xgame.server.common.protocol.ProtocolUpdatePlayerReady;
@@ -100,6 +101,8 @@ public class AIOSocketMgr
 				ProtocolCreateGroup.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_DELETE_GROUP,
 				ProtocolDeleteGroup.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_SAVE_CARD_GROUP,
+				ProtocolSaveCardConfig.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.INFO_REQUEST_CARD_GROUP,
 				ProtocolRequestCardGroup.class );
