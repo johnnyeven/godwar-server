@@ -22,12 +22,15 @@ import com.xgame.server.network.GameSession;
 public class Player
 {
 	private UUID						guid;
-	public long							accountId	= Long.MIN_VALUE;
-	public int							level		= 0;
-	public String						name		= "";
-	public long							accountCash	= Long.MIN_VALUE;
-	public String						rolePicture	= "";
-	public PlayerStatus					status		= PlayerStatus.NORMAL;
+	public long							accountId		= Long.MIN_VALUE;
+	public int							level			= 0;
+	public String						name			= "";
+	public long							accountCash		= Long.MIN_VALUE;
+	public String						rolePicture		= "";
+	public int							winningCount	= 0;
+	public int							battleCount		= 0;
+	public int							honor			= 0;
+	public PlayerStatus					status			= PlayerStatus.NORMAL;
 
 	private AsynchronousSocketChannel	channel;
 	private GameSession					session;
@@ -37,8 +40,8 @@ public class Player
 	private List< Card >				currentCard;
 	private Map< UUID, Card >			cardMap;
 
-	private static Log					log			= LogFactory
-															.getLog( Player.class );
+	private static Log					log				= LogFactory
+																.getLog( Player.class );
 
 	public Player()
 	{
@@ -68,6 +71,9 @@ public class Player
 				name = rs.getString( "nick_name" );
 				accountCash = rs.getLong( "account_cash" );
 				rolePicture = rs.getString( "role_picture" );
+				winningCount = rs.getInt( "winning_count" );
+				battleCount = rs.getInt( "battle_count" );
+				honor = rs.getInt( "honor" );
 			}
 			else
 			{

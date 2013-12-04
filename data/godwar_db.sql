@@ -15,18 +15,19 @@ DROP TABLE IF EXISTS `godwar_game_db`.`game_account` ;
 
 CREATE TABLE IF NOT EXISTS `godwar_game_db`.`game_account` (
   `account_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `game_guid` CHAR(36) NOT NULL DEFAULT '',
   `account_guid` BIGINT(20) NOT NULL,
   `level` INT NOT NULL DEFAULT 1,
   `nick_name` CHAR(32) NOT NULL DEFAULT '',
-  `role_picture` CHAR(16) NOT NULL DEFAULT '',
   `account_cash` BIGINT(20) NOT NULL DEFAULT 0,
+  `role_picture` CHAR(16) NOT NULL DEFAULT '',
+  `winning_count` INT NOT NULL DEFAULT 0,
+  `battle_count` INT NOT NULL DEFAULT 0,
+  `honor` INT NOT NULL DEFAULT 0,
   `account_lastlogin` BIGINT NOT NULL DEFAULT 0,
   `account_lastlogout` BIGINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`account_id`),
   UNIQUE INDEX `guid` (`account_guid` ASC))
-ENGINE = MyISAM
-DEFAULT CHARACTER SET = utf8;
+ENGINE = MyISAM;
 
 
 -- -----------------------------------------------------

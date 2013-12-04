@@ -108,8 +108,15 @@ public class ProtocolRequestEnterRoom implements IProtocol
 					}
 					uuid = p.getGuid().toString();
 					pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
+					pack.parameter.add( new PackageItem( 8, p.accountId ) );
 					pack.parameter.add( new PackageItem( p.name.length(),
 							p.name ) );
+					pack.parameter.add( new PackageItem( 4, p.level ) );
+					pack.parameter.add( new PackageItem( p.rolePicture.length(), p.rolePicture ) );
+					pack.parameter.add( new PackageItem( 8, p.accountCash ) );
+					pack.parameter.add( new PackageItem( 4, p.winningCount ) );
+					pack.parameter.add( new PackageItem( 4, p.battleCount ) );
+					pack.parameter.add( new PackageItem( 4, p.honor ) );
 					pack.parameter.add( new PackageItem( 4, status ) );
 				}
 				CommandCenter.send( parameter.client, pack );

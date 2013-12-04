@@ -229,14 +229,14 @@ public class BattleHall implements IHall
 
 	public BattleRoom getRoom( int id )
 	{
-		if ( id >= roomList.size() )
+		if ( id > roomList.size() )
 		{
 			log.error( "指定id的房间不存在" );
 			return null;
 		}
 		else
 		{
-			return roomList.get( id );
+			return roomList.get( id-1 );
 		}
 	}
 
