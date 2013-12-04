@@ -41,13 +41,12 @@ public class ProtocolRequestEnterRoom implements IProtocol
 					if ( roomType == Integer.MIN_VALUE )
 					{
 						roomType = parameter.receiveData.getInt();
-						break;
 					}
-					if ( id == Integer.MIN_VALUE )
+					else if ( id == Integer.MIN_VALUE )
 					{
 						id = parameter.receiveData.getInt();
-						break;
 					}
+					break;
 			}
 			i += ( length + 5 );
 		}
