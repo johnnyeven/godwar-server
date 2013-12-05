@@ -91,10 +91,10 @@ public class BattleRoom extends Room
 			pack.parameter.add( new PackageItem( 4, p.winningCount ) );
 			pack.parameter.add( new PackageItem( 4, p.battleCount ) );
 			pack.parameter.add( new PackageItem( 4, p.honor ) );
-			pack.parameter.add( new PackageItem( 4, status ) );
+			pack.parameter.add( new PackageItem( 4, 1 ) );
 			pack.parameter.add( new PackageItem( 4, p.getCurrentGroup() ) );
 
-			CommandCenter.send( p.getChannel(), pack );
+			CommandCenter.send( p1.getChannel(), pack );
 		}
 	}
 }
