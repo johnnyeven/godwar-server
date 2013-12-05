@@ -87,7 +87,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 						.add( new PackageItem( 4, room.getPeopleCount() ) );
 				pack.parameter
 						.add( new PackageItem( 4, room.getPeopleLimit() ) );
-
+				
 				List< Player > list = room.getPlayerList();
 				HashMap< Player, Boolean > statusMap = (HashMap< Player, Boolean >) room
 						.getStatusMap();
@@ -117,6 +117,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 					pack.parameter.add( new PackageItem( 4, p.battleCount ) );
 					pack.parameter.add( new PackageItem( 4, p.honor ) );
 					pack.parameter.add( new PackageItem( 4, status ) );
+					pack.parameter.add( new PackageItem( 4, p.getCurrentGroup() ) );
 				}
 				CommandCenter.send( parameter.client, pack );
 			}

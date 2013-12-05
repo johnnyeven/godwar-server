@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS `godwar_game_db`.`game_account` ;
 
 CREATE TABLE IF NOT EXISTS `godwar_game_db`.`game_account` (
   `account_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `game_guid` CHAR(36) NOT NULL DEFAULT '',
   `account_guid` BIGINT(20) NOT NULL,
   `level` INT NOT NULL DEFAULT 1,
   `nick_name` CHAR(32) NOT NULL DEFAULT '',

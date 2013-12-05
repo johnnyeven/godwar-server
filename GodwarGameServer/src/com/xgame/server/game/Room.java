@@ -17,23 +17,23 @@ import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.pool.ServerPackagePool;
 
-public class Room
+public abstract class Room
 {
 
-	private int						id;
-	private String					title;
-	private int						peopleLimit;
-	private int						peopleCount;
-	private Player					owner;
-	private List< Player >			playerList;
-	private Map< Player, Boolean >	statusMap;
-	private Map< Player, Card >		heroMap;
-	private RoomStatus				status;
-	private int						rounds;
-	private Player					currentPlayer;
-	private long					startTime;
-	private long					endTime;
-	private static Log				log	= LogFactory.getLog( Room.class );
+	protected int						id;
+	protected String					title;
+	protected int						peopleLimit;
+	protected int						peopleCount;
+	protected Player					owner;
+	protected List< Player >			playerList;
+	protected Map< Player, Boolean >	statusMap;
+	protected Map< Player, Card >		heroMap;
+	protected RoomStatus				status;
+	protected int						rounds;
+	protected Player					currentPlayer;
+	protected long					startTime;
+	protected long					endTime;
+	protected static Log				log	= LogFactory.getLog( Room.class );
 
 	public Room()
 	{
@@ -51,6 +51,7 @@ public class Room
 		else
 		{
 			log.fatal( "peopleLimit参数应大于0" );
+			return;
 		}
 	}
 
@@ -101,25 +102,9 @@ public class Room
 		}
 	}
 
-	private void noticePlayerJoin( Player p )
+	protected void noticePlayerJoin( Player p )
 	{
-		Iterator< Player > it = playerList.iterator();
-		Player p1;
-		while ( it.hasNext() )
-		{
-			p1 = it.next();
-			if ( p1 == p )
-			{
-				continue;
-			}
-
-			ServerPackage pack = ServerPackagePool.getInstance().getObject();
-			pack.success = EnumProtocol.ACK_CONFIRM;
-			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_ENTER_ROOM;
-			pack.parameter.add( new PackageItem( 8, p.accountId ) );
-			pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
-			CommandCenter.send( p.getChannel(), pack );
-		}
+		
 	}
 
 	public void setPlayerHero( Player p, Card hero )
