@@ -62,7 +62,7 @@ public class Room
 			log.error( "房间已满员" );
 			return false;
 		}
-		if ( playerList.indexOf( p ) > 0 )
+		if ( playerList.indexOf( p ) >= 0 )
 		{
 			log.error( "玩家已存在于该房间" );
 			return false;
@@ -89,7 +89,7 @@ public class Room
 	public void removePlayer( Player p )
 	{
 		int index = playerList.indexOf( p );
-		if ( index > 0 )
+		if ( index >= 0 )
 		{
 			playerList.set( index, null );
 			peopleCount--;

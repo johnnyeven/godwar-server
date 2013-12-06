@@ -45,7 +45,7 @@ public class BattleRoom extends Room
 			log.error( "房间已满员" );
 			return false;
 		}
-		if ( playerList.indexOf( p ) > 0 )
+		if ( playerList.indexOf( p ) >= 0 )
 		{
 			log.error( "玩家已存在于该房间" );
 			return false;

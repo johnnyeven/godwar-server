@@ -71,9 +71,9 @@ public class MeleeHall implements IHall
 		sessionMap.put( session.getId(), session );
 	}
 
-	public void removeSession( long id )
+	public void removeSession( GameSession session )
 	{
-
+		sessionMap.remove( session.getId() );
 	}
 
 	public GameSession getSession( long id )
@@ -164,5 +164,11 @@ public class MeleeHall implements IHall
 
 			s.dispose();
 		}
+	}
+
+	@Override
+	public void kickPlayer( GameSession session )
+	{
+
 	}
 }

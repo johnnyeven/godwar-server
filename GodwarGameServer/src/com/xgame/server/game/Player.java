@@ -35,7 +35,10 @@ public class Player
 	private AsynchronousSocketChannel	channel;
 	private GameSession					session;
 	private Room						currentRoom;
-	private int							currentGroup; //玩家阵营 1=红队 2=蓝队
+	private IHall						currentHall;
+	private int							currentGroup;										// 玩家阵营
+																							// 1=红队
+																							// 2=蓝队
 	private int							currentCardGroup;
 
 	private List< Card >				currentCard;
@@ -188,6 +191,16 @@ public class Player
 	public void setCurrentRoom( Room currentRoom )
 	{
 		this.currentRoom = currentRoom;
+	}
+
+	public IHall getCurrentHall()
+	{
+		return currentHall;
+	}
+
+	public void setCurrentHall( IHall currentHall )
+	{
+		this.currentHall = currentHall;
 	}
 
 	public int getCurrentGroup()

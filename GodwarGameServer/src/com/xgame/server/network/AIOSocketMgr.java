@@ -14,6 +14,7 @@ import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.common.protocol.ProtocolChooseHero;
 import com.xgame.server.common.protocol.ProtocolCreateGroup;
 import com.xgame.server.common.protocol.ProtocolDeleteGroup;
+import com.xgame.server.common.protocol.ProtocolHeartBeat;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
@@ -86,6 +87,8 @@ public class AIOSocketMgr
 
 	private void bindProtocol()
 	{
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_HEART_BEAT,
+				ProtocolHeartBeat.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.REQUEST_ACCOUNT_ROLE,
 				ProtocolRequestAccountRole.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,

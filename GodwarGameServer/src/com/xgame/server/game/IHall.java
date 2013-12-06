@@ -6,8 +6,9 @@ public interface IHall
 {
 	void addSessionQueue( GameSession session );
 	void addSession( GameSession session );
-	void removeSession( long id );
+	void removeSession( GameSession session );
 	GameSession getSession( long id );
 	void updateSessions( long timeDiff );
+	void kickPlayer(GameSession session);
 	void kickAllPlayer();
 }

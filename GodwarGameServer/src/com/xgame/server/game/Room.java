@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,8 +32,8 @@ public abstract class Room
 	protected RoomStatus				status;
 	protected int						rounds;
 	protected Player					currentPlayer;
-	protected long					startTime;
-	protected long					endTime;
+	protected long						startTime;
+	protected long						endTime;
 	protected static Log				log	= LogFactory.getLog( Room.class );
 
 	public Room()
@@ -62,7 +63,7 @@ public abstract class Room
 			log.error( "房间已满员" );
 			return false;
 		}
-		if ( playerList.indexOf( p ) > 0 )
+		if ( playerList.indexOf( p ) >= 0 )
 		{
 			log.error( "玩家已存在于该房间" );
 			return false;
@@ -90,7 +91,7 @@ public abstract class Room
 	public void removePlayer( Player p )
 	{
 		int index = playerList.indexOf( p );
-		if ( index > 0 )
+		if ( index >= 0 )
 		{
 			playerList.set( index, null );
 			statusMap.remove( p );
@@ -101,10 +102,21 @@ public abstract class Room
 			log.error( "玩家不存在" );
 		}
 	}
+	
+	public void removeAllPlayer()
+	{
+		owner = null;
+		currentPlayer = null;
+		
+		playerList.clear();
+		statusMap.clear();
+		heroMap.clear();
+		peopleCount = 0;
+	}
 
 	protected void noticePlayerJoin( Player p )
 	{
-		
+
 	}
 
 	public void setPlayerHero( Player p, Card hero )
@@ -258,4 +270,11 @@ public abstract class Room
 		return heroMap;
 	}
 
+	public void dispose()
+	{
+		removeAllPlayer();
+		playerList = null;
+		statusMap = null;
+		heroMap = null;
+	}
 }

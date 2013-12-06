@@ -51,7 +51,7 @@ public class AcceptCompletionHandler implements
 	@Override
 	public void failed( Throwable arg0, AIOSocketMgr arg1 )
 	{
-		log.error( arg0.getMessage() );
+		log.error( "远程主机连接失败, Message=" + arg0.getMessage() );
 	}
 
 }

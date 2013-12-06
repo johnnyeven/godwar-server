@@ -23,6 +23,7 @@ public final class EnumProtocol
 	public static final int		ACTION_CREATE_GROUP							= 10;
 	public static final int		ACTION_DELETE_GROUP							= 11;
 	public static final int		ACTION_SAVE_CARD_GROUP						= 12;
+	public static final int		ACTION_HEART_BEAT							= 127;
 	// BASE
 	public static final int		ACTION_REGISTER_LOGIC_SERVER				= 0;
 	public static final int		ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
@@ -66,6 +67,8 @@ public final class EnumProtocol
 	public static final short	INFO_DELETE_GROUP							= ACTION_DELETE_GROUP << 8
 																					| CONTROLLER_INFO;
 	public static final short	INFO_SAVE_CARD_GROUP						= ACTION_SAVE_CARD_GROUP << 8
+																					| CONTROLLER_INFO;
+	public static final short	INFO_HEART_BEAT								= ACTION_HEART_BEAT << 8
 																					| CONTROLLER_INFO;
 	// BASE
 	public static final short	BASE_REGISTER_LOGIC_SERVER					= ACTION_REGISTER_LOGIC_SERVER << 8

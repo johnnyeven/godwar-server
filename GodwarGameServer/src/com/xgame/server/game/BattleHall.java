@@ -74,11 +74,14 @@ public class BattleHall implements IHall
 	{
 		GameSession old = sessionMap.get( session.getId() );
 		sessionMap.put( session.getId(), session );
+		
+		session.setCurrentHall( this );
 	}
 
-	public void removeSession( long id )
+	public void removeSession( GameSession session )
 	{
-
+		sessionMap.remove( session.getId() );
+		session.setCurrentHall( null );
 	}
 
 	public GameSession getSession( long id )
@@ -168,6 +171,8 @@ public class BattleHall implements IHall
 			s = e.getValue();
 
 			s.dispose();
+			
+			sessionMap.remove( e.getKey() );
 		}
 	}
 
@@ -178,7 +183,7 @@ public class BattleHall implements IHall
 			log.error( "房间数量已满，无法继续创建" );
 			return;
 		}
-		if ( roomList.indexOf( room ) > 0 )
+		if ( roomList.indexOf( room ) >= 0 )
 		{
 			log.error( "房间已存在" );
 			return;
@@ -201,7 +206,7 @@ public class BattleHall implements IHall
 	public void removeRoom( BattleRoom room )
 	{
 		int index = roomList.indexOf( room );
-		if ( index > 0 )
+		if ( index >= 0 )
 		{
 			roomList.set( index, null );
 			if ( roomCount > 0 )
@@ -219,7 +224,7 @@ public class BattleHall implements IHall
 	{
 		if ( id > 0 )
 		{
-			roomList.set( id, null );
+			roomList.set( id - 1, null );
 			if ( roomCount > 0 )
 			{
 				roomCount--;
@@ -253,5 +258,23 @@ public class BattleHall implements IHall
 	public Iterator< Entry< Long, GameSession >> getSessionMapIterator()
 	{
 		return sessionMap.entrySet().iterator();
+	}
+
+	@Override
+	public void kickPlayer( GameSession session )
+	{
+		removeSession(session);
+		
+		Room room = session.getPlayer().getCurrentRoom();
+		if(room != null)
+		{
+			room.removePlayer( session.getPlayer() );
+			
+			if(room.getPeopleCount() <= 0)
+			{
+				removeRoom(room.getId());
+				room.dispose();
+			}
+		}
 	}
 }

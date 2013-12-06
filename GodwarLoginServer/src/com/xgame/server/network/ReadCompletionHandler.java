@@ -3,6 +3,10 @@ package com.xgame.server.network;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.CompletionHandler;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.xgame.server.common.AuthSessionPackage;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.login.ProtocolParam;
@@ -11,6 +15,8 @@ import com.xgame.server.pool.BufferPool;
 public class ReadCompletionHandler implements
 		CompletionHandler< Integer, AuthSessionPackage >
 {
+	private static Log	log	= LogFactory.getLog( ReadCompletionHandler.class );
+	
 	public ReadCompletionHandler()
 	{
 	}
@@ -42,7 +48,7 @@ public class ReadCompletionHandler implements
 		{
 			try
 			{
-				attachment.channel.close();
+				log.info( "¶Ï¿ªÁ¬½Ó IP=" + attachment.channel.getRemoteAddress().toString() );
 			}
 			catch ( IOException e )
 			{
@@ -58,7 +64,18 @@ public class ReadCompletionHandler implements
 	@Override
 	public void failed( Throwable exc, AuthSessionPackage attachment )
 	{
-		BufferPool.getInstance().releaseBuffer( attachment.buffer );
+		try
+		{
+			attachment.channel.close();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			BufferPool.getInstance().releaseBuffer( attachment.buffer );
+		}
 	}
 
 }
