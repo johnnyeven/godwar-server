@@ -1,4 +1,3 @@
-
 package com.xgame.server.game;
 
 import java.io.IOException;
@@ -67,7 +66,6 @@ public class GameServer
 		try
 		{
 			loadConfig();
-			System.out.println( initSoulCardConfig );
 		}
 		catch ( ParserConfigurationException | SAXException | IOException e )
 		{
@@ -86,6 +84,15 @@ public class GameServer
 		startLogicServerHolderThread();
 
 		AIOSocketMgr.getInstance().startCompletionPort();
+
+		try
+		{
+			System.in.read();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void loadConfig() throws ParserConfigurationException, SAXException,
