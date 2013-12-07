@@ -1,3 +1,4 @@
+
 package com.xgame.server.game;
 
 import java.util.ArrayList;
@@ -93,21 +94,37 @@ public abstract class Room
 		int index = playerList.indexOf( p );
 		if ( index >= 0 )
 		{
-			playerList.set( index, null );
+			playerList.remove( index );
 			statusMap.remove( p );
 			peopleCount--;
+			
+			Player player;
+			Iterator<Player> it = playerList.iterator();
+			while(it.hasNext())
+			{
+				player = it.next();
+				if(player != p)
+				{
+					ServerPackage pack = ServerPackagePool.getInstance().getObject();
+					pack.success = EnumProtocol.ACK_CONFIRM;
+					pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_LEAVE_ROOM;
+					String guid = p.getGuid().toString();
+					pack.parameter.add( new PackageItem( guid.length(), guid ) );
+					CommandCenter.send( player.getChannel(), pack );
+				}
+			}
 		}
 		else
 		{
 			log.error( "Íæ¼Ò²»´æÔÚ" );
 		}
 	}
-	
+
 	public void removeAllPlayer()
 	{
 		owner = null;
 		currentPlayer = null;
-		
+
 		playerList.clear();
 		statusMap.clear();
 		heroMap.clear();

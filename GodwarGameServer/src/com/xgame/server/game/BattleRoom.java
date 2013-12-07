@@ -1,3 +1,4 @@
+
 package com.xgame.server.game;
 
 import java.util.ArrayList;
@@ -14,8 +15,9 @@ import com.xgame.server.pool.ServerPackagePool;
 
 public class BattleRoom extends Room
 {
-	private List<Player> group1;
-	private List<Player> group2;
+
+	private List< Player >	group1;
+	private List< Player >	group2;
 
 	public BattleRoom()
 	{
@@ -25,11 +27,11 @@ public class BattleRoom extends Room
 	public void initialize()
 	{
 		super.initialize();
-		
+
 		if ( peopleLimit > 0 )
 		{
-			group1 = new ArrayList<Player>();
-			group2 = new ArrayList<Player>();
+			group1 = new ArrayList< Player >();
+			group2 = new ArrayList< Player >();
 		}
 		else
 		{
@@ -50,7 +52,7 @@ public class BattleRoom extends Room
 			log.error( "玩家已存在于该房间" );
 			return false;
 		}
-		if(group1.size() <= group2.size())
+		if ( group1.size() <= group2.size() )
 		{
 			p.setCurrentGroup( 1 );
 			group1.add( p );
@@ -60,8 +62,25 @@ public class BattleRoom extends Room
 			p.setCurrentGroup( 2 );
 			group2.add( p );
 		}
-		
+
 		return super.addPlayer( p );
+	}
+
+	public void removePlayer( Player p )
+	{
+		if ( playerList.indexOf( p ) >= 0 )
+		{
+			int group = p.getCurrentGroup();
+			if(group == 1)
+			{
+				group1.remove( p );
+			}
+			else
+			{
+				group2.remove( p );
+			}
+		}
+		super.removePlayer( p );
 	}
 
 	protected void noticePlayerJoin( Player p )
