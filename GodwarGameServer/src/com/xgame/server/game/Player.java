@@ -40,7 +40,7 @@ public class Player
 																							// 1=ºì¶Ó
 																							// 2=À¶¶Ó
 	private int							currentCardGroup;
-
+	
 	private List< Card >				currentCard;
 	private Map< UUID, Card >			cardMap;
 
