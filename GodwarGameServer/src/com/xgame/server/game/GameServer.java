@@ -21,6 +21,7 @@ public class GameServer
 
 	public final static int	PORT				= 9050;
 	public static String	initSoulCardConfig	= "";
+	public static String	initHeroCardConfig	= "";
 
 	public GameServer()
 	{
@@ -101,11 +102,15 @@ public class GameServer
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
-		Document doc = dbBuilder.parse( "init_soul_card_config.xml" );
+		Document doc = dbBuilder.parse( "init_card_config.xml" );
 
-		Node serverNode = doc.getElementsByTagName( "cards" ).item( 0 );
+		Node serverNode = doc.getElementsByTagName( "soul_cards" ).item( 0 );
 		NodeList list = serverNode.getChildNodes();
 		initSoulCardConfig = list.item( 0 ).getTextContent();
+
+		serverNode = doc.getElementsByTagName( "hero_cards" ).item( 0 );
+		list = serverNode.getChildNodes();
+		initHeroCardConfig = list.item( 0 ).getTextContent();
 	}
 
 	private void startLogicServerHolderThread()

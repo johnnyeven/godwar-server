@@ -132,8 +132,8 @@ public class ProtocolRegisterAccountRole implements IProtocol
 			e.printStackTrace();
 		}
 		
-		sql = "INSERT INTO `game_card`(`account_id`, `card_list`)VALUES";
-		sql += "(" + p.accountId + ", '" + GameServer.initSoulCardConfig + "')";
+		sql = "INSERT INTO `game_card`(`account_id`, `card_list`, `hero_card_list`)VALUES";
+		sql += "(" + p.accountId + ", '" + GameServer.initSoulCardConfig + "', '" + GameServer.initHeroCardConfig + "')";
 		try
 		{
 			PreparedStatement st = DatabaseRouter

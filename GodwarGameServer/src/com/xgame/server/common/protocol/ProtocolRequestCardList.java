@@ -65,8 +65,11 @@ public class ProtocolRequestCardList implements IProtocol
 				if ( rs.next() )
 				{
 					String cardList = rs.getString( "card_list" );
+					String heroCardList = rs.getString( "hero_card_list" );
 					pack.parameter.add( new PackageItem( cardList.length(),
 							cardList ) );
+					pack.parameter.add( new PackageItem( heroCardList.length(),
+							heroCardList ) );
 				}
 				CommandCenter.send( parameter.client, pack );
 			}

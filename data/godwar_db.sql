@@ -106,6 +106,7 @@ DROP TABLE IF EXISTS `godwar_game_db`.`game_card` ;
 CREATE TABLE IF NOT EXISTS `godwar_game_db`.`game_card` (
   `account_id` BIGINT NOT NULL,
   `card_list` TEXT NOT NULL,
+  `hero_card_list` TEXT NOT NULL,
   PRIMARY KEY (`account_id`))
 ENGINE = InnoDB;
 
