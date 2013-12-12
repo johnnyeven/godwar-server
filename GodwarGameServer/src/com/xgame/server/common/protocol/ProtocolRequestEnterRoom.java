@@ -115,6 +115,8 @@ public class ProtocolRequestEnterRoom implements IProtocol
 					pack.parameter.add( new PackageItem( 4, p.level ) );
 					pack.parameter.add( new PackageItem(
 							p.rolePicture.length(), p.rolePicture ) );
+					pack.parameter.add( new PackageItem(
+							p.getCurrentHeroCardId().length(), p.getCurrentHeroCardId() ) );
 					pack.parameter.add( new PackageItem( 8, p.accountCash ) );
 					pack.parameter.add( new PackageItem( 4, p.winningCount ) );
 					pack.parameter.add( new PackageItem( 4, p.battleCount ) );

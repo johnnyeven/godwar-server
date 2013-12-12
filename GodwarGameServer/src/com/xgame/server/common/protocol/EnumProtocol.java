@@ -1,4 +1,3 @@
-
 package com.xgame.server.common.protocol;
 
 public final class EnumProtocol
@@ -35,12 +34,13 @@ public final class EnumProtocol
 	public static final int		ACTION_SHOW_ROOMLIST						= 1;
 	public static final int		ACTION_ROOM_CREATED							= 2;
 	public static final int		ACTION_REQUEST_ENTER_ROOM					= 3;
-	// ROOM
+	// battle ROOM
 	public static final int		ACTION_INIT_ROOM_DATA						= 0;
 	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
 	public static final int		ACTION_PLAYER_SELETED_HERO					= 2;
 	public static final int		ACTION_PLAYER_READY							= 3;
 	public static final int		ACTION_PLAYER_LEAVE_ROOM_NOTICE				= 4;
+	public static final int		ACTION_REQUEST_START_BATTLE					= 5;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -100,5 +100,7 @@ public final class EnumProtocol
 	public static final short	BATTLEROOM_PLAYER_READY						= ACTION_PLAYER_READY << 8
 																					| CONTROLLER_BATTLEROOM;
 	public static final short	BATTLEROOM_PLAYER_LEAVE_ROOM				= ACTION_PLAYER_LEAVE_ROOM_NOTICE << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_REQUEST_START_BATTLE				= ACTION_REQUEST_START_BATTLE << 8
 																					| CONTROLLER_BATTLEROOM;
 }

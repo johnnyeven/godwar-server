@@ -22,28 +22,28 @@ import com.xgame.server.network.GameSession;
 public class Player
 {
 	private UUID						guid;
-	public long							accountId		= Long.MIN_VALUE;
-	public int							level			= 0;
-	public String						name			= "";
-	public long							accountCash		= Long.MIN_VALUE;
-	public String						rolePicture		= "";
-	public int							winningCount	= 0;
-	public int							battleCount		= 0;
-	public int							honor			= 0;
-	public PlayerStatus					status			= PlayerStatus.NORMAL;
+	public long							accountId			= Long.MIN_VALUE;
+	public int							level				= 0;
+	public String						name				= "";
+	public long							accountCash			= Long.MIN_VALUE;
+	public String						rolePicture			= "";
+	public int							winningCount		= 0;
+	public int							battleCount			= 0;
+	public int							honor				= 0;
+	public PlayerStatus					status				= PlayerStatus.NORMAL;
 
 	private AsynchronousSocketChannel	channel;
 	private GameSession					session;
 	private Room						currentRoom;
 	private IHall						currentHall;
-	private int							currentGroup;										// 玩家阵营
-																							// 1=红队
-																							// 2=蓝队
+	private int							currentGroup;											// 玩家阵营
+																								// 1=红队
+																								// 2=蓝队
 	private int							currentCardGroup;
-	private String						currentHeroCardId;
+	private String						currentHeroCardId	= "";
 
-	private static Log					log				= LogFactory
-																.getLog( Player.class );
+	private static Log					log					= LogFactory
+																	.getLog( Player.class );
 
 	public Player()
 	{

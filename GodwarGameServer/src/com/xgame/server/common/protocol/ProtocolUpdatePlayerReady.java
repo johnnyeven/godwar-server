@@ -65,7 +65,6 @@ public class ProtocolUpdatePlayerReady implements IProtocol
 						tmp = ready == 1 ? true : false;
 						statusMap.put( p, tmp );
 					}
-					continue;
 				}
 
 				ServerPackage pack = ServerPackagePool.getInstance()
