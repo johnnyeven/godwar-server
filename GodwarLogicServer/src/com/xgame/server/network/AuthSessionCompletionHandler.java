@@ -18,6 +18,7 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.logic.BattleHall;
 import com.xgame.server.logic.ProtocolPackage;
 import com.xgame.server.pool.BufferPool;
 import com.xgame.server.pool.ServerPackagePool;
@@ -88,7 +89,7 @@ public class AuthSessionCompletionHandler implements
 
 					GameSession s = new GameSession( guid, arg1.channel,
 							new Date().getTime() );
-//					BattleHall.getInstance().addSessionQueue( s );
+					BattleHall.getInstance().addSessionQueue( s );
 					s.startRecv();
 
 					ServerPackage pack = ServerPackagePool.getInstance()
