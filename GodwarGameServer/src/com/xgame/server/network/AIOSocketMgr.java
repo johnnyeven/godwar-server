@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.protocol.EnumProtocol;
-import com.xgame.server.common.protocol.ProtocolChooseHero;
+import com.xgame.server.common.protocol.ProtocolPlayerSelectHero;
 import com.xgame.server.common.protocol.ProtocolCreateGroup;
 import com.xgame.server.common.protocol.ProtocolDeleteGroup;
 import com.xgame.server.common.protocol.ProtocolHeartBeat;
@@ -113,7 +113,7 @@ public class AIOSocketMgr
 				ProtocolRequestCardList.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
-				ProtocolChooseHero.class );
+				ProtocolPlayerSelectHero.class );
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_PLAYER_READY,
 				ProtocolUpdatePlayerReady.class );

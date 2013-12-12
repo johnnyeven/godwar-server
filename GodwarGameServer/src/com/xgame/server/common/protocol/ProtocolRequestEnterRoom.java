@@ -70,7 +70,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 			else
 			{
 				room.addPlayer( session.getPlayer() );
-				
+
 				// 发送房间基本信息
 				ServerPackage pack = ServerPackagePool.getInstance()
 						.getObject();
@@ -87,7 +87,9 @@ public class ProtocolRequestEnterRoom implements IProtocol
 						.add( new PackageItem( 4, room.getPeopleCount() ) );
 				pack.parameter
 						.add( new PackageItem( 4, room.getPeopleLimit() ) );
-				
+				pack.parameter.add( new PackageItem( 4, session.getPlayer()
+						.getCurrentGroup() ) );
+
 				List< Player > list = room.getPlayerList();
 				HashMap< Player, Boolean > statusMap = (HashMap< Player, Boolean >) room
 						.getStatusMap();
@@ -111,13 +113,15 @@ public class ProtocolRequestEnterRoom implements IProtocol
 					pack.parameter.add( new PackageItem( p.name.length(),
 							p.name ) );
 					pack.parameter.add( new PackageItem( 4, p.level ) );
-					pack.parameter.add( new PackageItem( p.rolePicture.length(), p.rolePicture ) );
+					pack.parameter.add( new PackageItem(
+							p.rolePicture.length(), p.rolePicture ) );
 					pack.parameter.add( new PackageItem( 8, p.accountCash ) );
 					pack.parameter.add( new PackageItem( 4, p.winningCount ) );
 					pack.parameter.add( new PackageItem( 4, p.battleCount ) );
 					pack.parameter.add( new PackageItem( 4, p.honor ) );
 					pack.parameter.add( new PackageItem( 4, status ) );
-					pack.parameter.add( new PackageItem( 4, p.getCurrentGroup() ) );
+					pack.parameter
+							.add( new PackageItem( 4, p.getCurrentGroup() ) );
 				}
 				CommandCenter.send( parameter.client, pack );
 			}

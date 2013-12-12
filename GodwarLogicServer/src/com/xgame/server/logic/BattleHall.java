@@ -12,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.IntervalTimer;
+import com.xgame.server.logic.Room;
 import com.xgame.server.network.GameSession;
 
 public class BattleHall implements IHall
@@ -72,8 +73,8 @@ public class BattleHall implements IHall
 
 	public void addSession( GameSession session )
 	{
-		GameSession old = sessionMap.get( session.getAccountId() );
-		sessionMap.put( session.getAccountId(), session );
+		GameSession old = sessionMap.get( session.getId() );
+		sessionMap.put( session.getId(), session );
 	}
 
 	public void removeSession( long id )
@@ -261,5 +262,30 @@ public class BattleHall implements IHall
 	public Iterator< Entry< Long, GameSession >> getSessionMapIterator()
 	{
 		return sessionMap.entrySet().iterator();
+	}
+
+	@Override
+	public void removeSession( GameSession session )
+	{
+		sessionMap.remove( session.getId() );
+		session.setCurrentHall( null );
+	}
+
+	@Override
+	public void kickPlayer( GameSession session )
+	{
+		removeSession(session);
+		
+		Room room = session.getPlayer().getCurrentRoom();
+		if(room != null)
+		{
+			room.removePlayer( session.getPlayer() );
+			
+			if(room.getPeopleCount() <= 0)
+			{
+				removeRoom(room.getId());
+				room.dispose();
+			}
+		}
 	}
 }

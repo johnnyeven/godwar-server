@@ -1,11 +1,14 @@
 package com.xgame.server.common.protocol;
 
 import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.cards.Card;
 import com.xgame.server.game.ProtocolPackage;
+import com.xgame.server.game.Room;
 import com.xgame.server.network.GameSession;
 
 public class ProtocolPlayerSelectHero implements IProtocol
@@ -18,42 +21,44 @@ public class ProtocolPlayerSelectHero implements IProtocol
 		ProtocolPackage parameter = (ProtocolPackage) param1;
 		GameSession session = (GameSession) param2;
 
-		String heroId = null;
-		long timestamp = Long.MIN_VALUE;
-
-		for (int i = parameter.offset; i < parameter.receiveDataLength;)
+		String id = null;
+		for ( int i = parameter.offset; i < parameter.receiveDataLength; )
 		{
 			int length = parameter.receiveData.getInt();
 			int type = parameter.receiveData.get();
-			switch (type)
+			switch ( type )
 			{
-				case EnumProtocol.TYPE_LONG:
-					if (timestamp == Long.MIN_VALUE)
-					{
-						timestamp = parameter.receiveData.getLong();
-						break;
-					}
 				case EnumProtocol.TYPE_STRING:
-					if (heroId == null)
+					if ( id == null )
 					{
 						length = parameter.receiveData.getShort();
 						byte[] dst = new byte[length];
-						parameter.receiveData.get(dst);
+						parameter.receiveData.get( dst );
 						length += 2;
 						try
 						{
-							heroId = new String(dst, "UTF-8");
-						} catch (UnsupportedEncodingException e)
+							id = new String( dst, "UTF-8" );
+						}
+						catch ( UnsupportedEncodingException e )
 						{
 							e.printStackTrace();
 						}
 					}
 			}
-			i += (length + 5);
+			i += ( length + 5 );
 		}
-		log.info("[PlayerSelectHero] Player = " + session.getPlayer().name
-				+ ", HeroCard = " + heroId);
+		log.info( "[PlayerSelectHero] Card Id = " + id + ", Player = "
+				+ session.getPlayer().name );
 
+		if ( id != null && session.getPlayer().getCurrentRoom() != null )
+		{
+			Room room = session.getPlayer().getCurrentRoom();
+
+			if ( id != null && room != null )
+			{
+				room.setPlayerHero( session.getPlayer(), id );
+			}
+		}
 	}
 
 }

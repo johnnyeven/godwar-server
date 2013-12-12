@@ -1,4 +1,3 @@
-
 package com.xgame.server.game;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public abstract class Room
 	protected Player					owner;
 	protected List< Player >			playerList;
 	protected Map< Player, Boolean >	statusMap;
-	protected Map< Player, Card >		heroMap;
+	protected Map< Player, String >		heroMap;
 	protected RoomStatus				status;
 	protected int						rounds;
 	protected Player					currentPlayer;
@@ -48,7 +47,7 @@ public abstract class Room
 		{
 			playerList = new ArrayList< Player >();
 			statusMap = new HashMap< Player, Boolean >();
-			heroMap = new HashMap< Player, Card >();
+			heroMap = new HashMap< Player, String >();
 		}
 		else
 		{
@@ -97,15 +96,16 @@ public abstract class Room
 			playerList.remove( index );
 			statusMap.remove( p );
 			peopleCount--;
-			
+
 			Player player;
-			Iterator<Player> it = playerList.iterator();
-			while(it.hasNext())
+			Iterator< Player > it = playerList.iterator();
+			while ( it.hasNext() )
 			{
 				player = it.next();
-				if(player != p)
+				if ( player != p )
 				{
-					ServerPackage pack = ServerPackagePool.getInstance().getObject();
+					ServerPackage pack = ServerPackagePool.getInstance()
+							.getObject();
 					pack.success = EnumProtocol.ACK_CONFIRM;
 					pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_LEAVE_ROOM;
 					String guid = p.getGuid().toString();
@@ -136,14 +136,10 @@ public abstract class Room
 
 	}
 
-	public void setPlayerHero( Player p, Card hero )
+	public void setPlayerHero( Player p, String hero )
 	{
-		if ( heroMap.containsKey( p ) )
-		{
-			log.error( "指定玩家已确定英雄卡牌" );
-			return;
-		}
 		heroMap.put( p, hero );
+		p.setCurrentHeroCardId( hero );
 		noticePlayerSelectedHero( p );
 	}
 
@@ -154,16 +150,18 @@ public abstract class Room
 		while ( it.hasNext() )
 		{
 			p1 = it.next();
-			if ( p1 == p )
+			
+			if(p1.getCurrentGroup() == p.getCurrentGroup())
 			{
-				continue;
+				ServerPackage pack = ServerPackagePool.getInstance().getObject();
+				pack.success = EnumProtocol.ACK_CONFIRM;
+				pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO;
+				String guid = p.getGuid().toString();
+				pack.parameter.add( new PackageItem( guid.length(), guid ) );
+				pack.parameter.add( new PackageItem( p.getCurrentHeroCardId()
+						.length(), p.getCurrentHeroCardId() ) );
+				CommandCenter.send( p1.getChannel(), pack );
 			}
-
-			ServerPackage pack = ServerPackagePool.getInstance().getObject();
-			pack.success = EnumProtocol.ACK_CONFIRM;
-			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO;
-			pack.parameter.add( new PackageItem( 8, p.accountId ) );
-			CommandCenter.send( p.getChannel(), pack );
 		}
 	}
 
@@ -282,7 +280,7 @@ public abstract class Room
 		return statusMap;
 	}
 
-	public Map< Player, Card > getHeroMap()
+	public Map< Player, String > getHeroMap()
 	{
 		return heroMap;
 	}

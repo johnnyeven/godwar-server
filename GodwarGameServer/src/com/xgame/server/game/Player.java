@@ -40,9 +40,7 @@ public class Player
 																							// 1=红队
 																							// 2=蓝队
 	private int							currentCardGroup;
-	
-	private List< Card >				currentCard;
-	private Map< UUID, Card >			cardMap;
+	private String						currentHeroCardId;
 
 	private static Log					log				= LogFactory
 																.getLog( Player.class );
@@ -50,8 +48,6 @@ public class Player
 	public Player()
 	{
 		guid = UUID.randomUUID();
-		currentCard = new ArrayList< Card >();
-		cardMap = new HashMap< UUID, Card >();
 	}
 
 	public boolean loadFromDatabase()
@@ -117,16 +113,6 @@ public class Player
 		return true;
 	}
 
-	public Card getCard( UUID id )
-	{
-		if ( cardMap.containsKey( id ) )
-		{
-			return cardMap.get( id );
-		}
-		log.error( "指定ID的卡牌不存在，id = " + id.toString() );
-		return null;
-	}
-
 	public void update( long timeDiff )
 	{
 
@@ -146,11 +132,6 @@ public class Player
 	public void setCurrentCardGroup( int currentCardGroup )
 	{
 		this.currentCardGroup = currentCardGroup;
-	}
-
-	public List< Card > getCurrentCards()
-	{
-		return currentCard;
 	}
 
 	public GameSession getSession()
@@ -211,5 +192,15 @@ public class Player
 	public void setCurrentGroup( int currentGroup )
 	{
 		this.currentGroup = currentGroup;
+	}
+
+	public String getCurrentHeroCardId()
+	{
+		return currentHeroCardId;
+	}
+
+	public void setCurrentHeroCardId( String currentHeroCardId )
+	{
+		this.currentHeroCardId = currentHeroCardId;
 	}
 }
