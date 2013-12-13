@@ -11,16 +11,21 @@ import java.util.Map.Entry;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.CommandCenter;
 import com.xgame.server.common.LogicServerInfo;
+import com.xgame.server.common.PackageItem;
+import com.xgame.server.common.ServerPackage;
 import com.xgame.server.game.BattleHall;
 import com.xgame.server.game.BattleRoom;
 import com.xgame.server.game.LogicServerManager;
 import com.xgame.server.game.Player;
 import com.xgame.server.game.ProtocolPackage;
+import com.xgame.server.game.Room;
 import com.xgame.server.network.GameSession;
 import com.xgame.server.network.LogicServerConnector;
 import com.xgame.server.pool.BufferPool;
 import com.xgame.server.pool.DatagramPacketPool;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class ProtocolRequestStartGame implements IProtocol
 {
@@ -59,10 +64,16 @@ public class ProtocolRequestStartGame implements IProtocol
 		log.info( "[RequestStartGame] Room Type = " + roomType + ", Room id = "
 				+ id );
 
+		// 获取负载最低的LogicServer
+		LogicServerInfo info = LogicServerManager.getInstance()
+				.getLogicServer();
+		// 通知LogicServer创建房间
+		DatagramPacket pack = DatagramPacketPool.getInstance().getObject();
+		pack.setSocketAddress( info.add );
+
 		String title = "";
 		int peopleCount = 0;
 		String ownerGuid = "";
-		List< Player > playerList;
 		Iterator< Entry< Player, String >> it;
 		Entry< Player, String > en;
 		String heroCardId;
@@ -73,7 +84,6 @@ public class ProtocolRequestStartGame implements IProtocol
 			title = room.getTitle();
 			peopleCount = room.getPeopleCount();
 			ownerGuid = room.getOwner().getGuid().toString();
-			playerList = room.getPlayerList();
 			it = room.getHeroMap().entrySet().iterator();
 
 			bf.putShort( EnumProtocol.BASE_REQUEST_LOGIC_SERVER_ROOM );
@@ -100,32 +110,25 @@ public class ProtocolRequestStartGame implements IProtocol
 			bf.put( (byte) EnumProtocol.TYPE_STRING );
 			bf.put( src );
 
-			for ( int i = 0; i < playerList.size(); i++ )
-			{
-				src = playerList.get( i ).getGuid().toString()
-						.getBytes( Charset.forName( "UTF-8" ) );
-				bf.putInt( src.length );
-				bf.put( (byte) EnumProtocol.TYPE_STRING );
-				bf.put( src );
-			}
 			while ( it.hasNext() )
 			{
 				en = it.next();
 				heroCardId = en.getValue();
+
+				src = en.getKey().getGuid().toString()
+						.getBytes( Charset.forName( "UTF-8" ) );
+				bf.putInt( src.length );
+				bf.put( (byte) EnumProtocol.TYPE_STRING );
+				bf.put( src );
+
 				src = heroCardId.getBytes( Charset.forName( "UTF-8" ) );
 				bf.putInt( src.length );
 				bf.put( (byte) EnumProtocol.TYPE_STRING );
 				bf.put( src );
 			}
+
+			noticePlayerLogicServer( room, info.ip, info.port );
 		}
-
-		// 获取负载最低的LogicServer
-		LogicServerInfo info = LogicServerManager.getInstance()
-				.getLogicServer();
-		// 通知LogicServer创建房间
-		DatagramPacket pack = DatagramPacketPool.getInstance().getObject();
-		pack.setSocketAddress( info.add );
-
 		bf.flip();
 
 		byte[] dest = new byte[bf.remaining()];
@@ -136,4 +139,22 @@ public class ProtocolRequestStartGame implements IProtocol
 		LogicServerConnector.getInstance().send( pack );
 	}
 
+	private void noticePlayerLogicServer( Room room, String ip, int port )
+	{
+		List< Player > list = room.getPlayerList();
+		Player p;
+		ServerPackage pack;
+
+		for ( int i = 0; i < list.size(); i++ )
+		{
+			p = list.get( i );
+
+			pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.BASE_LOGIC_SERVER_INFO;
+			pack.parameter.add( new PackageItem( ip.length(), ip ) );
+			pack.parameter.add( new PackageItem( 4, port ) );
+			CommandCenter.send( p.getChannel(), pack );
+		}
+	}
 }

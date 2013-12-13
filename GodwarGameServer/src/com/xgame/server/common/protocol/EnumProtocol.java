@@ -29,6 +29,8 @@ public final class EnumProtocol
 	public static final int		ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
 	public static final int		ACTION_REQUEST_LOGIC_SERVER_ROOM			= 2;
 	public static final int		ACTION_REQUEST_LOGIC_SERVER_ROOM_CONFIRM	= 3;
+	public static final int		ACTION_LOGIC_SERVER_INFO					= 4;
+	public static final int		ACTION_CONNECT_LOGIC_SERVER					= 5;
 	// HALL
 	public static final int		ACTION_REQUEST_ROOM							= 0;
 	public static final int		ACTION_SHOW_ROOMLIST						= 1;
@@ -80,6 +82,10 @@ public final class EnumProtocol
 	public static final short	BASE_REQUEST_LOGIC_SERVER_ROOM				= ACTION_REQUEST_LOGIC_SERVER_ROOM << 8
 																					| CONTROLLER_BASE;
 	public static final short	BASE_REQUEST_LOGIC_SERVER_ROOM_CONFIRM		= ACTION_REQUEST_LOGIC_SERVER_ROOM_CONFIRM << 8
+																					| CONTROLLER_BASE;
+	public static final short	BASE_LOGIC_SERVER_INFO						= ACTION_LOGIC_SERVER_INFO << 8
+																					| CONTROLLER_BASE;
+	public static final short	BASE_CONNECT_LOGIC_SERVER					= ACTION_CONNECT_LOGIC_SERVER << 8
 																					| CONTROLLER_BASE;
 	// HALL
 	public static final short	HALL_REQUEST_ROOM							= ACTION_REQUEST_ROOM << 8

@@ -6,14 +6,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.CommandCenter;
 import com.xgame.server.cards.Card;
-import com.xgame.server.common.IntervalTimer;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
@@ -22,20 +19,24 @@ import com.xgame.server.pool.ServerPackagePool;
 public abstract class Room
 {
 
-	protected int						id;
-	protected String					title;
-	protected int						peopleCount;
-	protected Player					owner;
-	protected List< Player >			playerList;
-	protected Map< Player, Boolean >	statusMap;
-	protected Map< Player, Card >		heroMap;
-	protected RoomStatus				status;
-	protected int						rounds;
-	protected Player					currentPlayer;
-	protected long						createdTime;
-	protected long						startTime;
-	protected long						endTime;
-	protected static Log				log	= LogFactory.getLog( Room.class );
+	protected int					id;
+	protected String				title;
+	protected int					peopleCount;
+
+	protected String				ownerGuid;
+	protected List< String >		playerGuidList;
+	protected Map< String, String >	heroCardIdMap;
+
+	protected Player				owner;
+	protected List< Player >		playerList;
+	protected Map< Player, Card >	heroMap;
+	protected RoomStatus			status;
+	protected int					rounds;
+	protected Player				currentPlayer;
+	protected long					createdTime;
+	protected long					startTime;
+	protected long					endTime;
+	protected static Log			log	= LogFactory.getLog( Room.class );
 
 	public Room()
 	{
@@ -46,8 +47,9 @@ public abstract class Room
 	{
 		if ( peopleCount > 0 )
 		{
+			playerGuidList = new ArrayList< String >();
+			heroCardIdMap = new HashMap< String, String >();
 			playerList = new ArrayList< Player >();
-			statusMap = new HashMap< Player, Boolean >();
 			heroMap = new HashMap< Player, Card >();
 			createdTime = new Date().getTime();
 		}
@@ -56,6 +58,33 @@ public abstract class Room
 			log.fatal( "peopleLimit参数应大于0" );
 			return;
 		}
+	}
+
+	public Boolean addPlayerGuid( String guid )
+	{
+		if ( playerGuidList.size() >= peopleCount )
+		{
+			log.error( "房间已满员" );
+			return false;
+		}
+		if ( playerGuidList.indexOf( guid ) >= 0 )
+		{
+			log.error( "玩家Guid已存在于该房间" );
+			return false;
+		}
+		playerGuidList.add( guid );
+		return true;
+	}
+
+	public Boolean addHeroCardId( String guid, String id )
+	{
+		if(heroCardIdMap.containsKey( guid ))
+		{
+			log.error( "玩家英雄卡牌已存在于该房间" );
+			return false;
+		}
+		heroCardIdMap.put( guid, id );
+		return true;
 	}
 
 	public Boolean addPlayer( Player p )
@@ -83,7 +112,6 @@ public abstract class Room
 			}
 		}
 		playerList.add( p );
-		statusMap.put( p, false );
 		peopleCount++;
 
 		noticePlayerJoin( p );
@@ -96,7 +124,6 @@ public abstract class Room
 		if ( index >= 0 )
 		{
 			playerList.remove( index );
-			statusMap.remove( p );
 			peopleCount--;
 
 			Player player;
@@ -128,7 +155,6 @@ public abstract class Room
 		currentPlayer = null;
 
 		playerList.clear();
-		statusMap.clear();
 		heroMap.clear();
 		peopleCount = 0;
 	}
@@ -214,6 +240,11 @@ public abstract class Room
 		return status;
 	}
 
+	public void setOwnerGuid( String ownerGuid )
+	{
+		this.ownerGuid = ownerGuid;
+	}
+
 	public void setStatus( RoomStatus status )
 	{
 		this.status = status;
@@ -269,11 +300,6 @@ public abstract class Room
 		this.peopleCount = peopleCount;
 	}
 
-	public Map< Player, Boolean > getStatusMap()
-	{
-		return statusMap;
-	}
-
 	public Map< Player, Card > getHeroMap()
 	{
 		return heroMap;
@@ -288,7 +314,6 @@ public abstract class Room
 	{
 		removeAllPlayer();
 		playerList = null;
-		statusMap = null;
 		heroMap = null;
 	}
 }

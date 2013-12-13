@@ -5,7 +5,11 @@ import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
@@ -85,9 +89,10 @@ public class GameServerHolderThread implements Runnable
 		int peopleCount = Integer.MIN_VALUE;
 		String ownerGuid = null;
 		List< String > playerList = new ArrayList< String >();
-		List< String > heroList = new ArrayList< String >();
+		Map< String, String > heroList = new HashMap< String, String >();
 		String playerGuid = null;
 		String heroCardId = null;
+		byte[] dst;
 		while ( buffer.hasRemaining() )
 		{
 			length = buffer.getInt();
@@ -111,7 +116,7 @@ public class GameServerHolderThread implements Runnable
 			{
 				if ( roomTitle == null )
 				{
-					byte[] dst = new byte[length];
+					dst = new byte[length];
 					buffer.get( dst );
 					try
 					{
@@ -124,7 +129,7 @@ public class GameServerHolderThread implements Runnable
 				}
 				else if ( ownerGuid == null )
 				{
-					byte[] dst = new byte[length];
+					dst = new byte[length];
 					buffer.get( dst );
 					try
 					{
@@ -135,32 +140,41 @@ public class GameServerHolderThread implements Runnable
 						e.printStackTrace();
 					}
 				}
-				else if(playerList.size() < peopleCount)
+				else if ( heroList.size() < peopleCount )
 				{
-					byte[] dst = new byte[length];
-					buffer.get( dst );
-					try
+					if ( playerGuid == null )
 					{
-						playerGuid = new String( dst, "UTF-8" );
-						playerList.add( playerGuid );
+						dst = new byte[length];
+						buffer.get( dst );
+						try
+						{
+							playerGuid = new String( dst, "UTF-8" );
+						}
+						catch ( UnsupportedEncodingException e )
+						{
+							e.printStackTrace();
+						}
 					}
-					catch ( UnsupportedEncodingException e )
+					else if ( heroCardId == null )
 					{
-						e.printStackTrace();
+						dst = new byte[length];
+						buffer.get( dst );
+						try
+						{
+							heroCardId = new String( dst, "UTF-8" );
+						}
+						catch ( UnsupportedEncodingException e )
+						{
+							e.printStackTrace();
+						}
 					}
-				}
-				else if(heroList.size() < peopleCount)
-				{
-					byte[] dst = new byte[length];
-					buffer.get( dst );
-					try
+
+					if ( playerGuid != null && heroCardId != null )
 					{
-						heroCardId = new String( dst, "UTF-8" );
-						heroList.add( heroCardId );
-					}
-					catch ( UnsupportedEncodingException e )
-					{
-						e.printStackTrace();
+						heroList.put( playerGuid, heroCardId );
+
+						playerGuid = null;
+						heroCardId = null;
 					}
 				}
 			}
@@ -173,7 +187,17 @@ public class GameServerHolderThread implements Runnable
 			{
 				room.setTitle( roomTitle );
 				room.setPeopleCount( peopleCount );
-				
+				room.initialize();
+				Iterator< Entry< String, String >> it = heroList.entrySet()
+						.iterator();
+				Entry< String, String > en;
+				while ( it.hasNext() )
+				{
+					en = it.next();
+					room.addHeroCardId( en.getKey(), en.getValue() );
+					room.addPlayerGuid( en.getKey() );
+				}
+
 				log.info( "[RequestRoom] 房间创建成功，等待客户端连接, room id = " + roomId );
 				// TODO 通知GameServer创建房间成功
 				DatagramPacket p = DatagramPacketPool.getInstance().getObject();
@@ -186,7 +210,7 @@ public class GameServerHolderThread implements Runnable
 				bf.putInt( 4 );
 				bf.put( (byte) EnumProtocol.TYPE_INT );
 				bf.putInt( roomType );
-				
+
 				bf.putInt( 4 );
 				bf.put( (byte) EnumProtocol.TYPE_INT );
 				bf.putInt( roomId );
