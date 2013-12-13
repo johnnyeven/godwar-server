@@ -189,23 +189,23 @@ public class BattleHall implements IHall
 		return true;
 	}
 
-	public boolean addRoom( int id )
+	public BattleRoom addRoom( int id )
 	{
 		if ( roomCount >= roomLimit )
 		{
 			log.error( "房间数量已满，无法继续创建" );
-			return false;
+			return null;
 		}
 		if ( roomList.containsKey( id ) )
 		{
 			log.error( "房间已存在" );
-			return false;
+			return null;
 		}
 		BattleRoom room = new BattleRoom();
 		room.setId( id );
 		roomList.put( room.getId(), room );
 		roomCount++;
-		return true;
+		return room;
 	}
 
 	public void removeRoom( BattleRoom room )

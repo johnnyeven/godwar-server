@@ -63,6 +63,10 @@ public class LogicServerHolderThread implements Runnable
 
 					LogicServerConnector.getInstance().send( pack );
 				}
+				else if ( flag == EnumProtocol.BASE_REQUEST_LOGIC_SERVER_ROOM_CONFIRM )
+				{
+					registerLogicServerRoomConfirm( buffer );
+				}
 			}
 
 			try
@@ -140,6 +144,34 @@ public class LogicServerHolderThread implements Runnable
 		LogicServerManager.getInstance().addLogicServer( id, info );
 		log.info( "LogicServer注册信息, id = " + id + ", ip = " + ip + ", port = "
 				+ port + ", upd ip = " + udpIp + ", udp port = " + udpPort );
+	}
+
+	private void registerLogicServerRoomConfirm( ByteBuffer buffer )
+	{
+		int length = Integer.MIN_VALUE;
+		int type = Integer.MIN_VALUE;
+
+		int roomType = Integer.MIN_VALUE;
+		int roomId = Integer.MIN_VALUE;
+
+		while ( buffer.hasRemaining() )
+		{
+			length = buffer.getInt();
+			type = buffer.get();
+			if ( type == EnumProtocol.TYPE_INT )
+			{
+				if ( roomType == Integer.MIN_VALUE )
+				{
+					roomType = buffer.getInt();
+				}
+				else if ( roomId == Integer.MIN_VALUE )
+				{
+					roomId = buffer.getInt();
+				}
+			}
+		}
+		log.info( "LogicServer房间注册成功确认, room type = " + roomType + ", id = "
+				+ roomId );
 	}
 
 	public void stop()

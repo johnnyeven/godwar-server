@@ -1,4 +1,3 @@
-
 package com.xgame.server.network;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
 import com.xgame.server.common.protocol.ProtocolRequestCardList;
 import com.xgame.server.common.protocol.ProtocolRequestRoom;
+import com.xgame.server.common.protocol.ProtocolRequestStartGame;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.common.protocol.ProtocolSaveCardConfig;
 import com.xgame.server.common.protocol.ProtocolShowRoomList;
@@ -117,6 +117,9 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_PLAYER_READY,
 				ProtocolUpdatePlayerReady.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.BATTLEROOM_REQUEST_START_BATTLE,
+				ProtocolRequestStartGame.class );
 	}
 
 	public void startCompletionPort()

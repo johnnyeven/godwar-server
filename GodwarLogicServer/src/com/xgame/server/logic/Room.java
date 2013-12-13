@@ -1,7 +1,7 @@
-
 package com.xgame.server.logic;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +24,6 @@ public abstract class Room
 
 	protected int						id;
 	protected String					title;
-	protected int						peopleLimit;
 	protected int						peopleCount;
 	protected Player					owner;
 	protected List< Player >			playerList;
@@ -33,6 +32,7 @@ public abstract class Room
 	protected RoomStatus				status;
 	protected int						rounds;
 	protected Player					currentPlayer;
+	protected long						createdTime;
 	protected long						startTime;
 	protected long						endTime;
 	protected static Log				log	= LogFactory.getLog( Room.class );
@@ -44,11 +44,12 @@ public abstract class Room
 
 	public void initialize()
 	{
-		if ( peopleLimit > 0 )
+		if ( peopleCount > 0 )
 		{
 			playerList = new ArrayList< Player >();
 			statusMap = new HashMap< Player, Boolean >();
 			heroMap = new HashMap< Player, Card >();
+			createdTime = new Date().getTime();
 		}
 		else
 		{
@@ -59,7 +60,7 @@ public abstract class Room
 
 	public Boolean addPlayer( Player p )
 	{
-		if ( peopleCount >= peopleLimit )
+		if ( playerList.size() >= peopleCount )
 		{
 			log.error( "房间已满员" );
 			return false;
@@ -97,15 +98,16 @@ public abstract class Room
 			playerList.remove( index );
 			statusMap.remove( p );
 			peopleCount--;
-			
+
 			Player player;
-			Iterator<Player> it = playerList.iterator();
-			while(it.hasNext())
+			Iterator< Player > it = playerList.iterator();
+			while ( it.hasNext() )
 			{
 				player = it.next();
-				if(player != p)
+				if ( player != p )
 				{
-					ServerPackage pack = ServerPackagePool.getInstance().getObject();
+					ServerPackage pack = ServerPackagePool.getInstance()
+							.getObject();
 					pack.success = EnumProtocol.ACK_CONFIRM;
 					pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_LEAVE_ROOM;
 					String guid = p.getGuid().toString();
@@ -257,16 +259,6 @@ public abstract class Room
 		this.endTime = endTime;
 	}
 
-	public int getPeopleLimit()
-	{
-		return peopleLimit;
-	}
-
-	public void setPeopleLimit( int peopleLimit )
-	{
-		this.peopleLimit = peopleLimit;
-	}
-
 	public int getPeopleCount()
 	{
 		return peopleCount;
@@ -285,6 +277,11 @@ public abstract class Room
 	public Map< Player, Card > getHeroMap()
 	{
 		return heroMap;
+	}
+
+	public long getCreatedTime()
+	{
+		return createdTime;
 	}
 
 	public void dispose()

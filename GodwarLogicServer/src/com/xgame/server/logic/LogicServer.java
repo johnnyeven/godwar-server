@@ -1,6 +1,8 @@
 package com.xgame.server.logic;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.TimerTask;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,11 +16,15 @@ import org.xml.sax.SAXException;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
 import com.xgame.server.network.GameServerConnector;
+import com.xgame.server.timer.CheckBattleRoomTimerTask;
 import com.xgame.server.timer.RegisterLogicServerTimerTask;
 import com.xgame.server.timer.TimerManager;
 
 public class LogicServer
 {
+	public static String			gameServerIp	= null;
+	public static int				gameServerPort	= 0;
+	public static InetSocketAddress	gameServerAdd;
 
 	public LogicServer()
 	{
@@ -35,8 +41,6 @@ public class LogicServer
 
 		Node serverNode = doc.getElementsByTagName( "GameServer" ).item( 0 );
 		NodeList list = serverNode.getChildNodes();
-		String gameServerIp = null;
-		int gameServerPort = 0;
 		int length = list.getLength();
 		for ( int i = 0; i < length; i++ )
 		{
@@ -50,6 +54,7 @@ public class LogicServer
 						.getTextContent().trim() );
 			}
 		}
+		gameServerAdd = new InetSocketAddress( gameServerIp, gameServerPort );
 
 		serverNode = doc.getElementsByTagName( "LogicServer" ).item( 0 );
 		list = serverNode.getChildNodes();
@@ -78,42 +83,62 @@ public class LogicServer
 		GameServerConnector.getInstance().setIp( logicServerIp );
 		GameServerConnector.getInstance().setPort( logicServerPort );
 
-		RegisterLogicServerTimerTask task = new RegisterLogicServerTimerTask(
+		TimerTask task = new RegisterLogicServerTimerTask(
 				gameServerIp, gameServerPort );
-		TimerManager.getInstance().schedule( "GameServerConnectorInitilization", task, 0, 5000 );
+		TimerManager.getInstance().schedule(
+				"GameServerConnectorInitilization", task, 0, 5000 );
+		
+		task = new CheckBattleRoomTimerTask();
+		TimerManager.getInstance().schedule(
+				"BattleRoomValidation", task, 0, 10000 );
 	}
 
 	public void run()
 	{
 		System.out.println( "                MMMM" );
-		System.out.println( " MMM    MMM    MMMMMMM                          MMMMMMMM" );
-		System.out.println( " MMM    MMM   MMMMMMMMM                         MMMMMMMM" );
-		System.out.println( "  MMM  MMM   MMMM   MMM                         MM" );
-		System.out.println( "  MMM  MMM   MMM    MMM    MMM    MM MMM  MMM   MM" );
-		System.out.println( "   MMMMMM    MMM     MM   MMMMMM  MMMMMMMMMMMMM MM" );
-		System.out.println( "   MMMMMM    MMM         MMMMMMM  MMMMMMMMMMMMM MM" );
-		System.out.println( "    MMMM     MM          MM   MM  MM   MMM  MMM MMMMMMMM" );
-		System.out.println( "    MMMM     MM   MMMMM       MM  MM   MMM   MM MMMMMMMM" );
-		System.out.println( "    MMMM     MM   MMMMM    MMMMM  MM   MMM   MM MM" );
-		System.out.println( "   MMMMMM    MMM     MM  MMMMMMM  MM   MMM   MM MM" );
-		System.out.println( "   MMMMMM    MMM     MM  MMMM MM  MM   MMM   MM MM" );
-		System.out.println( "  MMM  MMM   MMM     MM  MM   MM  MM   MMM   MM MM" );
-		System.out.println( " MMMM  MMMM  MMM    MMM  MM   MM  MM   MMM   MM MM" );
-		System.out.println( " MMM    MMM   MMMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
-		System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
+		System.out
+				.println( " MMM    MMM    MMMMMMM                          MMMMMMMM" );
+		System.out
+				.println( " MMM    MMM   MMMMMMMMM                         MMMMMMMM" );
+		System.out
+				.println( "  MMM  MMM   MMMM   MMM                         MM" );
+		System.out
+				.println( "  MMM  MMM   MMM    MMM    MMM    MM MMM  MMM   MM" );
+		System.out
+				.println( "   MMMMMM    MMM     MM   MMMMMM  MMMMMMMMMMMMM MM" );
+		System.out
+				.println( "   MMMMMM    MMM         MMMMMMM  MMMMMMMMMMMMM MM" );
+		System.out
+				.println( "    MMMM     MM          MM   MM  MM   MMM  MMM MMMMMMMM" );
+		System.out
+				.println( "    MMMM     MM   MMMMM       MM  MM   MMM   MM MMMMMMMM" );
+		System.out
+				.println( "    MMMM     MM   MMMMM    MMMMM  MM   MMM   MM MM" );
+		System.out
+				.println( "   MMMMMM    MMM     MM  MMMMMMM  MM   MMM   MM MM" );
+		System.out
+				.println( "   MMMMMM    MMM     MM  MMMM MM  MM   MMM   MM MM" );
+		System.out
+				.println( "  MMM  MMM   MMM     MM  MM   MM  MM   MMM   MM MM" );
+		System.out
+				.println( " MMMM  MMMM  MMM    MMM  MM   MM  MM   MMM   MM MM" );
+		System.out
+				.println( " MMM    MMM   MMMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
+		System.out
+				.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
 		System.out.println( "                 MMM MM    MM\n" );
 		System.out.println( "LogicServer\n\n" );
 
-	    BattleHall.getInstance().setInitialWorldSettings();
-	    MeleeHall.getInstance().setInitialWorldSettings();
-	    
-	    Hall.getInstance().startHall();
-	    
-		Thread thGameServerListen = new Thread(new GameServerListenThread());
+		BattleHall.getInstance().setInitialWorldSettings();
+		MeleeHall.getInstance().setInitialWorldSettings();
+
+		Hall.getInstance().startHall();
+
+		Thread thGameServerListen = new Thread( new GameServerListenThread() );
 		thGameServerListen.setName( "GameServerListenThread" );
 		thGameServerListen.start();
 
-		Thread thGameServerHolder = new Thread(new GameServerHolderThread());
+		Thread thGameServerHolder = new Thread( new GameServerHolderThread() );
 		thGameServerHolder.setName( "GameServerHolderThread" );
 		thGameServerHolder.start();
 
