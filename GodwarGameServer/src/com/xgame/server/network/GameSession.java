@@ -23,6 +23,7 @@ public class GameSession
 	private long						heartBeatTime;
 	private ByteBuffer					readBuffer;
 	private IHall						currentHall;
+	private Boolean						keepAlive;
 	private Boolean						isDispose;
 
 	public GameSession( long id, AsynchronousSocketChannel c, long time )
@@ -40,6 +41,7 @@ public class GameSession
 		generateTime = time;
 		heartBeatTime = time;
 		recvQueue = new ArrayList< ProtocolPackage >();
+		keepAlive = false;
 		isDispose = false;
 	}
 
@@ -69,8 +71,8 @@ public class GameSession
 		{
 			player = p;
 			player.setSession( this );
-			
-			if(currentHall != null)
+
+			if ( currentHall != null )
 			{
 				player.setCurrentHall( currentHall );
 			}
@@ -171,10 +173,20 @@ public class GameSession
 	public void setCurrentHall( IHall currentHall )
 	{
 		this.currentHall = currentHall;
-		
-		if(player != null)
+
+		if ( player != null )
 		{
 			player.setCurrentHall( currentHall );
 		}
+	}
+
+	public Boolean getKeepAlive()
+	{
+		return keepAlive;
+	}
+
+	public void setKeepAlive( Boolean keepAlive )
+	{
+		this.keepAlive = keepAlive;
 	}
 }

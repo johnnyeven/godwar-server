@@ -1,19 +1,25 @@
 package com.xgame.server.game;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.CommandCenter;
 import com.xgame.server.common.LogicServerInfo;
+import com.xgame.server.common.PackageItem;
+import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.network.DatagramPacketQueue;
 import com.xgame.server.network.LogicServerConnector;
 import com.xgame.server.pool.BufferPool;
 import com.xgame.server.pool.DatagramPacketPool;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class LogicServerHolderThread implements Runnable
 {
@@ -51,7 +57,7 @@ public class LogicServerHolderThread implements Runnable
 					ByteBuffer bf = BufferPool.getInstance().getBuffer();
 
 					bf.putShort( EnumProtocol.BASE_REGISTER_LOGIC_SERVER_CONFIRM );
-					bf.put( (byte) EnumProtocol.TYPE_INT );
+					bf.put( ( byte ) EnumProtocol.TYPE_INT );
 					bf.putInt( 1 );
 
 					bf.flip();
@@ -172,6 +178,42 @@ public class LogicServerHolderThread implements Runnable
 		}
 		log.info( "LogicServer房间注册成功确认, room type = " + roomType + ", id = "
 				+ roomId );
+
+		if ( roomId > 0 )
+		{
+			Room room;
+			if ( roomType == 0 )
+			{
+				room = BattleHall.getInstance().getRoom( roomId );
+				if ( room != null )
+				{
+					List< Player > list = room.getPlayerList();
+					Player p;
+					ServerPackage pack;
+
+					for ( int i = 0; i < list.size(); i++ )
+					{
+						p = list.get( i );
+
+						pack = ServerPackagePool.getInstance().getObject();
+						pack.success = EnumProtocol.ACK_CONFIRM;
+						pack.protocolId = EnumProtocol.BASE_CONNECT_LOGIC_SERVER;
+						CommandCenter.send( p.getChannel(), pack );
+
+						try
+						{
+							//TODO 优化关闭 保持GameSession
+							p.getSession().setKeepAlive( true );
+							p.getChannel().shutdownOutput();
+						}
+						catch ( IOException e )
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void stop()

@@ -16,7 +16,7 @@ import com.xgame.server.network.GameSession;
 
 public class MeleeHall implements IHall
 {
-	public static Map< Long, GameSession >	sessionMap		= new HashMap< Long, GameSession >();
+	public static Map< String, GameSession >	sessionMap		= new HashMap< String, GameSession >();
 	public static boolean					stop			= false;
 	public static long						loopCounter		= 0;
 
@@ -67,8 +67,8 @@ public class MeleeHall implements IHall
 
 	public void addSession( GameSession session )
 	{
-		GameSession old = sessionMap.get( session.getId() );
-		sessionMap.put( session.getId(), session );
+		GameSession old = sessionMap.get( session.getGuid() );
+		sessionMap.put( session.getGuid(), session );
 	}
 
 	public void removeSession( long id )
@@ -89,9 +89,9 @@ public class MeleeHall implements IHall
 			addSession( s );
 		}
 
-		Iterator< Entry< Long, GameSession >> it = sessionMap.entrySet()
+		Iterator< Entry< String, GameSession >> it = sessionMap.entrySet()
 				.iterator();
-		Entry< Long, GameSession > e;
+		Entry< String, GameSession > e;
 		GameSession s;
 		while ( it.hasNext() )
 		{
@@ -153,9 +153,9 @@ public class MeleeHall implements IHall
 
 	public void kickAllPlayer()
 	{
-		Iterator< Entry< Long, GameSession >> it = sessionMap.entrySet()
+		Iterator< Entry< String, GameSession >> it = sessionMap.entrySet()
 				.iterator();
-		Entry< Long, GameSession > e;
+		Entry< String, GameSession > e;
 		GameSession s;
 		while ( it.hasNext() )
 		{

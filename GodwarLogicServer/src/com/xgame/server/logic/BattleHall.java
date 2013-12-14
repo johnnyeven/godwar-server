@@ -24,7 +24,7 @@ public class BattleHall implements IHall
 	private static BattleHall			instance		= null;
 	private static boolean				allowInstance	= false;
 
-	private Map< Long, GameSession >	sessionMap		= new HashMap< Long, GameSession >();
+	private Map< String, GameSession >	sessionMap		= new HashMap< String, GameSession >();
 	private int							roomCount		= 0;
 	private int							roomLimit		= 100;
 	private int							playerLimit;
@@ -73,8 +73,8 @@ public class BattleHall implements IHall
 
 	public void addSession( GameSession session )
 	{
-		GameSession old = sessionMap.get( session.getId() );
-		sessionMap.put( session.getId(), session );
+		GameSession old = sessionMap.get( session.getGuid() );
+		sessionMap.put( session.getGuid(), session );
 	}
 
 	public void removeSession( long id )
@@ -95,9 +95,9 @@ public class BattleHall implements IHall
 			addSession( s );
 		}
 
-		Iterator< Entry< Long, GameSession >> it = sessionMap.entrySet()
+		Iterator< Entry< String, GameSession >> it = sessionMap.entrySet()
 				.iterator();
-		Entry< Long, GameSession > e;
+		Entry< String, GameSession > e;
 		GameSession s;
 		while ( it.hasNext() )
 		{
@@ -159,9 +159,9 @@ public class BattleHall implements IHall
 
 	public void kickAllPlayer()
 	{
-		Iterator< Entry< Long, GameSession >> it = sessionMap.entrySet()
+		Iterator< Entry< String, GameSession >> it = sessionMap.entrySet()
 				.iterator();
-		Entry< Long, GameSession > e;
+		Entry< String, GameSession > e;
 		GameSession s;
 		while ( it.hasNext() )
 		{
@@ -254,12 +254,12 @@ public class BattleHall implements IHall
 		return roomList.values().iterator();
 	}
 
-	public Map< Long, GameSession > getSessionMap()
+	public Map< String, GameSession > getSessionMap()
 	{
 		return sessionMap;
 	}
 
-	public Iterator< Entry< Long, GameSession >> getSessionMapIterator()
+	public Iterator< Entry< String, GameSession >> getSessionMapIterator()
 	{
 		return sessionMap.entrySet().iterator();
 	}
@@ -267,7 +267,7 @@ public class BattleHall implements IHall
 	@Override
 	public void removeSession( GameSession session )
 	{
-		sessionMap.remove( session.getId() );
+		sessionMap.remove( session.getGuid() );
 		session.setCurrentHall( null );
 	}
 

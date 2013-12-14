@@ -18,8 +18,8 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.common.protocol.EnumProtocol;
-import com.xgame.server.logic.BattleHall;
 import com.xgame.server.logic.ProtocolPackage;
+import com.xgame.server.logic.BattleHall;
 import com.xgame.server.pool.BufferPool;
 import com.xgame.server.pool.ServerPackagePool;
 
@@ -41,9 +41,9 @@ public class AuthSessionCompletionHandler implements
 		int packageLength = buffer.getInt();
 		short protocolId = buffer.getShort();
 
-		if ( protocolId == EnumProtocol.INFO_BIND_SESSION )
+		if ( protocolId == EnumProtocol.INFO_LOGICSERVER_BIND_SESSION )
 		{
-			String accountName = null;
+			String guid = null;
 			for ( int i = 6; i < arg0; )
 			{
 				int length = buffer.getInt();
@@ -51,7 +51,7 @@ public class AuthSessionCompletionHandler implements
 				switch ( type )
 				{
 					case EnumProtocol.TYPE_STRING:
-						if ( accountName == null )
+						if ( guid == null )
 						{
 							length = buffer.getShort();
 							byte[] dst = new byte[length];
@@ -59,7 +59,7 @@ public class AuthSessionCompletionHandler implements
 							length += 2;
 							try
 							{
-								accountName = new String( dst, "UTF-8" );
+								guid = new String( dst, "UTF-8" );
 							}
 							catch ( UnsupportedEncodingException e )
 							{
@@ -69,35 +69,31 @@ public class AuthSessionCompletionHandler implements
 				}
 				i += ( length + 5 );
 			}
-			log.info( "[AuthSession] AccountName=" + accountName );
+			log.info( "[AuthSession] Guid = " + guid );
 
-			if ( accountName != null )
+			if ( guid != null )
 			{
 				try
 				{
-					String sql = "SELECT * FROM `pulse_account` WHERE `account_name`='"
-							+ accountName + "'";
+					String sql = "SELECT * FROM `game_account` WHERE `game_guid`='"
+							+ guid + "'";
 					PreparedStatement st = DatabaseRouter.getInstance()
-							.getConnection( "accountdb" )
-							.prepareStatement( sql );
+							.getConnection( "gamedb" ).prepareStatement( sql );
 					ResultSet rs = st.executeQuery();
-					long guid = Long.MIN_VALUE;
-					if ( rs.first() )
+					if ( rs.next() )
 					{
-						guid = rs.getLong( "GUID" );
+						GameSession s = new GameSession( guid, arg1.channel,
+								new Date().getTime() );
+						BattleHall.getInstance().addSessionQueue( s );
+						s.startRecv();
+
+						ServerPackage pack = ServerPackagePool.getInstance()
+								.getObject();
+						pack.success = EnumProtocol.ACK_CONFIRM;
+						pack.protocolId = EnumProtocol.INFO_LOGICSERVER_BIND_SESSION;
+						pack.parameter.add( new PackageItem( 4, 1 ) );
+						CommandCenter.send( arg1.channel, pack );
 					}
-
-					GameSession s = new GameSession( guid, arg1.channel,
-							new Date().getTime() );
-					BattleHall.getInstance().addSessionQueue( s );
-					s.startRecv();
-
-					ServerPackage pack = ServerPackagePool.getInstance()
-							.getObject();
-					pack.success = EnumProtocol.ACK_CONFIRM;
-					pack.protocolId = EnumProtocol.INFO_BIND_SESSION;
-					pack.parameter.add( new PackageItem( 4, 1 ) );
-					CommandCenter.send( arg1.channel, pack );
 
 					rs.close();
 				}
@@ -112,7 +108,7 @@ public class AuthSessionCompletionHandler implements
 		else
 		{
 			log.error( "绑定Session协议号错误，收到的协议号为" + protocolId + ", 应该为"
-					+ EnumProtocol.INFO_BIND_SESSION );
+					+ EnumProtocol.INFO_LOGICSERVER_BIND_SESSION );
 		}
 	}
 

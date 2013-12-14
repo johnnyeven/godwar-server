@@ -85,13 +85,12 @@ public class Player
 						+ accountId );
 				return false;
 			}
-			long accountGuid = rs.getLong( "account_guid" );
-			if ( accountGuid != session.getId() )
+			String gameGuid = rs.getString( "game_guid" );
+			if ( gameGuid != session.getGuid() )
 			{
 				log.error( "[loadFromDatabase] accountId与WorldSession使用的accountId不匹配" );
 				return false;
 			}
-			String gameGuid = rs.getString( "game_guid" );
 			String guidSql = "";
 			if ( !gameGuid.isEmpty() )
 			{

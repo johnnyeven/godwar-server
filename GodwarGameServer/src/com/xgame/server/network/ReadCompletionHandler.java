@@ -46,7 +46,9 @@ public class ReadCompletionHandler implements
 		{
 			try
 			{
-				log.info( "断开连接 IP=" + attachment.getChannel().getRemoteAddress().toString() + ", Player=" + attachment.getPlayer().name );
+				log.info( "断开连接 IP="
+						+ attachment.getChannel().getRemoteAddress().toString()
+						+ ", Player=" + attachment.getPlayer().name );
 			}
 			catch ( IOException e )
 			{
@@ -54,7 +56,10 @@ public class ReadCompletionHandler implements
 			}
 			finally
 			{
-				attachment.dispose();
+				if ( !attachment.getKeepAlive() )
+				{
+					attachment.dispose();
+				}
 			}
 		}
 	}
@@ -64,7 +69,9 @@ public class ReadCompletionHandler implements
 	{
 		try
 		{
-			log.info( "Socket错误读取数据失败 IP=" + attachment.getChannel().getRemoteAddress().toString() + ", Player=" + attachment.getPlayer().name );
+			log.info( "Socket错误读取数据失败 IP="
+					+ attachment.getChannel().getRemoteAddress().toString()
+					+ ", Player=" + attachment.getPlayer().name );
 		}
 		catch ( IOException e )
 		{

@@ -17,6 +17,7 @@ public final class EnumProtocol
 	// INFO
 	public static final int		ACTION_REQUEST_CHARACTER					= 4;
 	public static final int		ACTION_REGISTER_CHARACTER					= 5;
+	public static final int		ACTION_LOGICSERVER_BIND_SESSION				= 6;
 	public static final int		ACTION_BIND_SESSION							= 7;
 	public static final int		ACTION_REQUEST_CARD_GROUP					= 8;
 	public static final int		ACTION_REQUEST_CARD_LIST					= 9;
@@ -57,6 +58,8 @@ public final class EnumProtocol
 	public static final short	REQUEST_ACCOUNT_ROLE						= ACTION_REQUEST_CHARACTER << 8
 																					| CONTROLLER_INFO;
 	public static final short	REGISTER_ACCOUNT_ROLE						= ACTION_REGISTER_CHARACTER << 8
+																					| CONTROLLER_INFO;
+	public static final short	INFO_LOGICSERVER_BIND_SESSION				= ACTION_LOGICSERVER_BIND_SESSION << 8
 																					| CONTROLLER_INFO;
 	public static final short	INFO_BIND_SESSION							= ACTION_BIND_SESSION << 8
 																					| CONTROLLER_INFO;
