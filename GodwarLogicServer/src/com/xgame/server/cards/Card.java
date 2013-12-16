@@ -1,22 +1,34 @@
 package com.xgame.server.cards;
 
-import java.util.UUID;
-
 public class Card
 {
-	private UUID id;
-	private String name;
-	private String series;
-	private int level;
-	private String comment;
-	private String resource;
-	
-	public Card()
+	private String			id;
+	private String			name;
+	private String			series;
+	protected CardParameter	parameter;
+
+	public Card( String id )
 	{
-		
+		this.id = id;
+		loadInfo();
 	}
 
-	public UUID getId()
+	protected void loadInfo()
+	{
+		if ( id != null )
+		{
+			CardParameter param = CardParameterManager.getInstance().getCard(
+					id );
+			if ( param != null )
+			{
+				parameter = param;
+				name = parameter.name;
+				series = parameter.series;
+			}
+		}
+	}
+
+	public String getId()
 	{
 		return id;
 	}
@@ -29,21 +41,6 @@ public class Card
 	public String getSeries()
 	{
 		return series;
-	}
-
-	public int getLevel()
-	{
-		return level;
-	}
-
-	public String getComment()
-	{
-		return comment;
-	}
-
-	public String getResource()
-	{
-		return resource;
 	}
 
 }

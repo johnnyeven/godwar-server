@@ -13,6 +13,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.xgame.server.cards.CardParameterManager;
+import com.xgame.server.cards.SoulCardParameter;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
 import com.xgame.server.network.GameServerConnector;
@@ -83,14 +85,14 @@ public class LogicServer
 		GameServerConnector.getInstance().setIp( logicServerIp );
 		GameServerConnector.getInstance().setPort( logicServerPort );
 
-		TimerTask task = new RegisterLogicServerTimerTask(
-				gameServerIp, gameServerPort );
+		TimerTask task = new RegisterLogicServerTimerTask( gameServerIp,
+				gameServerPort );
 		TimerManager.getInstance().schedule(
 				"GameServerConnectorInitilization", task, 0, 5000 );
-		
+
 		task = new CheckBattleRoomTimerTask();
-		TimerManager.getInstance().schedule(
-				"BattleRoomValidation", task, 0, 10000 );
+		TimerManager.getInstance().schedule( "BattleRoomValidation", task, 0,
+				10000 );
 	}
 
 	public void run()
@@ -151,6 +153,7 @@ public class LogicServer
 		try
 		{
 			me.loadConfig();
+			CardParameterManager.getInstance().initialize();
 		}
 		catch ( ParserConfigurationException | SAXException | IOException e )
 		{

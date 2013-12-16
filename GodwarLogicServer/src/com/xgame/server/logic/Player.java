@@ -16,7 +16,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.cards.Card;
 import com.xgame.server.common.database.DatabaseRouter;
-import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.network.GameSession;
 
 public class Player
@@ -30,7 +29,7 @@ public class Player
 	public int							winningCount	= 0;
 	public int							battleCount		= 0;
 	public int							honor			= 0;
-	public PlayerStatus					status			= PlayerStatus.NORMAL;
+	public int							phase			= -1;
 
 	private AsynchronousSocketChannel	channel;
 	private GameSession					session;
@@ -40,18 +39,18 @@ public class Player
 																							// 1=红队
 																							// 2=蓝队
 	private int							currentCardGroup;
-	
-	private List< Card >				currentCard;
-	private Map< UUID, Card >			cardMap;
+
+	private Card						heroCard;
+	private List< Card >				cardList;
+	private Map< String, Card >			cardMap;
 
 	private static Log					log				= LogFactory
 																.getLog( Player.class );
 
 	public Player()
 	{
-		guid = UUID.randomUUID();
-		currentCard = new ArrayList< Card >();
-		cardMap = new HashMap< UUID, Card >();
+		cardList = new ArrayList< Card >();
+		cardMap = new HashMap< String, Card >();
 	}
 
 	public boolean loadFromDatabase()
@@ -91,21 +90,10 @@ public class Player
 				log.error( "[loadFromDatabase] accountId与WorldSession使用的accountId不匹配" );
 				return false;
 			}
-			String guidSql = "";
 			if ( !gameGuid.isEmpty() )
 			{
 				setGuid( UUID.fromString( gameGuid ) );
 			}
-			else
-			{
-				guidSql = "`game_guid`='" + getGuid().toString().toUpperCase()
-						+ "', ";
-			}
-
-			sql = "UPDATE `game_account` SET " + guidSql
-					+ " `account_lastlogin`=" + new Date().getTime()
-					+ " WHERE `account_id`=" + accountId;
-			st.executeUpdate( sql );
 
 			rs.close();
 		}
@@ -147,9 +135,9 @@ public class Player
 		this.currentCardGroup = currentCardGroup;
 	}
 
-	public List< Card > getCurrentCards()
+	public List< Card > getCardList()
 	{
-		return currentCard;
+		return cardList;
 	}
 
 	public GameSession getSession()
