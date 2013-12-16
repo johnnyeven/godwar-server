@@ -30,11 +30,14 @@ public final class EnumProtocol
 	public static final int		ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
 	public static final int		ACTION_REQUEST_LOGIC_SERVER_ROOM			= 2;
 	public static final int		ACTION_REQUEST_LOGIC_SERVER_ROOM_CONFIRM	= 3;
+	public static final int		ACTION_LOGIC_SERVER_INFO					= 4;
+	public static final int		ACTION_CONNECT_LOGIC_SERVER					= 5;
 	// HALL
 	public static final int		ACTION_REQUEST_ROOM							= 0;
 	public static final int		ACTION_SHOW_ROOMLIST						= 1;
 	public static final int		ACTION_ROOM_CREATED							= 2;
 	public static final int		ACTION_REQUEST_ENTER_ROOM					= 3;
+	public static final int		ACTION_REQUEST_ENTER_ROOM_LOGICSERVER		= 4;
 	// battle ROOM
 	public static final int		ACTION_INIT_ROOM_DATA						= 0;
 	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
@@ -42,6 +45,8 @@ public final class EnumProtocol
 	public static final int		ACTION_PLAYER_READY							= 3;
 	public static final int		ACTION_PLAYER_LEAVE_ROOM_NOTICE				= 4;
 	public static final int		ACTION_REQUEST_START_BATTLE					= 5;
+	public static final int		ACTION_INIT_ROOM_DATA_LOGICSERVER			= 6;
+	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE_LOGICSERVER	= 7;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -84,6 +89,10 @@ public final class EnumProtocol
 																					| CONTROLLER_BASE;
 	public static final short	BASE_REQUEST_LOGIC_SERVER_ROOM_CONFIRM		= ACTION_REQUEST_LOGIC_SERVER_ROOM_CONFIRM << 8
 																					| CONTROLLER_BASE;
+	public static final short	BASE_LOGIC_SERVER_INFO						= ACTION_LOGIC_SERVER_INFO << 8
+																					| CONTROLLER_BASE;
+	public static final short	BASE_CONNECT_LOGIC_SERVER					= ACTION_CONNECT_LOGIC_SERVER << 8
+																					| CONTROLLER_BASE;
 	// HALL
 	public static final short	HALL_REQUEST_ROOM							= ACTION_REQUEST_ROOM << 8
 																					| CONTROLLER_HALL;
@@ -92,6 +101,8 @@ public final class EnumProtocol
 	public static final short	HALL_ROOM_CREATED							= ACTION_ROOM_CREATED << 8
 																					| CONTROLLER_HALL;
 	public static final short	HALL_REQUEST_ENTER_ROOM						= ACTION_REQUEST_ENTER_ROOM << 8
+																					| CONTROLLER_HALL;
+	public static final short	HALL_REQUEST_ENTER_ROOM_LOGICSERVER			= ACTION_REQUEST_ENTER_ROOM_LOGICSERVER << 8
 																					| CONTROLLER_HALL;
 	// battle ROOM
 	public static final short	BATTLEROOM_INIT_ROOM						= ACTION_INIT_ROOM_DATA << 8
@@ -105,5 +116,9 @@ public final class EnumProtocol
 	public static final short	BATTLEROOM_PLAYER_LEAVE_ROOM				= ACTION_PLAYER_LEAVE_ROOM_NOTICE << 8
 																					| CONTROLLER_BATTLEROOM;
 	public static final short	BATTLEROOM_REQUEST_START_BATTLE				= ACTION_REQUEST_START_BATTLE << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_INIT_ROOM_LOGICSERVER			= ACTION_INIT_ROOM_DATA_LOGICSERVER << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_PLAYER_ENTER_ROOM_LOGICSERVER	= ACTION_PLAYER_ENTER_ROOM_NOTICE_LOGICSERVER << 8
 																					| CONTROLLER_BATTLEROOM;
 }

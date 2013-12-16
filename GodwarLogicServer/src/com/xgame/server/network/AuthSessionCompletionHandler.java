@@ -6,7 +6,6 @@ import java.nio.channels.CompletionHandler;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -18,9 +17,11 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.common.protocol.EnumProtocol;
-import com.xgame.server.logic.ProtocolPackage;
+import com.xgame.server.logic.ObjectManager;
+import com.xgame.server.logic.Player;
 import com.xgame.server.logic.BattleHall;
 import com.xgame.server.pool.BufferPool;
+import com.xgame.server.pool.PlayerPool;
 import com.xgame.server.pool.ServerPackagePool;
 
 public class AuthSessionCompletionHandler implements
@@ -44,6 +45,8 @@ public class AuthSessionCompletionHandler implements
 		if ( protocolId == EnumProtocol.INFO_LOGICSERVER_BIND_SESSION )
 		{
 			String guid = null;
+			int roomType = Integer.MIN_VALUE;
+
 			for ( int i = 6; i < arg0; )
 			{
 				int length = buffer.getInt();
@@ -66,6 +69,13 @@ public class AuthSessionCompletionHandler implements
 								e.printStackTrace();
 							}
 						}
+						break;
+					case EnumProtocol.TYPE_INT:
+						if ( roomType == Integer.MIN_VALUE )
+						{
+							roomType = buffer.getInt();
+						}
+						break;
 				}
 				i += ( length + 5 );
 			}
@@ -84,6 +94,17 @@ public class AuthSessionCompletionHandler implements
 					{
 						GameSession s = new GameSession( guid, arg1.channel,
 								new Date().getTime() );
+
+						Player p = PlayerPool.getInstance().getObject();
+						p.accountId = rs.getLong( "account_id" );
+						p.setChannel( arg1.channel );
+						s.setPlayer( p );
+						if ( !p.loadFromDatabase() )
+						{
+
+						}
+						ObjectManager.getInstance().addPlayer( p );
+
 						BattleHall.getInstance().addSessionQueue( s );
 						s.startRecv();
 

@@ -40,7 +40,7 @@ public abstract class Room
 
 	public Room()
 	{
-
+		
 	}
 
 	public void initialize()
@@ -74,6 +74,15 @@ public abstract class Room
 		}
 		playerGuidList.add( guid );
 		return true;
+	}
+	
+	public Boolean hasPlayerGuid(String guid)
+	{
+		if ( playerGuidList.indexOf( guid ) >= 0 )
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public Boolean addHeroCardId( String guid, String id )
