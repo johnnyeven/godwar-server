@@ -94,7 +94,7 @@ public class DatabaseRouter
 
 					c = DriverManager.getConnection( config.connectString
 							+ config.databaseName
-							+ "?useUnicode=true&characterEncoding=UTF-8",
+							+ "?autoReconnect=true&maxReconnects=10&useUnicode=true&characterEncoding=UTF-8",
 							config.username, config.password );
 					connectionSet.put( name, c );
 				}
