@@ -90,7 +90,9 @@ public class GameServerHolderThread implements Runnable
 		String ownerGuid = null;
 		List< String > playerList = new ArrayList< String >();
 		Map< String, String > heroList = new HashMap< String, String >();
+		Map< String, Integer > groupList = new HashMap< String, Integer >();
 		String playerGuid = null;
+		int playerGroup = Integer.MIN_VALUE;
 		String heroCardId = null;
 		byte[] dst;
 		while ( buffer.hasRemaining() )
@@ -110,6 +112,10 @@ public class GameServerHolderThread implements Runnable
 				else if ( peopleCount == Integer.MIN_VALUE )
 				{
 					peopleCount = buffer.getInt();
+				}
+				else if ( playerGroup == Integer.MIN_VALUE )
+				{
+					playerGroup = buffer.getInt();
 				}
 			}
 			else if ( type == EnumProtocol.TYPE_STRING )
@@ -168,14 +174,17 @@ public class GameServerHolderThread implements Runnable
 							e.printStackTrace();
 						}
 					}
+				}
 
-					if ( playerGuid != null && heroCardId != null )
-					{
-						heroList.put( playerGuid, heroCardId );
+				if ( playerGuid != null && playerGroup != Integer.MIN_VALUE
+						&& heroCardId != null )
+				{
+					heroList.put( playerGuid, heroCardId );
+					groupList.put( playerGuid, playerGroup );
 
-						playerGuid = null;
-						heroCardId = null;
-					}
+					playerGuid = null;
+					playerGroup = Integer.MIN_VALUE;
+					heroCardId = null;
 				}
 			}
 		}
@@ -195,7 +204,7 @@ public class GameServerHolderThread implements Runnable
 				{
 					en = it.next();
 					room.addHeroCardId( en.getKey(), en.getValue() );
-					room.addPlayerGuid( en.getKey() );
+					room.addPlayerGuid( en.getKey(), groupList.get( en.getKey() ) );
 				}
 
 				log.info( "[RequestRoom] 房间创建成功，等待客户端连接, room id = " + roomId );

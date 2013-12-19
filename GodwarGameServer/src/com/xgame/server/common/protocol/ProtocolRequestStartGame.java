@@ -121,6 +121,10 @@ public class ProtocolRequestStartGame implements IProtocol
 				bf.put( (byte) EnumProtocol.TYPE_STRING );
 				bf.put( src );
 
+				bf.putInt( 4 );
+				bf.put( (byte) EnumProtocol.TYPE_INT );
+				bf.putInt( en.getKey().getCurrentGroup() );
+
 				src = heroCardId.getBytes( Charset.forName( "UTF-8" ) );
 				bf.putInt( src.length );
 				bf.put( (byte) EnumProtocol.TYPE_STRING );

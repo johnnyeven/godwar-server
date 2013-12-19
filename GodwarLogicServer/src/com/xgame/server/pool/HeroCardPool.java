@@ -6,26 +6,27 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.cards.HeroCard;
 import com.xgame.server.logic.Player;
 
-public class PlayerPool implements IPool< Player >
+public class HeroCardPool implements IPool< HeroCard >
 {
-	private static Log						log					= LogFactory
-																		.getLog( PlayerPool.class );
+	private static Log							log					= LogFactory
+																			.getLog( HeroCardPool.class );
 
-	private static int						maxBufferPoolSize	= 2000;
-	private static int						minBufferPoolSize	= 1000;
+	private static int							maxBufferPoolSize	= 1000;
+	private static int							minBufferPoolSize	= 500;
 
-	private AtomicInteger					usableCount			= new AtomicInteger();
-	private AtomicInteger					createCount			= new AtomicInteger();
-	private ConcurrentLinkedQueue< Player >	queue				= new ConcurrentLinkedQueue< Player >();
-	private static PlayerPool				instance			= new PlayerPool();
+	private AtomicInteger						usableCount			= new AtomicInteger();
+	private AtomicInteger						createCount			= new AtomicInteger();
+	private ConcurrentLinkedQueue< HeroCard >	queue				= new ConcurrentLinkedQueue< HeroCard >();
+	private static HeroCardPool					instance			= new HeroCardPool();
 
-	private PlayerPool()
+	private HeroCardPool()
 	{
 		for ( int i = 0; i < minBufferPoolSize; ++i )
 		{
-			Player p = new Player();
+			HeroCard p = new HeroCard();
 			this.queue.add( p );
 		}
 
@@ -34,13 +35,13 @@ public class PlayerPool implements IPool< Player >
 	}
 
 	@Override
-	public Player getObject()
+	public HeroCard getObject()
 	{
-		Player p = this.queue.poll();
+		HeroCard p = this.queue.poll();
 
 		if ( p == null )
 		{
-			p = new Player();
+			p = new HeroCard();
 			this.createCount.incrementAndGet();
 		}
 		else
@@ -52,7 +53,7 @@ public class PlayerPool implements IPool< Player >
 	}
 
 	@Override
-	public void returnObject( Player p )
+	public void returnObject( HeroCard p )
 	{
 		if ( this.createCount.intValue() > maxBufferPoolSize
 				&& ( this.usableCount.intValue() > ( this.createCount
@@ -69,11 +70,11 @@ public class PlayerPool implements IPool< Player >
 		}
 	}
 
-	public static PlayerPool getInstance()
+	public static HeroCardPool getInstance()
 	{
 		if ( instance == null )
 		{
-			instance = new PlayerPool();
+			instance = new HeroCardPool();
 		}
 		return instance;
 	}

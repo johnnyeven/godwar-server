@@ -6,14 +6,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.CommandCenter;
 import com.xgame.server.cards.Card;
+import com.xgame.server.cards.HeroCard;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.pool.HeroCardPool;
 import com.xgame.server.pool.ServerPackagePool;
 
 public abstract class Room
@@ -40,7 +43,7 @@ public abstract class Room
 
 	public Room()
 	{
-		
+
 	}
 
 	public void initialize()
@@ -60,41 +63,11 @@ public abstract class Room
 		}
 	}
 
-	public Boolean addPlayerGuid( String guid )
-	{
-		if ( playerGuidList.size() >= peopleCount )
-		{
-			log.error( "房间已满员" );
-			return false;
-		}
-		if ( playerGuidList.indexOf( guid ) >= 0 )
-		{
-			log.error( "玩家Guid已存在于该房间" );
-			return false;
-		}
-		playerGuidList.add( guid );
-		return true;
-	}
-	
-	public Boolean hasPlayerGuid(String guid)
-	{
-		if ( playerGuidList.indexOf( guid ) >= 0 )
-		{
-			return true;
-		}
-		return false;
-	}
+	abstract public Boolean addPlayerGuid( String guid, int group );
 
-	public Boolean addHeroCardId( String guid, String id )
-	{
-		if(heroCardIdMap.containsKey( guid ))
-		{
-			log.error( "玩家英雄卡牌已存在于该房间" );
-			return false;
-		}
-		heroCardIdMap.put( guid, id );
-		return true;
-	}
+	abstract public Boolean hasPlayerGuid( String guid );
+
+	abstract public Boolean addHeroCardId( String guid, String id );
 
 	public Boolean addPlayer( Player p )
 	{
@@ -108,7 +81,20 @@ public abstract class Room
 			log.error( "玩家已存在于该房间" );
 			return false;
 		}
+		String guid = p.getGuid().toString();
 		p.setCurrentRoom( this );
+		if ( heroCardIdMap.containsKey( guid ) )
+		{
+			String heroCardId = heroCardIdMap.get( guid );
+			HeroCard card = HeroCardPool.getInstance().getObject();
+			card.loadInfo( heroCardId );
+			p.setHeroCard( card );
+		}
+		else
+		{
+			log.error( "无法找到玩家的英雄数据" );
+			return false;
+		}
 		for ( int i = 0; i < playerList.size(); i++ )
 		{
 			if ( playerList.get( i ) == null )

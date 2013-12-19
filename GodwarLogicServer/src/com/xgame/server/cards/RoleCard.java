@@ -8,6 +8,11 @@ public class RoleCard extends Card implements IBattlable
 	protected int	health;
 	protected int	healthMax;
 
+	public RoleCard()
+	{
+		super();
+	}
+	
 	public RoleCard( String id )
 	{
 		super( id );
@@ -26,7 +31,7 @@ public class RoleCard extends Card implements IBattlable
 
 	}
 
-	protected void loadInfo()
+	public void loadInfo()
 	{
 		super.loadInfo();
 

@@ -55,7 +55,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 		BattleRoom room = BattleHall.getInstance().getRoom( id );
 		if ( room != null )
 		{
-			if ( room.getPeopleCount() >= room.getPlayerList().size() )
+			if ( room.getPlayerList().size() >= room.getPeopleCount() )
 			{
 				log.info( "[RequestEnterRoom] 房间已满员" );
 
@@ -76,12 +76,6 @@ public class ProtocolRequestEnterRoom implements IProtocol
 				pack.success = EnumProtocol.ACK_CONFIRM;
 				pack.protocolId = EnumProtocol.BATTLEROOM_INIT_ROOM_LOGICSERVER;
 				pack.parameter.add( new PackageItem( 4, room.getId() ) );
-				pack.parameter.add( new PackageItem( room.getTitle().length(),
-						room.getTitle() ) );
-				String uuid = room.getOwner().getGuid().toString();
-				pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
-				pack.parameter.add( new PackageItem( room.getOwner().name
-						.length(), room.getOwner().name ) );
 				pack.parameter
 						.add( new PackageItem( 4, room.getPeopleCount() ) );
 				pack.parameter.add( new PackageItem( 4, session.getPlayer()
@@ -90,6 +84,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 				List< Player > list = room.getPlayerList();
 				Iterator< Player > it = list.iterator();
 				Player p;
+				String uuid;
 				while ( it.hasNext() )
 				{
 					p = it.next();

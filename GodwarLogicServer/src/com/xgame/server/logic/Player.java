@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.cards.Card;
+import com.xgame.server.cards.HeroCard;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.GameSession;
 
@@ -40,7 +41,7 @@ public class Player
 																							// 2=蓝队
 	private int							currentCardGroup;
 
-	private Card						heroCard;
+	private HeroCard					heroCard;
 	private List< Card >				cardList;
 	private Map< String, Card >			cardMap;
 
@@ -85,7 +86,8 @@ public class Player
 				return false;
 			}
 			String gameGuid = rs.getString( "game_guid" );
-			if ( gameGuid != session.getGuid() )
+
+			if ( !gameGuid.equals( session.getGuid() ) )
 			{
 				log.error( "[loadFromDatabase] accountId与WorldSession使用的accountId不匹配" );
 				return false;
@@ -198,5 +200,15 @@ public class Player
 	public void setCurrentGroup( int currentGroup )
 	{
 		this.currentGroup = currentGroup;
+	}
+
+	public HeroCard getHeroCard()
+	{
+		return heroCard;
+	}
+
+	public void setHeroCard( HeroCard heroCard )
+	{
+		this.heroCard = heroCard;
 	}
 }

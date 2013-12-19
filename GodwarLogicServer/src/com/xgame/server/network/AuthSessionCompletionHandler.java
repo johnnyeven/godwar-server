@@ -79,6 +79,7 @@ public class AuthSessionCompletionHandler implements
 				}
 				i += ( length + 5 );
 			}
+			guid = guid.toUpperCase();
 			log.info( "[AuthSession] Guid = " + guid );
 
 			if ( guid != null )

@@ -85,6 +85,69 @@ public class CardParameterManager
 			}
 			cardMap.put( parameter.id, parameter );
 		}
+
+		doc = dbBuilder.parse( "hero_card_config.xml" );
+		list = doc.getElementsByTagName( "card" );
+		length = list.getLength();
+		HeroCardParameter parameter1;
+		for ( int i = 0; i < length; i++ )
+		{
+			node = list.item( i );
+			children = node.getChildNodes();
+			parameter1 = new HeroCardParameter();
+			for ( int j = 0; j < children.getLength(); j++ )
+			{
+				child = children.item( j );
+				if ( child.getNodeName() == "id" )
+				{
+					parameter1.id = child.getTextContent().trim();
+				}
+				else if ( child.getNodeName() == "name" )
+				{
+					parameter1.name = child.getTextContent().trim();
+				}
+				else if ( child.getNodeName() == "nickname" )
+				{
+					parameter1.nickname = child.getTextContent().trim();
+				}
+				else if ( child.getNodeName() == "attack" )
+				{
+					parameter1.attack = Integer.parseInt( child
+							.getTextContent().trim() );
+				}
+				else if ( child.getNodeName() == "def" )
+				{
+					parameter1.def = Integer.parseInt( child.getTextContent()
+							.trim() );
+				}
+				else if ( child.getNodeName() == "mdef" )
+				{
+					parameter1.mdef = Integer.parseInt( child.getTextContent()
+							.trim() );
+				}
+				else if ( child.getNodeName() == "hit" )
+				{
+					parameter1.hit = Integer.parseInt( child.getTextContent()
+							.trim() );
+				}
+				else if ( child.getNodeName() == "flee" )
+				{
+					parameter1.flee = Integer.parseInt( child.getTextContent()
+							.trim() );
+				}
+				else if ( child.getNodeName() == "health" )
+				{
+					parameter1.health = Integer.parseInt( child
+							.getTextContent().trim() );
+				}
+				else if ( child.getNodeName() == "race" )
+				{
+					parameter1.race = Integer.parseInt( child.getTextContent()
+							.trim() );
+				}
+			}
+			cardMap.put( parameter1.id, parameter1 );
+		}
 	}
 
 	public CardParameter getCard( String id )

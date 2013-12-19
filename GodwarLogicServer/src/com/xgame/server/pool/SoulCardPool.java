@@ -6,26 +6,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.cards.HeroCard;
+import com.xgame.server.cards.SoulCard;
 import com.xgame.server.logic.Player;
 
-public class PlayerPool implements IPool< Player >
+public class SoulCardPool implements IPool< SoulCard >
 {
-	private static Log						log					= LogFactory
-																		.getLog( PlayerPool.class );
+	private static Log							log					= LogFactory
+																			.getLog( SoulCardPool.class );
 
-	private static int						maxBufferPoolSize	= 2000;
-	private static int						minBufferPoolSize	= 1000;
+	private static int							maxBufferPoolSize	= 1000;
+	private static int							minBufferPoolSize	= 500;
 
-	private AtomicInteger					usableCount			= new AtomicInteger();
-	private AtomicInteger					createCount			= new AtomicInteger();
-	private ConcurrentLinkedQueue< Player >	queue				= new ConcurrentLinkedQueue< Player >();
-	private static PlayerPool				instance			= new PlayerPool();
+	private AtomicInteger						usableCount			= new AtomicInteger();
+	private AtomicInteger						createCount			= new AtomicInteger();
+	private ConcurrentLinkedQueue< SoulCard >	queue				= new ConcurrentLinkedQueue< SoulCard >();
+	private static SoulCardPool					instance			= new SoulCardPool();
 
-	private PlayerPool()
+	private SoulCardPool()
 	{
 		for ( int i = 0; i < minBufferPoolSize; ++i )
 		{
-			Player p = new Player();
+			SoulCard p = new SoulCard();
 			this.queue.add( p );
 		}
 
@@ -34,13 +36,13 @@ public class PlayerPool implements IPool< Player >
 	}
 
 	@Override
-	public Player getObject()
+	public SoulCard getObject()
 	{
-		Player p = this.queue.poll();
+		SoulCard p = this.queue.poll();
 
 		if ( p == null )
 		{
-			p = new Player();
+			p = new SoulCard();
 			this.createCount.incrementAndGet();
 		}
 		else
@@ -52,7 +54,7 @@ public class PlayerPool implements IPool< Player >
 	}
 
 	@Override
-	public void returnObject( Player p )
+	public void returnObject( SoulCard p )
 	{
 		if ( this.createCount.intValue() > maxBufferPoolSize
 				&& ( this.usableCount.intValue() > ( this.createCount
@@ -69,11 +71,11 @@ public class PlayerPool implements IPool< Player >
 		}
 	}
 
-	public static PlayerPool getInstance()
+	public static SoulCardPool getInstance()
 	{
 		if ( instance == null )
 		{
-			instance = new PlayerPool();
+			instance = new SoulCardPool();
 		}
 		return instance;
 	}

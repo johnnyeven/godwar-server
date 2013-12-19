@@ -5,6 +5,11 @@ public class SoulCard extends RoleCard
 	private int	level;
 	private int	race;
 
+	public SoulCard()
+	{
+		super();
+	}
+
 	public SoulCard( String id )
 	{
 		super( id );
@@ -29,8 +34,8 @@ public class SoulCard extends RoleCard
 	{
 		this.race = race;
 	}
-	
-	protected void loadInfo()
+
+	public void loadInfo()
 	{
 		super.loadInfo();
 

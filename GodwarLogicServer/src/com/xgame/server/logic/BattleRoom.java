@@ -1,8 +1,10 @@
 package com.xgame.server.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.xgame.server.CommandCenter;
 import com.xgame.server.common.PackageItem;
@@ -14,12 +16,14 @@ import com.xgame.server.pool.ServerPackagePool;
 public class BattleRoom extends Room
 {
 
-	private List< Player >	group1;
-	private List< Player >	group2;
+	private List< Player >				group1;
+	private List< Player >				group2;
+	protected Map< String, Integer >	playerGroupMap;
 
 	public BattleRoom()
 	{
 		super();
+		playerGroupMap = new HashMap< String, Integer >();
 	}
 
 	public void initialize()
@@ -50,15 +54,24 @@ public class BattleRoom extends Room
 			log.error( "玩家已存在于该房间" );
 			return false;
 		}
-		if ( group1.size() <= group2.size() )
+		String guid = p.getGuid().toString();
+		if ( playerGroupMap.containsKey( guid ) )
 		{
-			p.setCurrentGroup( 1 );
-			group1.add( p );
+			int group = playerGroupMap.get( guid );
+			if ( group == 1 )
+			{
+				p.setCurrentGroup( 1 );
+				group1.add( p );
+			}
+			else
+			{
+				p.setCurrentGroup( 2 );
+				group2.add( p );
+			}
 		}
 		else
 		{
-			p.setCurrentGroup( 2 );
-			group2.add( p );
+			return false;
 		}
 
 		return super.addPlayer( p );
@@ -69,7 +82,7 @@ public class BattleRoom extends Room
 		if ( playerList.indexOf( p ) >= 0 )
 		{
 			int group = p.getCurrentGroup();
-			if(group == 1)
+			if ( group == 1 )
 			{
 				group1.remove( p );
 			}
@@ -95,7 +108,7 @@ public class BattleRoom extends Room
 
 			ServerPackage pack = ServerPackagePool.getInstance().getObject();
 			pack.success = EnumProtocol.ACK_CONFIRM;
-			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_ENTER_ROOM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_ENTER_ROOM_LOGICSERVER;
 
 			String uuid = p.getGuid().toString();
 			pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
@@ -113,5 +126,42 @@ public class BattleRoom extends Room
 
 			CommandCenter.send( p1.getChannel(), pack );
 		}
+	}
+
+	public Boolean addPlayerGuid( String guid, int group )
+	{
+		if ( playerGuidList.size() >= peopleCount )
+		{
+			log.error( "房间已满员" );
+			return false;
+		}
+		if ( playerGuidList.indexOf( guid ) >= 0 )
+		{
+			log.error( "玩家Guid已存在于该房间" );
+			return false;
+		}
+		playerGuidList.add( guid );
+		playerGroupMap.put( guid, group );
+		return true;
+	}
+
+	public Boolean addHeroCardId( String guid, String id )
+	{
+		if ( heroCardIdMap.containsKey( guid ) )
+		{
+			log.error( "玩家英雄卡牌已存在于该房间" );
+			return false;
+		}
+		heroCardIdMap.put( guid, id );
+		return true;
+	}
+
+	public Boolean hasPlayerGuid( String guid )
+	{
+		if ( playerGuidList.indexOf( guid ) >= 0 )
+		{
+			return true;
+		}
+		return false;
 	}
 }

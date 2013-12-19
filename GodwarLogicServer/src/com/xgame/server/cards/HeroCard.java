@@ -7,6 +7,11 @@ public class HeroCard extends RoleCard
 	private int		flee;
 	private int		race;
 
+	public HeroCard()
+	{
+		super();
+	}
+
 	public HeroCard( String id )
 	{
 		super( id );
@@ -52,7 +57,7 @@ public class HeroCard extends RoleCard
 		this.race = race;
 	}
 
-	protected void loadInfo()
+	public void loadInfo()
 	{
 		super.loadInfo();
 

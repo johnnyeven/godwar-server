@@ -7,13 +7,24 @@ public class Card
 	private String			series;
 	protected CardParameter	parameter;
 
+	public Card()
+	{
+
+	}
+
 	public Card( String id )
 	{
 		this.id = id;
 		loadInfo();
 	}
 
-	protected void loadInfo()
+	public void loadInfo( String id )
+	{
+		this.id = id;
+		loadInfo();
+	}
+
+	public void loadInfo()
 	{
 		if ( id != null )
 		{
