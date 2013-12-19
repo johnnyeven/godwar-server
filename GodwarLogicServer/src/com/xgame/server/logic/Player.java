@@ -16,8 +16,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.cards.Card;
 import com.xgame.server.cards.HeroCard;
+import com.xgame.server.cards.SoulCard;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.GameSession;
+import com.xgame.server.pool.SoulCardPool;
 
 public class Player
 {
@@ -98,6 +100,32 @@ public class Player
 			}
 
 			rs.close();
+
+			sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
+					+ accountId;
+			st = DatabaseRouter.getInstance().getConnection( "gamedb" )
+					.prepareStatement( sql );
+			rs = st.executeQuery();
+
+			if ( rs.first() )
+			{
+				String list = rs.getString( "card_list" );
+				String[] cardArray = list.split( "," );
+
+				SoulCard card;
+				for ( int i = 0; i < cardArray.length; i++ )
+				{
+					card = SoulCardPool.getInstance().getObject();
+					card.loadInfo( cardArray[i] );
+					cardList.add( card );
+					cardMap.put( card.getId(), card );
+				}
+			}
+			else
+			{
+				log.error( "[loadFromDatabase] 没有已激活的卡组" + accountId );
+				return false;
+			}
 		}
 		catch ( SQLException e )
 		{
@@ -106,7 +134,7 @@ public class Player
 		return true;
 	}
 
-	public Card getCard( UUID id )
+	public Card getCard( String id )
 	{
 		if ( cardMap.containsKey( id ) )
 		{

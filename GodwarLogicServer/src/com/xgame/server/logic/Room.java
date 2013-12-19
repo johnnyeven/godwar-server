@@ -100,14 +100,12 @@ public abstract class Room
 			if ( playerList.get( i ) == null )
 			{
 				playerList.set( i, p );
-				peopleCount++;
 
 				noticePlayerJoin( p );
 				return true;
 			}
 		}
 		playerList.add( p );
-		peopleCount++;
 
 		noticePlayerJoin( p );
 		return true;
@@ -119,7 +117,6 @@ public abstract class Room
 		if ( index >= 0 )
 		{
 			playerList.remove( index );
-			peopleCount--;
 
 			Player player;
 			Iterator< Player > it = playerList.iterator();

@@ -25,8 +25,8 @@ public class ProtocolRequestEnterRoom implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = (ProtocolPackage) param1;
-		GameSession session = (GameSession) param2;
+		ProtocolPackage parameter = ( ProtocolPackage ) param1;
+		GameSession session = ( GameSession ) param2;
 
 		int roomType = Integer.MIN_VALUE;
 		int id = Integer.MIN_VALUE;
@@ -85,19 +85,20 @@ public class ProtocolRequestEnterRoom implements IProtocol
 				Iterator< Player > it = list.iterator();
 				Player p;
 				String uuid;
+				String heroCardId;
 				while ( it.hasNext() )
 				{
 					p = it.next();
-					
+
 					uuid = p.getGuid().toString();
 					pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
 					pack.parameter.add( new PackageItem( 8, p.accountId ) );
 					pack.parameter.add( new PackageItem( p.name.length(),
 							p.name ) );
 					pack.parameter.add( new PackageItem( 4, p.level ) );
-					pack.parameter.add( new PackageItem(
-							p.rolePicture.length(), p.rolePicture ) );
-					pack.parameter.add( new PackageItem( 4, p.honor ) );
+					heroCardId = p.getHeroCard().getId();
+					pack.parameter.add( new PackageItem( heroCardId.length(),
+							heroCardId ) );
 					pack.parameter
 							.add( new PackageItem( 4, p.getCurrentGroup() ) );
 				}
