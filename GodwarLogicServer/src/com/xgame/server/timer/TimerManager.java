@@ -31,6 +31,16 @@ public class TimerManager extends Timer
 		super.schedule( task, delay, period );
 	}
 
+	public void schedule( TimerTask task, long delay )
+	{
+//		if ( timerContainer.containsKey( id ) )
+//		{
+//			return;
+//		}
+//		timerContainer.put( id, task );
+		super.schedule( task, delay );
+	}
+
 	public TimerTask getTask( String id )
 	{
 		return timerContainer.get( id );
