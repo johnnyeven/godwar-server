@@ -98,6 +98,9 @@ public class BattleRoom extends Room
 	{
 		Iterator< Player > it = playerList.iterator();
 		Player p1;
+		ServerPackage pack;
+		String uuid;
+		String heroCardId;
 		while ( it.hasNext() )
 		{
 			p1 = it.next();
@@ -106,22 +109,19 @@ public class BattleRoom extends Room
 				continue;
 			}
 
-			ServerPackage pack = ServerPackagePool.getInstance().getObject();
+			pack = ServerPackagePool.getInstance().getObject();
 			pack.success = EnumProtocol.ACK_CONFIRM;
 			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_ENTER_ROOM_LOGICSERVER;
 
-			String uuid = p.getGuid().toString();
+			uuid = p.getGuid().toString();
 			pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
 			pack.parameter.add( new PackageItem( 8, p.accountId ) );
 			pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
+
+			heroCardId = p.getHeroCard().getId();
+			pack.parameter.add( new PackageItem( heroCardId.length(),
+					heroCardId ) );
 			pack.parameter.add( new PackageItem( 4, p.level ) );
-			pack.parameter.add( new PackageItem( p.rolePicture.length(),
-					p.rolePicture ) );
-			pack.parameter.add( new PackageItem( 8, p.accountCash ) );
-			pack.parameter.add( new PackageItem( 4, p.winningCount ) );
-			pack.parameter.add( new PackageItem( 4, p.battleCount ) );
-			pack.parameter.add( new PackageItem( 4, p.honor ) );
-			pack.parameter.add( new PackageItem( 4, 1 ) );
 			pack.parameter.add( new PackageItem( 4, p.getCurrentGroup() ) );
 
 			CommandCenter.send( p1.getChannel(), pack );

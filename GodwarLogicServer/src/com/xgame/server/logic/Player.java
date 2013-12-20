@@ -102,7 +102,7 @@ public class Player
 			rs.close();
 
 			sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
-					+ accountId;
+					+ accountId + " AND `current`=1";
 			st = DatabaseRouter.getInstance().getConnection( "gamedb" )
 					.prepareStatement( sql );
 			rs = st.executeQuery();
@@ -112,13 +112,24 @@ public class Player
 				String list = rs.getString( "card_list" );
 				String[] cardArray = list.split( "," );
 
-				SoulCard card;
+				SoulCard soulCard;
+				String[] cardTmp;
+				int cardType;
 				for ( int i = 0; i < cardArray.length; i++ )
 				{
-					card = SoulCardPool.getInstance().getObject();
-					card.loadInfo( cardArray[i] );
-					cardList.add( card );
-					cardMap.put( card.getId(), card );
+					if ( !cardArray[i].equals( "" ) )
+					{
+						cardTmp = cardArray[i].split( ":" );
+						cardType = Integer.parseInt( cardTmp[0] );
+						
+						if(cardType == 0)
+						{
+							soulCard = SoulCardPool.getInstance().getObject();
+							soulCard.loadInfo( cardTmp[1] );
+							cardList.add( soulCard );
+							cardMap.put( soulCard.getId(), soulCard );
+						}
+					}
 				}
 			}
 			else
