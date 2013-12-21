@@ -65,7 +65,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 			{
 				log.info( "[RequestEnterRoom] 房间已满员" );
 
-				ServerPackage pack = ServerPackagePool.getInstance()
+				pack = ServerPackagePool.getInstance()
 						.getObject();
 				pack.success = EnumProtocol.ACK_CONFIRM;
 				pack.protocolId = EnumProtocol.HALL_REQUEST_ENTER_ROOM_LOGICSERVER;
