@@ -117,9 +117,9 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_PLAYER_READY,
 				ProtocolUpdatePlayerReady.class );
-		ProtocolRouter.getInstance().Bind(
-				EnumProtocol.BATTLEROOM_REQUEST_START_BATTLE,
-				ProtocolRequestStartGame.class );
+//		ProtocolRouter.getInstance().Bind(
+//				EnumProtocol.BATTLEROOM_REQUEST_START_BATTLE,
+//				ProtocolRequestStartGame.class );
 	}
 
 	public void startCompletionPort()

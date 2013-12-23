@@ -133,7 +133,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 					StartBattleGameTimerTask timer = new StartBattleGameTimerTask();
 					timer.roomType = roomType;
 					timer.roomId = id;
-					TimerManager.getInstance().schedule( timer, 10000 );
+					TimerManager.getInstance().schedule( timer, 3000 );
 				}
 			}
 		}

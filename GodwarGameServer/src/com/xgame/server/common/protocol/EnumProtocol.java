@@ -37,6 +37,7 @@ public final class EnumProtocol
 	public static final int		ACTION_SHOW_ROOMLIST						= 1;
 	public static final int		ACTION_ROOM_CREATED							= 2;
 	public static final int		ACTION_REQUEST_ENTER_ROOM					= 3;
+	public static final int		ACTION_REQUEST_ENTER_ROOM_LOGICSERVER		= 4;
 	// battle ROOM
 	public static final int		ACTION_INIT_ROOM_DATA						= 0;
 	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
@@ -44,6 +45,10 @@ public final class EnumProtocol
 	public static final int		ACTION_PLAYER_READY							= 3;
 	public static final int		ACTION_PLAYER_LEAVE_ROOM_NOTICE				= 4;
 	public static final int		ACTION_REQUEST_START_BATTLE					= 5;
+	public static final int		ACTION_INIT_ROOM_DATA_LOGICSERVER			= 6;
+	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE_LOGICSERVER	= 7;
+	public static final int		ACTION_START_BATTLE_TIMER					= 8;
+	public static final int		ACTION_START_ROOM_TIMER						= 9;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -99,6 +104,8 @@ public final class EnumProtocol
 																					| CONTROLLER_HALL;
 	public static final short	HALL_REQUEST_ENTER_ROOM						= ACTION_REQUEST_ENTER_ROOM << 8
 																					| CONTROLLER_HALL;
+	public static final short	HALL_REQUEST_ENTER_ROOM_LOGICSERVER			= ACTION_REQUEST_ENTER_ROOM_LOGICSERVER << 8
+																					| CONTROLLER_HALL;
 	// battle ROOM
 	public static final short	BATTLEROOM_INIT_ROOM						= ACTION_INIT_ROOM_DATA << 8
 																					| CONTROLLER_BATTLEROOM;
@@ -111,5 +118,13 @@ public final class EnumProtocol
 	public static final short	BATTLEROOM_PLAYER_LEAVE_ROOM				= ACTION_PLAYER_LEAVE_ROOM_NOTICE << 8
 																					| CONTROLLER_BATTLEROOM;
 	public static final short	BATTLEROOM_REQUEST_START_BATTLE				= ACTION_REQUEST_START_BATTLE << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_INIT_ROOM_LOGICSERVER			= ACTION_INIT_ROOM_DATA_LOGICSERVER << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_PLAYER_ENTER_ROOM_LOGICSERVER	= ACTION_PLAYER_ENTER_ROOM_NOTICE_LOGICSERVER << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_START_BATTLE_TIMER				= ACTION_START_BATTLE_TIMER << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_START_ROOM_TIMER					= ACTION_START_ROOM_TIMER << 8
 																					| CONTROLLER_BATTLEROOM;
 }
