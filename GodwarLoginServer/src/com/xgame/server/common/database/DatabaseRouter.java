@@ -36,7 +36,7 @@ public class DatabaseRouter
 		{
 			Class.forName(DRIVER);
 			
-			dbConnection = DriverManager.getConnection(CONNECT_STRING + DATABASE_NAME + "?useUnicode=true&characterEncoding=UTF-8", USERNAME, PASSWORD);
+			dbConnection = DriverManager.getConnection(CONNECT_STRING + DATABASE_NAME + "?autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=UTF-8", USERNAME, PASSWORD);
 			if(dbConnection.isClosed())
 			{
 				throw new Exception();

@@ -54,7 +54,7 @@ public class DatabaseRouter
 
 				Connection c = DriverManager.getConnection(
 						config.connectString + config.databaseName
-								+ "?useUnicode=true&characterEncoding=UTF-8",
+								+ "?autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=UTF-8",
 						config.username, config.password );
 				if ( c.isClosed() )
 				{
