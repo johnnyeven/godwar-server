@@ -43,7 +43,7 @@ public abstract class Room
 
 	public Room()
 	{
-
+		
 	}
 
 	public void initialize()
@@ -68,6 +68,8 @@ public abstract class Room
 	abstract public Boolean hasPlayerGuid( String guid );
 
 	abstract public Boolean addHeroCardId( String guid, String id );
+	
+	abstract public void start();
 
 	public Boolean addPlayer( Player p )
 	{
@@ -185,11 +187,6 @@ public abstract class Room
 			pack.parameter.add( new PackageItem( 8, p.accountId ) );
 			CommandCenter.send( p.getChannel(), pack );
 		}
-	}
-
-	public void startGame()
-	{
-
 	}
 
 	public int getId()

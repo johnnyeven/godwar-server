@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.xgame.server.CommandCenter;
+import com.xgame.server.cards.SoulCard;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
@@ -128,6 +129,7 @@ public class BattleRoom extends Room
 		}
 	}
 
+	@Override
 	public Boolean addPlayerGuid( String guid, int group )
 	{
 		if ( playerGuidList.size() >= peopleCount )
@@ -145,6 +147,7 @@ public class BattleRoom extends Room
 		return true;
 	}
 
+	@Override
 	public Boolean addHeroCardId( String guid, String id )
 	{
 		if ( heroCardIdMap.containsKey( guid ) )
@@ -156,6 +159,7 @@ public class BattleRoom extends Room
 		return true;
 	}
 
+	@Override
 	public Boolean hasPlayerGuid( String guid )
 	{
 		if ( playerGuidList.indexOf( guid ) >= 0 )
@@ -163,5 +167,61 @@ public class BattleRoom extends Room
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void start()
+	{
+		List< Player > playerList;
+		Player p;
+		ServerPackage pack;
+		playerList = getPlayerList();
+		for ( int i = 0; i < playerList.size(); i++ )
+		{
+			p = playerList.get( i );
+
+			pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_REQUEST_START_BATTLE;
+
+			CommandCenter.send( p.getChannel(), pack );
+		}
+
+		phaseDeploy();
+	}
+
+	private void phaseDeploy()
+	{
+		List< Player > playerList;
+		Player p;
+		ServerPackage pack;
+		playerList = getPlayerList();
+		SoulCard card;
+		int j = 0;
+
+		for ( int i = 0; i < playerList.size(); i++ )
+		{
+			p = playerList.get( i );
+
+			pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_FIRST_CHOUPAI;
+
+			for ( j = 0; j < 5; j++ )
+			{
+				card = p.popSoulCardToHand();
+				pack.parameter.add( new PackageItem( 4, 0 ) );
+				pack.parameter.add( new PackageItem( card.getId().length(), card.getId() ) );
+			}
+
+//			for ( j = 0; j < 3; j++ )
+//			{
+//				card = p.popSupplyCardToHand();
+//				pack.parameter.add( new PackageItem( 4, 1 ) );
+//				pack.parameter.add( new PackageItem( card.getId().length(), card.getId() ) );
+//			}
+
+			CommandCenter.send( p.getChannel(), pack );
+		}
 	}
 }

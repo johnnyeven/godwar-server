@@ -49,6 +49,7 @@ public final class EnumProtocol
 	public static final int		ACTION_PLAYER_ENTER_ROOM_NOTICE_LOGICSERVER	= 7;
 	public static final int		ACTION_START_BATTLE_TIMER					= 8;
 	public static final int		ACTION_START_ROOM_TIMER						= 9;
+	public static final int		ACTION_FIRST_CHOUPAI						= 10;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -126,5 +127,7 @@ public final class EnumProtocol
 	public static final short	BATTLEROOM_START_BATTLE_TIMER				= ACTION_START_BATTLE_TIMER << 8
 																					| CONTROLLER_BATTLEROOM;
 	public static final short	BATTLEROOM_START_ROOM_TIMER					= ACTION_START_ROOM_TIMER << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_FIRST_CHOUPAI					= ACTION_FIRST_CHOUPAI << 8
 																					| CONTROLLER_BATTLEROOM;
 }

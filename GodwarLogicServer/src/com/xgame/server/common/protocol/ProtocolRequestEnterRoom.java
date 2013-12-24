@@ -26,8 +26,8 @@ public class ProtocolRequestEnterRoom implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = ( ProtocolPackage ) param1;
-		GameSession session = ( GameSession ) param2;
+		ProtocolPackage parameter = (ProtocolPackage) param1;
+		GameSession session = (GameSession) param2;
 
 		int roomType = Integer.MIN_VALUE;
 		int id = Integer.MIN_VALUE;
@@ -65,8 +65,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 			{
 				log.info( "[RequestEnterRoom] 房间已满员" );
 
-				pack = ServerPackagePool.getInstance()
-						.getObject();
+				pack = ServerPackagePool.getInstance().getObject();
 				pack.success = EnumProtocol.ACK_CONFIRM;
 				pack.protocolId = EnumProtocol.HALL_REQUEST_ENTER_ROOM_LOGICSERVER;
 				pack.parameter.add( new PackageItem( 4, -1 ) );
@@ -83,12 +82,31 @@ public class ProtocolRequestEnterRoom implements IProtocol
 				pack.parameter.add( new PackageItem( 4, room.getId() ) );
 				pack.parameter
 						.add( new PackageItem( 4, room.getPeopleCount() ) );
+				// guid
+				String guid = session.getPlayer().getGuid().toString();
+				pack.parameter.add( new PackageItem( guid.length(), guid ) );
+				// accountId
+				pack.parameter.add( new PackageItem( 8,
+						session.getPlayer().accountId ) );
+				// level
+				pack.parameter.add( new PackageItem( 4,
+						session.getPlayer().level ) );
+				// name
+				String name = session.getPlayer().name;
+				pack.parameter.add( new PackageItem( name.length(), name ) );
+				// group
 				pack.parameter.add( new PackageItem( 4, session.getPlayer()
 						.getCurrentGroup() ) );
-
+				// heroCard
 				String heroCardId = session.getPlayer().getHeroCard().getId();
 				pack.parameter.add( new PackageItem( heroCardId.length(),
 						heroCardId ) );
+				// soulCardCount
+				pack.parameter.add( new PackageItem( 4, session.getPlayer()
+						.getSoulCardList().size() ) );
+				// supplyCardCount
+				pack.parameter.add( new PackageItem( 4, session.getPlayer()
+						.getSupplyCardList().size() ) );
 
 				list = room.getPlayerList();
 				it = list.iterator();

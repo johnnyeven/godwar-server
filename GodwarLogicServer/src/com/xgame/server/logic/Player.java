@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,16 +45,20 @@ public class Player
 	private int							currentCardGroup;
 
 	private HeroCard					heroCard;
-	private List< Card >				cardList;
+	private List< Card >				soulCardList;
+	private List< Card >				supplyCardList;
 	private Map< String, Card >			cardMap;
+	private List< Card >				cardHand;
 
 	private static Log					log				= LogFactory
 																.getLog( Player.class );
 
 	public Player()
 	{
-		cardList = new ArrayList< Card >();
+		soulCardList = new ArrayList< Card >();
+		supplyCardList = new ArrayList< Card >();
 		cardMap = new HashMap< String, Card >();
+		cardHand = new ArrayList< Card >();
 	}
 
 	public boolean loadFromDatabase()
@@ -121,12 +126,13 @@ public class Player
 					{
 						cardTmp = cardArray[i].split( ":" );
 						cardType = Integer.parseInt( cardTmp[0] );
-						
-						if(cardType == 0)
+
+						if ( cardType == 0 )
 						{
 							soulCard = SoulCardPool.getInstance().getObject();
 							soulCard.loadInfo( cardTmp[1] );
-							cardList.add( soulCard );
+							soulCardList.add( soulCard );
+							Collections.shuffle( soulCardList );
 							cardMap.put( soulCard.getId(), soulCard );
 						}
 					}
@@ -176,9 +182,35 @@ public class Player
 		this.currentCardGroup = currentCardGroup;
 	}
 
-	public List< Card > getCardList()
+	public SoulCard popSoulCardToHand()
 	{
-		return cardList;
+		SoulCard card = (SoulCard) soulCardList.remove( 0 );
+		cardHand.add( card );
+
+		return card;
+	}
+
+	public List< Card > getSoulCardList()
+	{
+		return soulCardList;
+	}
+
+//	public SupplyCard popSupplyCardToHand()
+//	{
+//		SupplyCard card = (SupplyCard) supplyCardList.remove( 0 );
+//		cardHand.add( card );
+//
+//		return card;
+//	}
+
+	public List< Card > getSupplyCardList()
+	{
+		return supplyCardList;
+	}
+
+	public List< Card > getCardHandList()
+	{
+		return cardHand;
 	}
 
 	public GameSession getSession()

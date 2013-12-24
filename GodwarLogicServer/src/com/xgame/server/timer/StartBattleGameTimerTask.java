@@ -25,31 +25,16 @@ public class StartBattleGameTimerTask extends TimerTask
 	public void run()
 	{
 		Room room;
-		List< Player > playerList;
-		Player p;
-		ServerPackage pack;
 		if ( roomType == 0 )
 		{
 			room = BattleHall.getInstance().getRoom( roomId );
 			if ( room != null )
 			{
-				playerList = room.getPlayerList();
-				for ( int i = 0; i < playerList.size(); i++ )
-				{
-					p = playerList.get( i );
-
-					pack = ServerPackagePool.getInstance().getObject();
-					pack.success = EnumProtocol.ACK_CONFIRM;
-					pack.protocolId = EnumProtocol.BATTLEROOM_REQUEST_START_BATTLE;
-
-					CommandCenter.send( p.getChannel(), pack );
-				}
+				room.start();
 			}
 		}
 		
 		room = null;
-		playerList = null;
-		p = null;
 		
 		cancel();
 	}
