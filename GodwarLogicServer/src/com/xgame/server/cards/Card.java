@@ -53,5 +53,10 @@ public class Card
 	{
 		return series;
 	}
+	
+	public String toString()
+	{
+		return id;
+	}
 
 }

@@ -26,8 +26,8 @@ public class ProtocolRequestEnterRoom implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = (ProtocolPackage) param1;
-		GameSession session = (GameSession) param2;
+		ProtocolPackage parameter = ( ProtocolPackage ) param1;
+		GameSession session = ( GameSession ) param2;
 
 		int roomType = Integer.MIN_VALUE;
 		int id = Integer.MIN_VALUE;
@@ -107,6 +107,13 @@ public class ProtocolRequestEnterRoom implements IProtocol
 				// supplyCardCount
 				pack.parameter.add( new PackageItem( 4, session.getPlayer()
 						.getSupplyCardList().size() ) );
+
+				String soulCardString = session.getPlayer().getSoulCardString();
+				pack.parameter.add( new PackageItem( soulCardString.length(),
+						soulCardString ) );
+				String supplyCardString = session.getPlayer().getSupplyCardString();
+				pack.parameter.add( new PackageItem( supplyCardString.length(),
+						supplyCardString ) );
 
 				list = room.getPlayerList();
 				it = list.iterator();

@@ -184,7 +184,7 @@ public class Player
 
 	public SoulCard popSoulCardToHand()
 	{
-		SoulCard card = (SoulCard) soulCardList.remove( 0 );
+		SoulCard card = ( SoulCard ) soulCardList.remove( 0 );
 		cardHand.add( card );
 
 		return card;
@@ -195,17 +195,49 @@ public class Player
 		return soulCardList;
 	}
 
-//	public SupplyCard popSupplyCardToHand()
-//	{
-//		SupplyCard card = (SupplyCard) supplyCardList.remove( 0 );
-//		cardHand.add( card );
-//
-//		return card;
-//	}
+	public String getSoulCardString()
+	{
+		Card card;
+		StringBuffer buf = new StringBuffer();
+		if ( soulCardList.size() > 0 )
+		{
+			buf.append( soulCardList.get( 0 ).getId() );
+			for ( int i = 1; i < soulCardList.size(); i++ )
+			{
+				card = soulCardList.get( i );
+				buf.append( "," + card.getId() );
+			}
+		}
+		return buf.toString();
+	}
+
+	// public SupplyCard popSupplyCardToHand()
+	// {
+	// SupplyCard card = (SupplyCard) supplyCardList.remove( 0 );
+	// cardHand.add( card );
+	//
+	// return card;
+	// }
 
 	public List< Card > getSupplyCardList()
 	{
 		return supplyCardList;
+	}
+
+	public String getSupplyCardString()
+	{
+		Card card;
+		StringBuffer buf = new StringBuffer();
+		if ( supplyCardList.size() > 0 )
+		{
+			buf.append( supplyCardList.get( 0 ).getId() );
+			for ( int i = 1; i < supplyCardList.size(); i++ )
+			{
+				card = supplyCardList.get( i );
+				buf.append( "," + card.getId() );
+			}
+		}
+		return buf.toString();
 	}
 
 	public List< Card > getCardHandList()
