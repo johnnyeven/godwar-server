@@ -60,6 +60,30 @@ public class ProtocolUpdatePlayerReady implements IProtocol
 		log.info( "[UpdatePlayerReady] Player Name = "
 				+ session.getPlayer().name + " Ready = " + ready );
 
+		if ( session.getPlayer().getCurrentCardGroup() <= 0 )
+		{
+			ServerPackage pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_READY_ERROR;
+
+			pack.parameter.add( new PackageItem( 4, 500 ) );
+			CommandCenter.send( session.getChannel(), pack );
+
+			return;
+		}
+		if ( session.getPlayer().getCurrentHeroCardId() == null
+				|| session.getPlayer().getCurrentHeroCardId().equals( "" ) )
+		{
+			ServerPackage pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_READY_ERROR;
+
+			pack.parameter.add( new PackageItem( 4, 400 ) );
+			CommandCenter.send( session.getChannel(), pack );
+
+			return;
+		}
+
 		if ( session.getPlayer().getCurrentRoom() != null )
 		{
 			Room room = session.getPlayer().getCurrentRoom();

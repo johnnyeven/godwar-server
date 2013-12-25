@@ -138,6 +138,7 @@ public class ProtocolRequestEnterRoom implements IProtocol
 							heroCardId ) );
 					pack.parameter
 							.add( new PackageItem( 4, p.getCurrentGroup() ) );
+					log.debug( "通知" + session.getPlayer().name + "房间内有玩家" + p.name );
 				}
 				CommandCenter.send( parameter.client, pack );
 

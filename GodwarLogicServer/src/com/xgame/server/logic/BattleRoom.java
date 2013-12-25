@@ -126,6 +126,8 @@ public class BattleRoom extends Room
 			pack.parameter.add( new PackageItem( 4, p.getCurrentGroup() ) );
 
 			CommandCenter.send( p1.getChannel(), pack );
+			
+			log.debug( "通知" + p1.name + "新玩家" + p.name + "已加入" );
 		}
 	}
 
@@ -198,6 +200,8 @@ public class BattleRoom extends Room
 		playerList = getPlayerList();
 		SoulCard card;
 		int j = 0;
+		StringBuffer buf;
+		String cardList;
 
 		for ( int i = 0; i < playerList.size(); i++ )
 		{
@@ -207,12 +211,16 @@ public class BattleRoom extends Room
 			pack.success = EnumProtocol.ACK_CONFIRM;
 			pack.protocolId = EnumProtocol.BATTLEROOM_FIRST_CHOUPAI;
 
-			for ( j = 0; j < 5; j++ )
+			buf = new StringBuffer();
+			card = p.popSoulCardToHand();
+			buf.append( card.getId() );
+			for ( j = 1; j < 5; j++ )
 			{
 				card = p.popSoulCardToHand();
-				pack.parameter.add( new PackageItem( 4, 0 ) );
-				pack.parameter.add( new PackageItem( card.getId().length(), card.getId() ) );
+				buf.append( "," + card.getId() );
 			}
+			cardList = buf.toString();
+			pack.parameter.add( new PackageItem( cardList.length(), cardList ) );
 
 //			for ( j = 0; j < 3; j++ )
 //			{

@@ -76,6 +76,8 @@ public class ProtocolSaveCardConfig implements IProtocol
 		
 		if(groupId > 0)
 		{
+			session.getPlayer().setCurrentCardGroup( groupId );
+			
 			String sql = "UPDATE `game_card_group` SET `current`=0 WHERE `account_id`=" + session.getPlayer().accountId;
 			try
 			{
