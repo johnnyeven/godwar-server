@@ -22,6 +22,7 @@ public class GameServer
 	public final static int	PORT				= 9050;
 	public static String	initSoulCardConfig	= "";
 	public static String	initHeroCardConfig	= "";
+	public static String	freeHeroCardConfig	= "";
 
 	public GameServer()
 	{
@@ -111,6 +112,11 @@ public class GameServer
 		serverNode = doc.getElementsByTagName( "hero_cards" ).item( 0 );
 		list = serverNode.getChildNodes();
 		initHeroCardConfig = list.item( 0 ).getTextContent();
+		
+		doc = dbBuilder.parse( "free_card_config.xml" );
+		serverNode = doc.getElementsByTagName( "free_cards" ).item( 0 );
+		list = serverNode.getChildNodes();
+		freeHeroCardConfig = list.item( 0 ).getTextContent();
 	}
 
 	private void startLogicServerHolderThread()
