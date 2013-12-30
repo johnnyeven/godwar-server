@@ -1,10 +1,10 @@
-
 package com.xgame.server.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.xgame.server.CommandCenter;
 import com.xgame.server.cards.Card;
@@ -16,8 +16,10 @@ import com.xgame.server.pool.ServerPackagePool;
 public class BattleRoom extends Room
 {
 
-	private List< Player >	group1;
-	private List< Player >	group2;
+	private List< Player >			group1;
+	private List< Player >			group2;
+	protected Map< Player, String >	heroGroup1;
+	protected Map< Player, String >	heroGroup2;
 
 	public BattleRoom()
 	{
@@ -32,12 +34,43 @@ public class BattleRoom extends Room
 		{
 			group1 = new ArrayList< Player >();
 			group2 = new ArrayList< Player >();
+			heroGroup1 = new HashMap< Player, String >();
+			heroGroup2 = new HashMap< Player, String >();
 		}
 		else
 		{
 			log.fatal( "peopleLimit参数应大于0" );
 			return;
 		}
+	}
+	
+	public void setPlayerHero( Player p, String hero )
+	{
+		int group = p.getCurrentGroup();
+		
+		if(group == 1)
+		{
+			if(heroGroup1.containsValue( hero ))
+			{
+				return;
+			}
+			else
+			{
+				heroGroup1.put( p, hero );
+			}
+		}
+		else
+		{
+			if(heroGroup2.containsValue( hero ))
+			{
+				return;
+			}
+			else
+			{
+				heroGroup2.put( p, hero );
+			}
+		}
+		super.setPlayerHero( p, hero );
 	}
 
 	public Boolean addPlayer( Player p )
@@ -71,7 +104,7 @@ public class BattleRoom extends Room
 		if ( playerList.indexOf( p ) >= 0 )
 		{
 			int group = p.getCurrentGroup();
-			if(group == 1)
+			if ( group == 1 )
 			{
 				group1.remove( p );
 			}
