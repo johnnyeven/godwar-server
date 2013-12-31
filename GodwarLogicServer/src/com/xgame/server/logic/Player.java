@@ -50,6 +50,11 @@ public class Player
 	private Map< String, Card >			cardMap;
 	private List< Card >				cardHand;
 
+	private String						cardDefenser;
+	private String						cardAttacker1;
+	private String						cardAttacker2;
+	private String						cardAttacker3;
+
 	private static Log					log				= LogFactory
 																.getLog( Player.class );
 
@@ -315,5 +320,45 @@ public class Player
 	public void setHeroCard( HeroCard heroCard )
 	{
 		this.heroCard = heroCard;
+	}
+
+	public String getCardDefenser()
+	{
+		return cardDefenser;
+	}
+
+	public void setCardDefenser( String cardDefenser )
+	{
+		this.cardDefenser = cardDefenser;
+	}
+
+	public String getCardAttacker1()
+	{
+		return cardAttacker1;
+	}
+
+	public void setCardAttacker1( String cardAttacker1 )
+	{
+		this.cardAttacker1 = cardAttacker1;
+	}
+
+	public String getCardAttacker2()
+	{
+		return cardAttacker2;
+	}
+
+	public void setCardAttacker2( String cardAttacker2 )
+	{
+		this.cardAttacker2 = cardAttacker2;
+	}
+
+	public String getCardAttacker3()
+	{
+		return cardAttacker3;
+	}
+
+	public void setCardAttacker3( String cardAttacker3 )
+	{
+		this.cardAttacker3 = cardAttacker3;
 	}
 }
