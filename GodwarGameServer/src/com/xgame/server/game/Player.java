@@ -4,17 +4,12 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.xgame.server.cards.Card;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.network.GameSession;
@@ -40,6 +35,7 @@ public class Player
 																								// 1=ºì¶Ó
 																								// 2=À¶¶Ó
 	private int							currentCardGroup;
+	private String						lastHeroCardId		= "";
 	private String						currentHeroCardId	= "";
 
 	private static Log					log					= LogFactory
@@ -103,6 +99,20 @@ public class Player
 					+ " `account_lastlogin`=" + new Date().getTime()
 					+ " WHERE `account_id`=" + accountId;
 			st.executeUpdate( sql );
+			
+			rs.close();
+			
+			sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
+					+ accountId + " AND `current`=1";
+			st = DatabaseRouter.getInstance().getConnection( "gamedb" )
+					.prepareStatement( sql );
+			rs = st.executeQuery();
+
+			if ( rs.first() )
+			{
+				int groupId = rs.getInt( "group_id" );
+				setCurrentCardGroup(groupId);
+			}
 
 			rs.close();
 		}
@@ -201,6 +211,12 @@ public class Player
 
 	public void setCurrentHeroCardId( String currentHeroCardId )
 	{
+		lastHeroCardId = this.currentHeroCardId;
 		this.currentHeroCardId = currentHeroCardId;
+	}
+
+	public String getLastHeroCardId()
+	{
+		return lastHeroCardId;
 	}
 }

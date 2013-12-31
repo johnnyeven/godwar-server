@@ -143,6 +143,8 @@ public class Player
 				log.error( "[loadFromDatabase] 没有已激活的卡组" + accountId );
 				return false;
 			}
+
+			rs.close();
 		}
 		catch ( SQLException e )
 		{

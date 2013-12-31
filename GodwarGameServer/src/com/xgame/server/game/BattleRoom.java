@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.xgame.server.CommandCenter;
-import com.xgame.server.cards.Card;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
@@ -43,14 +42,14 @@ public class BattleRoom extends Room
 			return;
 		}
 	}
-	
+
 	public void setPlayerHero( Player p, String hero )
 	{
 		int group = p.getCurrentGroup();
-		
-		if(group == 1)
+
+		if ( group == 1 )
 		{
-			if(heroGroup1.containsValue( hero ))
+			if ( heroGroup1.containsValue( hero ) )
 			{
 				return;
 			}
@@ -61,7 +60,7 @@ public class BattleRoom extends Room
 		}
 		else
 		{
-			if(heroGroup2.containsValue( hero ))
+			if ( heroGroup2.containsValue( hero ) )
 			{
 				return;
 			}
@@ -147,6 +146,31 @@ public class BattleRoom extends Room
 			pack.parameter.add( new PackageItem( 4, p.getCurrentGroup() ) );
 
 			CommandCenter.send( p1.getChannel(), pack );
+		}
+	}
+
+	protected void noticePlayerSelectedHero( Player p )
+	{
+		Iterator< Player > it = playerList.iterator();
+		Player p1;
+		while ( it.hasNext() )
+		{
+			p1 = it.next();
+
+			if ( p1.getCurrentGroup() == p.getCurrentGroup() )
+			{
+				ServerPackage pack = ServerPackagePool.getInstance()
+						.getObject();
+				pack.success = EnumProtocol.ACK_CONFIRM;
+				pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO;
+				String guid = p.getGuid().toString();
+				pack.parameter.add( new PackageItem( guid.length(), guid ) );
+				pack.parameter.add( new PackageItem( p.getLastHeroCardId()
+						.length(), p.getLastHeroCardId() ) );
+				pack.parameter.add( new PackageItem( p.getCurrentHeroCardId()
+						.length(), p.getCurrentHeroCardId() ) );
+				CommandCenter.send( p1.getChannel(), pack );
+			}
 		}
 	}
 }

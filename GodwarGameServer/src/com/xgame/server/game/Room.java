@@ -131,10 +131,7 @@ public abstract class Room
 		peopleCount = 0;
 	}
 
-	protected void noticePlayerJoin( Player p )
-	{
-
-	}
+	abstract protected void noticePlayerJoin( Player p );
 
 	public void setPlayerHero( Player p, String hero )
 	{
@@ -143,27 +140,7 @@ public abstract class Room
 		noticePlayerSelectedHero( p );
 	}
 
-	protected void noticePlayerSelectedHero( Player p )
-	{
-		Iterator< Player > it = playerList.iterator();
-		Player p1;
-		while ( it.hasNext() )
-		{
-			p1 = it.next();
-			
-			if(p1.getCurrentGroup() == p.getCurrentGroup())
-			{
-				ServerPackage pack = ServerPackagePool.getInstance().getObject();
-				pack.success = EnumProtocol.ACK_CONFIRM;
-				pack.protocolId = EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO;
-				String guid = p.getGuid().toString();
-				pack.parameter.add( new PackageItem( guid.length(), guid ) );
-				pack.parameter.add( new PackageItem( p.getCurrentHeroCardId()
-						.length(), p.getCurrentHeroCardId() ) );
-				CommandCenter.send( p1.getChannel(), pack );
-			}
-		}
-	}
+	abstract protected void noticePlayerSelectedHero( Player p );
 
 	public void startGame()
 	{
