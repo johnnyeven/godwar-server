@@ -54,6 +54,7 @@ public class Player
 	private String						cardAttacker1;
 	private String						cardAttacker2;
 	private String						cardAttacker3;
+	private boolean						isDeploy		= false;
 
 	private static Log					log				= LogFactory
 																.getLog( Player.class );
@@ -330,6 +331,12 @@ public class Player
 	public void setCardDefenser( String cardDefenser )
 	{
 		this.cardDefenser = cardDefenser;
+
+		if ( this.cardDefenser != null && this.cardAttacker1 != null
+				&& this.cardAttacker2 != null && this.cardAttacker3 != null )
+		{
+			isDeploy = true;
+		}
 	}
 
 	public String getCardAttacker1()
@@ -340,6 +347,12 @@ public class Player
 	public void setCardAttacker1( String cardAttacker1 )
 	{
 		this.cardAttacker1 = cardAttacker1;
+
+		if ( this.cardDefenser != null && this.cardAttacker1 != null
+				&& this.cardAttacker2 != null && this.cardAttacker3 != null )
+		{
+			isDeploy = true;
+		}
 	}
 
 	public String getCardAttacker2()
@@ -350,6 +363,12 @@ public class Player
 	public void setCardAttacker2( String cardAttacker2 )
 	{
 		this.cardAttacker2 = cardAttacker2;
+
+		if ( this.cardDefenser != null && this.cardAttacker1 != null
+				&& this.cardAttacker2 != null && this.cardAttacker3 != null )
+		{
+			isDeploy = true;
+		}
 	}
 
 	public String getCardAttacker3()
@@ -360,5 +379,16 @@ public class Player
 	public void setCardAttacker3( String cardAttacker3 )
 	{
 		this.cardAttacker3 = cardAttacker3;
+
+		if ( this.cardDefenser != null && this.cardAttacker1 != null
+				&& this.cardAttacker2 != null && this.cardAttacker3 != null )
+		{
+			isDeploy = true;
+		}
+	}
+
+	public boolean isDeploy()
+	{
+		return isDeploy;
 	}
 }

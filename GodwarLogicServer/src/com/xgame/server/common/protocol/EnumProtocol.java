@@ -52,6 +52,7 @@ public final class EnumProtocol
 	public static final int		ACTION_FIRST_CHOUPAI						= 10;
 	public static final int		ACTION_PLAYER_READY_ERROR					= 11;
 	public static final int		ACTION_DEPLOY_COMPLETE						= 12;
+	public static final int		ACTION_START_DICE							= 13;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -135,5 +136,7 @@ public final class EnumProtocol
 	public static final short	BATTLEROOM_FIRST_CHOUPAI					= ACTION_FIRST_CHOUPAI << 8
 																					| CONTROLLER_BATTLEROOM;
 	public static final short	BATTLEROOM_DEPLOY_COMPLETE					= ACTION_DEPLOY_COMPLETE << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_START_DICE						= ACTION_START_DICE << 8
 																					| CONTROLLER_BATTLEROOM;
 }

@@ -1,7 +1,12 @@
 package com.xgame.server.common.protocol;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +19,8 @@ import com.xgame.server.logic.ProtocolPackage;
 import com.xgame.server.logic.Room;
 import com.xgame.server.network.GameSession;
 import com.xgame.server.pool.ServerPackagePool;
+import com.xgame.server.timer.StartBattleRoundTimerTask;
+import com.xgame.server.timer.TimerManager;
 
 public class ProtocolDeployComplete implements IProtocol
 {
@@ -119,6 +126,7 @@ public class ProtocolDeployComplete implements IProtocol
 			Player p;
 			ServerPackage pack;
 			String guid;
+			boolean isDeploy = true;
 			for ( int i = 0; i < list.size(); i++ )
 			{
 				p = list.get( i );
@@ -130,8 +138,61 @@ public class ProtocolDeployComplete implements IProtocol
 				guid = player.getGuid().toString();
 				pack.parameter.add( new PackageItem( guid.length(), guid ) );
 				CommandCenter.send( p.getChannel(), pack );
+
+				if ( !p.isDeploy() )
+				{
+					isDeploy = false;
+				}
+			}
+
+			if ( isDeploy )
+			{
+				startDice( room );
+				
+				StartBattleRoundTimerTask timer = new StartBattleRoundTimerTask();
+				TimerManager.getInstance().schedule( timer, 5000 );
 			}
 		}
 	}
 
+	private void startDice( Room room )
+	{
+		Map< String, Integer > map = new HashMap< String, Integer >();
+		List< Player > list = room.getPlayerList();
+		Player p;
+		ServerPackage pack;
+		String guid;
+		int value;
+		Iterator< Entry< String, Integer >> it;
+		Entry< String, Integer > en;
+		Random random = new Random();
+
+		for ( int i = 0; i < list.size(); i++ )
+		{
+			p = list.get( i );
+			map.put( p.getGuid().toString(),
+					Math.abs( random.nextInt() ) % 6 + 1 );
+		}
+
+		for ( int i = 0; i < list.size(); i++ )
+		{
+			p = list.get( i );
+
+			pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_START_DICE;
+
+			it = map.entrySet().iterator();
+			while ( it.hasNext() )
+			{
+				en = it.next();
+				guid = en.getKey();
+				value = en.getValue();
+				pack.parameter.add( new PackageItem( guid.length(), guid ) );
+				pack.parameter.add( new PackageItem( 4, value ) );
+			}
+
+			CommandCenter.send( p.getChannel(), pack );
+		}
+	}
 }
