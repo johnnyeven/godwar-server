@@ -43,6 +43,16 @@ public class BattleRoom extends Room
 		}
 	}
 
+	public List< Player > getGroup1()
+	{
+		return group1;
+	}
+
+	public List< Player > getGroup2()
+	{
+		return group2;
+	}
+
 	public Boolean addPlayer( Player p )
 	{
 		if ( playerList.size() == peopleCount )
@@ -63,11 +73,13 @@ public class BattleRoom extends Room
 			{
 				p.setCurrentGroup( 1 );
 				group1.add( p );
+				p.setCurrentPosition( group1.size() - 1 );
 			}
 			else
 			{
 				p.setCurrentGroup( 2 );
 				group2.add( p );
+				p.setCurrentPosition( group2.size() - 1 );
 			}
 		}
 		else
@@ -126,7 +138,7 @@ public class BattleRoom extends Room
 			pack.parameter.add( new PackageItem( 4, p.getCurrentGroup() ) );
 
 			CommandCenter.send( p1.getChannel(), pack );
-			
+
 			log.debug( "通知" + p1.name + "新玩家" + p.name + "已加入" );
 		}
 	}
@@ -222,12 +234,13 @@ public class BattleRoom extends Room
 			cardList = buf.toString();
 			pack.parameter.add( new PackageItem( cardList.length(), cardList ) );
 
-//			for ( j = 0; j < 3; j++ )
-//			{
-//				card = p.popSupplyCardToHand();
-//				pack.parameter.add( new PackageItem( 4, 1 ) );
-//				pack.parameter.add( new PackageItem( card.getId().length(), card.getId() ) );
-//			}
+			// for ( j = 0; j < 3; j++ )
+			// {
+			// card = p.popSupplyCardToHand();
+			// pack.parameter.add( new PackageItem( 4, 1 ) );
+			// pack.parameter.add( new PackageItem( card.getId().length(),
+			// card.getId() ) );
+			// }
 
 			CommandCenter.send( p.getChannel(), pack );
 		}

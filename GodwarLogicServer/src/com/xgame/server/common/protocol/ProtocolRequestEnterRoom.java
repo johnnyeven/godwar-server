@@ -111,7 +111,8 @@ public class ProtocolRequestEnterRoom implements IProtocol
 				String soulCardString = session.getPlayer().getSoulCardString();
 				pack.parameter.add( new PackageItem( soulCardString.length(),
 						soulCardString ) );
-				String supplyCardString = session.getPlayer().getSupplyCardString();
+				String supplyCardString = session.getPlayer()
+						.getSupplyCardString();
 				pack.parameter.add( new PackageItem( supplyCardString.length(),
 						supplyCardString ) );
 
@@ -138,7 +139,10 @@ public class ProtocolRequestEnterRoom implements IProtocol
 							heroCardId ) );
 					pack.parameter
 							.add( new PackageItem( 4, p.getCurrentGroup() ) );
-					log.debug( "通知" + session.getPlayer().name + "房间内有玩家" + p.name );
+					pack.parameter.add( new PackageItem( 4, p
+							.getCurrentPosition() ) );
+					log.debug( "通知" + session.getPlayer().name + "房间内有玩家"
+							+ p.name );
 				}
 				CommandCenter.send( parameter.client, pack );
 
