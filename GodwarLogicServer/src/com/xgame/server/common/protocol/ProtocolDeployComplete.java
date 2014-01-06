@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import com.xgame.server.CommandCenter;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
+import com.xgame.server.logic.BattleRoom;
 import com.xgame.server.logic.Player;
 import com.xgame.server.logic.ProtocolPackage;
 import com.xgame.server.logic.Room;
@@ -30,8 +31,8 @@ public class ProtocolDeployComplete implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = ( ProtocolPackage ) param1;
-		GameSession session = ( GameSession ) param2;
+		ProtocolPackage parameter = (ProtocolPackage) param1;
+		GameSession session = (GameSession) param2;
 
 		String defenser = null;
 		String attacker1 = null;
@@ -147,18 +148,21 @@ public class ProtocolDeployComplete implements IProtocol
 
 			if ( isDeploy )
 			{
-				startDice( room );
-				
-				StartBattleRoundTimerTask timer = new StartBattleRoundTimerTask();
-				TimerManager.getInstance().schedule( timer, 5000 );
+				if ( room instanceof BattleRoom )
+				{
+					startBattleDice( (BattleRoom) room );
+				}
 			}
 		}
 	}
 
-	private void startDice( Room room )
+	private void startBattleDice( BattleRoom room )
 	{
-		Map< String, Integer > map = new HashMap< String, Integer >();
+		Map< String, Integer > map1 = new HashMap< String, Integer >();
+		Map< String, Integer > map2 = new HashMap< String, Integer >();
 		List< Player > list = room.getPlayerList();
+		List< Player > list1 = room.getGroup1();
+		List< Player > list2 = room.getGroup2();
 		Player p;
 		ServerPackage pack;
 		String guid;
@@ -167,10 +171,17 @@ public class ProtocolDeployComplete implements IProtocol
 		Entry< String, Integer > en;
 		Random random = new Random();
 
-		for ( int i = 0; i < list.size(); i++ )
+		for ( int i = 0; i < list1.size(); i++ )
 		{
-			p = list.get( i );
-			map.put( p.getGuid().toString(),
+			p = list1.get( i );
+			map1.put( p.getGuid().toString(),
+					Math.abs( random.nextInt() ) % 6 + 1 );
+		}
+
+		for ( int i = 0; i < list2.size(); i++ )
+		{
+			p = list2.get( i );
+			map2.put( p.getGuid().toString(),
 					Math.abs( random.nextInt() ) % 6 + 1 );
 		}
 
@@ -182,7 +193,17 @@ public class ProtocolDeployComplete implements IProtocol
 			pack.success = EnumProtocol.ACK_CONFIRM;
 			pack.protocolId = EnumProtocol.BATTLEROOM_START_DICE;
 
-			it = map.entrySet().iterator();
+			it = map1.entrySet().iterator();
+			while ( it.hasNext() )
+			{
+				en = it.next();
+				guid = en.getKey();
+				value = en.getValue();
+				pack.parameter.add( new PackageItem( guid.length(), guid ) );
+				pack.parameter.add( new PackageItem( 4, value ) );
+			}
+
+			it = map2.entrySet().iterator();
 			while ( it.hasNext() )
 			{
 				en = it.next();
@@ -194,5 +215,8 @@ public class ProtocolDeployComplete implements IProtocol
 
 			CommandCenter.send( p.getChannel(), pack );
 		}
+
+		StartBattleRoundTimerTask timer = new StartBattleRoundTimerTask(map1, map2);
+		TimerManager.getInstance().schedule( timer, 5000 );
 	}
 }
