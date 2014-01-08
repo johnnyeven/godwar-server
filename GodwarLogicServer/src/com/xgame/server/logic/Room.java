@@ -32,6 +32,7 @@ public abstract class Room
 
 	protected Player				owner;
 	protected List< Player >		playerList;
+	protected int					startPosition;
 	protected Map< Player, Card >	heroMap;
 	protected RoomStatus			status;
 	protected int					rounds;
@@ -43,7 +44,7 @@ public abstract class Room
 
 	public Room()
 	{
-		
+
 	}
 
 	public void initialize()
@@ -64,13 +65,13 @@ public abstract class Room
 	}
 
 	abstract public Boolean addPlayerGuid( String guid, int group );
-	
+
 	abstract public Boolean addPlayerPosition( String guid, int position );
 
 	abstract public Boolean hasPlayerGuid( String guid );
-	
+
 	abstract public void start();
-	
+
 	public Boolean addHeroCardId( String guid, String id )
 	{
 		if ( heroCardIdMap.containsKey( guid ) )
@@ -233,6 +234,20 @@ public abstract class Room
 	public List< Player > getPlayerList()
 	{
 		return playerList;
+	}
+
+	public int getStartPosition()
+	{
+		return startPosition;
+	}
+
+	public void setStartPosition( int startPosition, int group )
+	{
+		if(group > 1)
+		{
+			startPosition += peopleCount / 2;
+		}
+		this.startPosition = startPosition;
 	}
 
 	public RoomStatus getStatus()

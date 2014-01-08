@@ -133,19 +133,23 @@ public class StartBattleRoundTimerTask extends TimerTask
 			if ( startGroup == 1 )
 			{
 				group = room.getGroup1();
-				for ( i = 0; i < group.size(); i++ )
-				{
-					p = group.get( i );
-					if ( p.getGuid().toString() == startGuid )
-					{
-						break;
-					}
-				}
 			}
 			else
 			{
 				group = room.getGroup1();
 			}
+
+			for ( i = 0; i < group.size(); i++ )
+			{
+				p = group.get( i );
+				if ( p.getGuid().toString().equals( startGuid ) )
+				{
+					break;
+				}
+			}
+
+			room.resetPlayerSequence();
+			room.setStartPosition( i, startGroup );
 		}
 	}
 

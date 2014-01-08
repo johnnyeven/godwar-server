@@ -67,6 +67,21 @@ public class BattleRoom extends Room
 		return group2;
 	}
 
+	public void resetPlayerSequence()
+	{
+		playerList.clear();
+
+		int i = 0;
+		for ( i = 0; i < group1.size(); i++ )
+		{
+			playerList.add( group1.get( i ) );
+		}
+		for ( i = 0; i < group2.size(); i++ )
+		{
+			playerList.add( group2.get( i ) );
+		}
+	}
+
 	public Boolean addPlayer( Player p )
 	{
 		if ( playerList.size() == peopleCount )
