@@ -98,6 +98,10 @@ public class StartBattleGameTimerTask extends TimerTask
 			bf.put( (byte) EnumProtocol.TYPE_INT );
 			bf.putInt( en.getKey().getCurrentGroup() );
 
+			bf.putInt( 4 );
+			bf.put( (byte) EnumProtocol.TYPE_INT );
+			bf.putInt( en.getKey().getCurrentPosition() );
+
 			src = heroCardId.getBytes( Charset.forName( "UTF-8" ) );
 			bf.putInt( src.length );
 			bf.put( (byte) EnumProtocol.TYPE_STRING );

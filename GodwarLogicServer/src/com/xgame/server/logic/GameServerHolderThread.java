@@ -91,8 +91,10 @@ public class GameServerHolderThread implements Runnable
 		List< String > playerList = new ArrayList< String >();
 		Map< String, String > heroList = new HashMap< String, String >();
 		Map< String, Integer > groupList = new HashMap< String, Integer >();
+		Map< String, Integer > positionList = new HashMap< String, Integer >();
 		String playerGuid = null;
 		int playerGroup = Integer.MIN_VALUE;
+		int playerPosition = Integer.MIN_VALUE;
 		String heroCardId = null;
 		byte[] dst;
 		while ( buffer.hasRemaining() )
@@ -116,6 +118,10 @@ public class GameServerHolderThread implements Runnable
 				else if ( playerGroup == Integer.MIN_VALUE )
 				{
 					playerGroup = buffer.getInt();
+				}
+				else if ( playerPosition == Integer.MIN_VALUE )
+				{
+					playerPosition = buffer.getInt();
 				}
 			}
 			else if ( type == EnumProtocol.TYPE_STRING )
@@ -177,13 +183,16 @@ public class GameServerHolderThread implements Runnable
 				}
 
 				if ( playerGuid != null && playerGroup != Integer.MIN_VALUE
+						&& playerPosition != Integer.MIN_VALUE
 						&& heroCardId != null )
 				{
 					heroList.put( playerGuid, heroCardId );
 					groupList.put( playerGuid, playerGroup );
+					positionList.put( playerGuid, playerPosition );
 
 					playerGuid = null;
 					playerGroup = Integer.MIN_VALUE;
+					playerPosition = Integer.MIN_VALUE;
 					heroCardId = null;
 				}
 			}
@@ -200,11 +209,14 @@ public class GameServerHolderThread implements Runnable
 				Iterator< Entry< String, String >> it = heroList.entrySet()
 						.iterator();
 				Entry< String, String > en;
+				String guid;
 				while ( it.hasNext() )
 				{
 					en = it.next();
-					room.addHeroCardId( en.getKey(), en.getValue() );
-					room.addPlayerGuid( en.getKey(), groupList.get( en.getKey() ) );
+					guid = en.getKey();
+					room.addHeroCardId( guid, en.getValue() );
+					room.addPlayerGuid( guid, groupList.get( guid ) );
+					room.addPlayerPosition( guid, positionList.get( guid ) );
 				}
 
 				log.info( "[RequestRoom] 房间创建成功，等待客户端连接, room id = " + roomId );

@@ -64,12 +64,23 @@ public abstract class Room
 	}
 
 	abstract public Boolean addPlayerGuid( String guid, int group );
+	
+	abstract public Boolean addPlayerPosition( String guid, int position );
 
 	abstract public Boolean hasPlayerGuid( String guid );
-
-	abstract public Boolean addHeroCardId( String guid, String id );
 	
 	abstract public void start();
+	
+	public Boolean addHeroCardId( String guid, String id )
+	{
+		if ( heroCardIdMap.containsKey( guid ) )
+		{
+			log.error( "玩家英雄卡牌已存在于该房间" );
+			return false;
+		}
+		heroCardIdMap.put( guid, id );
+		return true;
+	}
 
 	public Boolean addPlayer( Player p )
 	{

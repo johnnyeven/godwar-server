@@ -1,23 +1,29 @@
 package com.xgame.server.timer;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TimerTask;
 
+import com.xgame.server.logic.BattleRoom;
+import com.xgame.server.logic.Player;
+
 public class StartBattleRoundTimerTask extends TimerTask
 {
 	private Map< String, Integer >	map1;
 	private Map< String, Integer >	map2;
+	private BattleRoom				room;
 	private int						startGroup;
 	private String					startGuid;
 
 	public StartBattleRoundTimerTask( Map< String, Integer > map1,
-			Map< String, Integer > map2 )
+			Map< String, Integer > map2, BattleRoom room )
 	{
 		this.map1 = map1;
 		this.map2 = map2;
+		this.room = room;
 
 		initilization();
 	}
@@ -79,41 +85,68 @@ public class StartBattleRoundTimerTask extends TimerTask
 
 		if ( diceTotal1 == diceTotal2 )
 		{
-			if(max1 == max2)
+			if ( max1 == max2 )
 			{
 				i = Math.abs( rand.nextInt() % 100 );
 				if ( i < 50 )
 				{
 					startGroup = 1;
+					startGuid = guid1;
 				}
 				else
 				{
 					startGroup = 2;
+					startGuid = guid2;
 				}
 			}
-			else if(max1 > max2)
+			else if ( max1 > max2 )
 			{
 				startGroup = 1;
+				startGuid = guid1;
 			}
 			else
 			{
 				startGroup = 2;
+				startGuid = guid2;
 			}
 		}
 		else if ( diceTotal1 > diceTotal2 )
 		{
 			startGroup = 1;
+			startGuid = guid1;
 		}
 		else
 		{
 			startGroup = 2;
+			startGuid = guid2;
 		}
 	}
 
 	@Override
 	public void run()
 	{
-
+		if ( startGroup > 0 )
+		{
+			List< Player > group;
+			Player p;
+			int i = 0;
+			if ( startGroup == 1 )
+			{
+				group = room.getGroup1();
+				for ( i = 0; i < group.size(); i++ )
+				{
+					p = group.get( i );
+					if ( p.getGuid().toString() == startGuid )
+					{
+						break;
+					}
+				}
+			}
+			else
+			{
+				group = room.getGroup1();
+			}
+		}
 	}
 
 }

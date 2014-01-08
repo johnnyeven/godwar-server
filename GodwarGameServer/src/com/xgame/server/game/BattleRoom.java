@@ -88,11 +88,13 @@ public class BattleRoom extends Room
 		{
 			p.setCurrentGroup( 1 );
 			group1.add( p );
+			p.setCurrentPosition( group1.size() - 1 );
 		}
 		else
 		{
 			p.setCurrentGroup( 2 );
 			group2.add( p );
+			p.setCurrentPosition( group2.size() - 1 );
 		}
 
 		return super.addPlayer( p );

@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.xgame.server.CommandCenter;
 import com.xgame.server.cards.SoulCard;
 import com.xgame.server.common.PackageItem;
@@ -20,11 +23,14 @@ public class BattleRoom extends Room
 	private List< Player >				group1;
 	private List< Player >				group2;
 	protected Map< String, Integer >	playerGroupMap;
+	protected Map< String, Integer >	playerPositionMap;
+
+	private static Log					log	= LogFactory
+													.getLog( BattleRoom.class );
 
 	public BattleRoom()
 	{
 		super();
-		playerGroupMap = new HashMap< String, Integer >();
 	}
 
 	public void initialize()
@@ -35,6 +41,14 @@ public class BattleRoom extends Room
 		{
 			group1 = new ArrayList< Player >();
 			group2 = new ArrayList< Player >();
+			playerGroupMap = new HashMap< String, Integer >();
+			playerPositionMap = new HashMap< String, Integer >();
+
+			for ( int i = 0; i < peopleCount / 2; i++ )
+			{
+				group1.add( null );
+				group2.add( null );
+			}
 		}
 		else
 		{
@@ -69,17 +83,26 @@ public class BattleRoom extends Room
 		if ( playerGroupMap.containsKey( guid ) )
 		{
 			int group = playerGroupMap.get( guid );
-			if ( group == 1 )
+			int position = playerPositionMap.get( guid );
+
+			try
 			{
-				p.setCurrentGroup( 1 );
-				group1.add( p );
-				p.setCurrentPosition( group1.size() - 1 );
+				if ( group == 1 )
+				{
+					p.setCurrentGroup( 1 );
+					group1.set( position, p );
+					p.setCurrentPosition( group1.size() - 1 );
+				}
+				else
+				{
+					p.setCurrentGroup( 2 );
+					group2.set( position, p );
+					p.setCurrentPosition( group2.size() - 1 );
+				}
 			}
-			else
+			catch ( IndexOutOfBoundsException e )
 			{
-				p.setCurrentGroup( 2 );
-				group2.add( p );
-				p.setCurrentPosition( group2.size() - 1 );
+				log.fatal( "group position不存在" );
 			}
 		}
 		else
@@ -162,14 +185,9 @@ public class BattleRoom extends Room
 	}
 
 	@Override
-	public Boolean addHeroCardId( String guid, String id )
+	public Boolean addPlayerPosition( String guid, int position )
 	{
-		if ( heroCardIdMap.containsKey( guid ) )
-		{
-			log.error( "玩家英雄卡牌已存在于该房间" );
-			return false;
-		}
-		heroCardIdMap.put( guid, id );
+		playerPositionMap.put( guid, position );
 		return true;
 	}
 

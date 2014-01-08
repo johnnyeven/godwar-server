@@ -34,6 +34,7 @@ public class Player
 	private int							currentGroup;											// 玩家阵营
 																								// 1=红队
 																								// 2=蓝队
+	private int							currentPosition;
 	private int							currentCardGroup;
 	private String						lastHeroCardId		= "";
 	private String						currentHeroCardId	= "";
@@ -192,6 +193,16 @@ public class Player
 	public void setCurrentHall( IHall currentHall )
 	{
 		this.currentHall = currentHall;
+	}
+
+	public int getCurrentPosition()
+	{
+		return currentPosition;
+	}
+
+	public void setCurrentPosition( int currentPosition )
+	{
+		this.currentPosition = currentPosition;
 	}
 
 	public int getCurrentGroup()

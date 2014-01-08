@@ -216,7 +216,7 @@ public class ProtocolDeployComplete implements IProtocol
 			CommandCenter.send( p.getChannel(), pack );
 		}
 
-		StartBattleRoundTimerTask timer = new StartBattleRoundTimerTask(map1, map2);
+		StartBattleRoundTimerTask timer = new StartBattleRoundTimerTask(map1, map2, room);
 		TimerManager.getInstance().schedule( timer, 5000 );
 	}
 }
