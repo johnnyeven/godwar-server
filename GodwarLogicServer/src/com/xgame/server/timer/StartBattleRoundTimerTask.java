@@ -150,6 +150,7 @@ public class StartBattleRoundTimerTask extends TimerTask
 
 			room.resetPlayerSequence();
 			room.setStartPosition( i, startGroup );
+			room.startRound();
 		}
 	}
 

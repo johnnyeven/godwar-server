@@ -71,6 +71,10 @@ public abstract class Room
 	abstract public Boolean hasPlayerGuid( String guid );
 
 	abstract public void start();
+	
+	abstract public void startRound();
+	
+	abstract public void step();
 
 	public Boolean addHeroCardId( String guid, String id )
 	{

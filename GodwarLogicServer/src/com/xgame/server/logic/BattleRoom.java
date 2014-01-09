@@ -1,6 +1,7 @@
 package com.xgame.server.logic;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import com.xgame.server.cards.SoulCard;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.enums.PlayerPhase;
 import com.xgame.server.logic.Player;
 import com.xgame.server.pool.ServerPackagePool;
 
@@ -237,6 +239,22 @@ public class BattleRoom extends Room
 		phaseDeploy();
 	}
 
+	@Override
+	public void startRound()
+	{
+		rounds = 1;
+		startTime = new Date().getTime();
+		try
+		{
+			currentPlayer = playerList.get( startPosition );
+			currentPlayer.phase = PlayerPhase.ROUND_START;
+		}
+		catch ( IndexOutOfBoundsException e )
+		{
+			log.fatal( "指定的startPosition在playerList中不存在！" );
+		}
+	}
+
 	private void phaseDeploy()
 	{
 		List< Player > playerList;
@@ -274,6 +292,46 @@ public class BattleRoom extends Room
 			// pack.parameter.add( new PackageItem( card.getId().length(),
 			// card.getId() ) );
 			// }
+
+			CommandCenter.send( p.getChannel(), pack );
+		}
+	}
+
+	public void step()
+	{
+		switch ( currentPlayer.phase )
+		{
+			case PlayerPhase.ROUND_START:
+
+				// break;
+			case PlayerPhase.ROUND_STANDBY:
+				roundStandby();
+				break;
+			case PlayerPhase.ROUND_ACTION:
+
+				break;
+			case PlayerPhase.ROUND_DISCARD:
+
+				break;
+			case PlayerPhase.ROUND_END:
+
+				break;
+		}
+	}
+
+	private void roundStandby()
+	{
+		Player p;
+		ServerPackage pack;
+		String guid = currentPlayer.getGuid().toString();
+		for ( int i = 0; i < playerList.size(); i++ )
+		{
+			p = playerList.get( i );
+
+			pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.BATTLEROOM_ROUND_STANDBY;
+			pack.parameter.add( new PackageItem( guid.length(), guid ) );
 
 			CommandCenter.send( p.getChannel(), pack );
 		}
