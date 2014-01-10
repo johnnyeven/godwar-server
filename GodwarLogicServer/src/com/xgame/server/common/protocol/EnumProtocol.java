@@ -54,6 +54,7 @@ public final class EnumProtocol
 	public static final int		ACTION_DEPLOY_COMPLETE						= 12;
 	public static final int		ACTION_START_DICE							= 13;
 	public static final int		ACTION_ROUND_STANDBY						= 14;
+	public static final int		ACTION_ROUND_STANDBY_CONFIRM				= 15;
 
 	public static final int		ACK_CONFIRM									= 1;
 	public static final int		ACK_ERROR									= 0;
@@ -141,5 +142,7 @@ public final class EnumProtocol
 	public static final short	BATTLEROOM_START_DICE						= ACTION_START_DICE << 8
 																					| CONTROLLER_BATTLEROOM;
 	public static final short	BATTLEROOM_ROUND_STANDBY					= ACTION_ROUND_STANDBY << 8
+																					| CONTROLLER_BATTLEROOM;
+	public static final short	BATTLEROOM_ROUND_STANDBY_CONFIRM			= ACTION_ROUND_STANDBY_CONFIRM << 8
 																					| CONTROLLER_BATTLEROOM;
 }

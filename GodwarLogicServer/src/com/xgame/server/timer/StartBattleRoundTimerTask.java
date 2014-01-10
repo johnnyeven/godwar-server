@@ -136,7 +136,7 @@ public class StartBattleRoundTimerTask extends TimerTask
 			}
 			else
 			{
-				group = room.getGroup1();
+				group = room.getGroup2();
 			}
 
 			for ( i = 0; i < group.size(); i++ )

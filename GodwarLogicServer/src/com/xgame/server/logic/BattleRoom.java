@@ -248,6 +248,7 @@ public class BattleRoom extends Room
 		{
 			currentPlayer = playerList.get( startPosition );
 			currentPlayer.phase = PlayerPhase.ROUND_START;
+			step();
 		}
 		catch ( IndexOutOfBoundsException e )
 		{
