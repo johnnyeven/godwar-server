@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.common.protocol.ProtocolDeployComplete;
 import com.xgame.server.common.protocol.ProtocolRequestEnterRoom;
+import com.xgame.server.common.protocol.ProtocolRoundStandbyComplete;
 import com.xgame.server.common.protocol.ProtocolRouter;
 
 public class AIOSocketMgr
@@ -80,6 +81,9 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_DEPLOY_COMPLETE,
 				ProtocolDeployComplete.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.BATTLEROOM_ROUND_STANDBY_CONFIRM,
+				ProtocolRoundStandbyComplete.class );
 	}
 
 	public void startCompletionPort()

@@ -193,10 +193,14 @@ public class Player
 
 	public SoulCard popSoulCardToHand()
 	{
-		SoulCard card = ( SoulCard ) soulCardList.remove( 0 );
-		cardHand.add( card );
+		if ( soulCardList.size() > 0 )
+		{
+			SoulCard card = (SoulCard) soulCardList.remove( 0 );
+			cardHand.add( card );
 
-		return card;
+			return card;
+		}
+		return null;
 	}
 
 	public List< Card > getSoulCardList()
