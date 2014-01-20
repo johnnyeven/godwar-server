@@ -1,15 +1,9 @@
 package com.xgame.server.timer;
 
-import java.util.List;
 import java.util.TimerTask;
 
-import com.xgame.server.CommandCenter;
-import com.xgame.server.common.ServerPackage;
-import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.logic.BattleHall;
-import com.xgame.server.logic.Player;
 import com.xgame.server.logic.Room;
-import com.xgame.server.pool.ServerPackagePool;
 
 public class StartBattleGameTimerTask extends TimerTask
 {

@@ -25,6 +25,7 @@ public class Player
 	public int							winningCount		= 0;
 	public int							battleCount			= 0;
 	public int							honor				= 0;
+	public int							energy				= 0;
 	public PlayerStatus					status				= PlayerStatus.NORMAL;
 
 	private AsynchronousSocketChannel	channel;
@@ -71,6 +72,7 @@ public class Player
 				winningCount = rs.getInt( "winning_count" );
 				battleCount = rs.getInt( "battle_count" );
 				honor = rs.getInt( "honor" );
+				energy = rs.getInt( "energy" );
 			}
 			else
 			{
@@ -100,9 +102,9 @@ public class Player
 					+ " `account_lastlogin`=" + new Date().getTime()
 					+ " WHERE `account_id`=" + accountId;
 			st.executeUpdate( sql );
-			
+
 			rs.close();
-			
+
 			sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
 					+ accountId + " AND `current`=1";
 			st = DatabaseRouter.getInstance().getConnection( "gamedb" )
@@ -112,7 +114,7 @@ public class Player
 			if ( rs.first() )
 			{
 				int groupId = rs.getInt( "group_id" );
-				setCurrentCardGroup(groupId);
+				setCurrentCardGroup( groupId );
 			}
 
 			rs.close();

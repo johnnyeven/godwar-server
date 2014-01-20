@@ -160,6 +160,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
 		pack.parameter.add( new PackageItem( 4, p.level ) );
 		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
+		pack.parameter.add( new PackageItem( 4, p.energy ) );
 		pack.parameter.add( new PackageItem( p.rolePicture.length(),
 				p.rolePicture ) );
 		CommandCenter.send( session.getChannel(), pack );
