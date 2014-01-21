@@ -4,6 +4,7 @@ public class Card
 {
 	private String			id;
 	private String			name;
+	private int				energy;
 	private String			series;
 	protected CardParameter	parameter;
 
@@ -34,6 +35,7 @@ public class Card
 			{
 				parameter = param;
 				name = parameter.name;
+				energy = parameter.energy;
 				series = parameter.series;
 			}
 		}
@@ -53,7 +55,12 @@ public class Card
 	{
 		return series;
 	}
-	
+
+	public int getEnergy()
+	{
+		return energy;
+	}
+
 	public String toString()
 	{
 		return id;

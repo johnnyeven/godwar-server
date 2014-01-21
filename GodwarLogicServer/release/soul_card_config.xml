@@ -7,6 +7,7 @@
     <def>85</def>
     <mdef>48</mdef>
     <health>300</health>
+    <energy>2</energy>
     <level>1</level>
     <race>0</race>
   </card>
@@ -18,6 +19,7 @@
     <def>67</def>
     <mdef>60</mdef>
     <health>205</health>
+    <energy>2</energy>
     <level>1</level>
     <race>0</race>
   </card>
@@ -29,6 +31,7 @@
     <def>65</def>
     <mdef>75</mdef>
     <health>210</health>
+    <energy>2</energy>
     <level>1</level>
     <race>0</race>
   </card>
@@ -40,6 +43,7 @@
     <def>75</def>
     <mdef>65</mdef>
     <health>215</health>
+    <energy>2</energy>
     <level>1</level>
     <race>0</race>
   </card>
@@ -51,6 +55,7 @@
     <def>81</def>
     <mdef>40</mdef>
     <health>290</health>
+    <energy>2</energy>
     <level>1</level>
     <race>0</race>
   </card>
@@ -62,6 +67,7 @@
     <def>110</def>
     <mdef>110</mdef>
     <health>440</health>
+    <energy>3</energy>
     <level>2</level>
     <race>0</race>
   </card>
@@ -73,6 +79,7 @@
     <def>95</def>
     <mdef>99</mdef>
     <health>446</health>
+    <energy>3</energy>
     <level>2</level>
     <race>0</race>
   </card>
@@ -84,6 +91,7 @@
     <def>86</def>
     <mdef>125</mdef>
     <health>469</health>
+    <energy>3</energy>
     <level>2</level>
     <race>0</race>
   </card>
@@ -95,6 +103,7 @@
     <def>100</def>
     <mdef>70</mdef>
     <health>480</health>
+    <energy>3</energy>
     <level>2</level>
     <race>0</race>
   </card>
@@ -106,6 +115,7 @@
     <def>124</def>
     <mdef>90</mdef>
     <health>730</health>
+    <energy>5</energy>
     <level>3</level>
     <race>0</race>
   </card>
@@ -117,6 +127,7 @@
     <def>110</def>
     <mdef>100</mdef>
     <health>690</health>
+    <energy>5</energy>
     <level>3</level>
     <race>0</race>
   </card>
@@ -128,6 +139,7 @@
     <def>104</def>
     <mdef>100</mdef>
     <health>710</health>
+    <energy>5</energy>
     <level>3</level>
     <race>0</race>
   </card>
@@ -139,6 +151,7 @@
     <def>104</def>
     <mdef>99</mdef>
     <health>800</health>
+    <energy>8</energy>
     <level>4</level>
     <race>0</race>
   </card>
@@ -150,6 +163,7 @@
     <def>110</def>
     <mdef>90</mdef>
     <health>790</health>
+    <energy>8</energy>
     <level>4</level>
     <race>0</race>
   </card>
@@ -161,6 +175,7 @@
     <def>125</def>
     <mdef>150</mdef>
     <health>880</health>
+    <energy>10</energy>
     <level>5</level>
     <race>0</race>
   </card>
@@ -172,6 +187,7 @@
     <def>70</def>
     <mdef>60</mdef>
     <health>210</health>
+    <energy>2</energy>
     <level>1</level>
     <race>1</race>
   </card>
@@ -183,6 +199,7 @@
     <def>60</def>
     <mdef>70</mdef>
     <health>210</health>
+    <energy>2</energy>
     <level>1</level>
     <race>1</race>
   </card>
@@ -194,6 +211,7 @@
     <def>70</def>
     <mdef>75</mdef>
     <health>280</health>
+    <energy>2</energy>
     <level>1</level>
     <race>1</race>
   </card>
@@ -205,6 +223,7 @@
     <def>58</def>
     <mdef>81</mdef>
     <health>264</health>
+    <energy>2</energy>
     <level>1</level>
     <race>1</race>
   </card>
@@ -216,6 +235,7 @@
     <def>60</def>
     <mdef>70</mdef>
     <health>275</health>
+    <energy>2</energy>
     <level>1</level>
     <race>1</race>
   </card>
@@ -227,6 +247,7 @@
     <def>102</def>
     <mdef>70</mdef>
     <health>354</health>
+    <energy>3</energy>
     <level>2</level>
     <race>1</race>
   </card>
@@ -238,6 +259,7 @@
     <def>99</def>
     <mdef>85</mdef>
     <health>310</health>
+    <energy>3</energy>
     <level>2</level>
     <race>1</race>
   </card>
@@ -249,6 +271,7 @@
     <def>95</def>
     <mdef>95</mdef>
     <health>380</health>
+    <energy>3</energy>
     <level>2</level>
     <race>1</race>
   </card>
@@ -260,6 +283,7 @@
     <def>90</def>
     <mdef>85</mdef>
     <health>358</health>
+    <energy>3</energy>
     <level>2</level>
     <race>1</race>
   </card>
@@ -271,6 +295,7 @@
     <def>98</def>
     <mdef>90</mdef>
     <health>538</health>
+    <energy>5</energy>
     <level>3</level>
     <race>1</race>
   </card>
@@ -282,6 +307,7 @@
     <def>90</def>
     <mdef>100</mdef>
     <health>550</health>
+    <energy>5</energy>
     <level>3</level>
     <race>1</race>
   </card>
@@ -293,6 +319,7 @@
     <def>100</def>
     <mdef>100</mdef>
     <health>600</health>
+    <energy>5</energy>
     <level>3</level>
     <race>1</race>
   </card>
@@ -304,6 +331,7 @@
     <def>100</def>
     <mdef>90</mdef>
     <health>810</health>
+    <energy>8</energy>
     <level>4</level>
     <race>1</race>
   </card>
@@ -315,6 +343,7 @@
     <def>190</def>
     <mdef>95</mdef>
     <health>900</health>
+    <energy>8</energy>
     <level>4</level>
     <race>1</race>
   </card>
@@ -326,6 +355,7 @@
     <def>138</def>
     <mdef>99</mdef>
     <health>850</health>
+    <energy>10</energy>
     <level>5</level>
     <race>1</race>
   </card>
@@ -337,6 +367,7 @@
     <def>65</def>
     <mdef>55</mdef>
     <health>210</health>
+    <energy>2</energy>
     <level>1</level>
     <race>2</race>
   </card>
@@ -348,6 +379,7 @@
     <def>85</def>
     <mdef>55</mdef>
     <health>280</health>
+    <energy>2</energy>
     <level>1</level>
     <race>2</race>
   </card>
@@ -359,6 +391,7 @@
     <def>75</def>
     <mdef>50</mdef>
     <health>255</health>
+    <energy>2</energy>
     <level>1</level>
     <race>2</race>
   </card>
@@ -370,6 +403,7 @@
     <def>70</def>
     <mdef>68</mdef>
     <health>275</health>
+    <energy>2</energy>
     <level>1</level>
     <race>2</race>
   </card>
@@ -381,6 +415,7 @@
     <def>65</def>
     <mdef>75</mdef>
     <health>268</health>
+    <energy>2</energy>
     <level>1</level>
     <race>2</race>
   </card>
@@ -392,6 +427,7 @@
     <def>117</def>
     <mdef>75</mdef>
     <health>450</health>
+    <energy>3</energy>
     <level>2</level>
     <race>2</race>
   </card>
@@ -403,6 +439,7 @@
     <def>91</def>
     <mdef>71</mdef>
     <health>370</health>
+    <energy>3</energy>
     <level>2</level>
     <race>2</race>
   </card>
@@ -414,6 +451,7 @@
     <def>85</def>
     <mdef>80</mdef>
     <health>430</health>
+    <energy>3</energy>
     <level>2</level>
     <race>2</race>
   </card>
@@ -425,6 +463,7 @@
     <def>80</def>
     <mdef>81</mdef>
     <health>510</health>
+    <energy>3</energy>
     <level>2</level>
     <race>2</race>
   </card>
@@ -436,6 +475,7 @@
     <def>100</def>
     <mdef>95</mdef>
     <health>570</health>
+    <energy>5</energy>
     <level>3</level>
     <race>2</race>
   </card>
@@ -447,6 +487,7 @@
     <def>115</def>
     <mdef>90</mdef>
     <health>650</health>
+    <energy>5</energy>
     <level>3</level>
     <race>2</race>
   </card>
@@ -458,6 +499,7 @@
     <def>95</def>
     <mdef>110</mdef>
     <health>631</health>
+    <energy>5</energy>
     <level>3</level>
     <race>2</race>
   </card>
@@ -469,6 +511,7 @@
     <def>135</def>
     <mdef>98</mdef>
     <health>890</health>
+    <energy>8</energy>
     <level>4</level>
     <race>2</race>
   </card>
@@ -480,6 +523,7 @@
     <def>110</def>
     <mdef>124</mdef>
     <health>820</health>
+    <energy>8</energy>
     <level>4</level>
     <race>2</race>
   </card>
@@ -491,6 +535,7 @@
     <def>132</def>
     <mdef>129</mdef>
     <health>890</health>
+    <energy>10</energy>
     <level>5</level>
     <race>2</race>
   </card>
@@ -502,6 +547,7 @@
     <def>70</def>
     <mdef>55</mdef>
     <health>240</health>
+    <energy>2</energy>
     <level>1</level>
     <race>3</race>
   </card>
@@ -513,6 +559,7 @@
     <def>80</def>
     <mdef>75</mdef>
     <health>300</health>
+    <energy>2</energy>
     <level>1</level>
     <race>3</race>
   </card>
@@ -524,6 +571,7 @@
     <def>65</def>
     <mdef>76</mdef>
     <health>295</health>
+    <energy>2</energy>
     <level>1</level>
     <race>3</race>
   </card>
@@ -535,6 +583,7 @@
     <def>60</def>
     <mdef>88</mdef>
     <health>270</health>
+    <energy>2</energy>
     <level>1</level>
     <race>3</race>
   </card>
@@ -546,6 +595,7 @@
     <def>65</def>
     <mdef>70</mdef>
     <health>300</health>
+    <energy>2</energy>
     <level>1</level>
     <race>3</race>
   </card>
@@ -557,6 +607,7 @@
     <def>112</def>
     <mdef>75</mdef>
     <health>520</health>
+    <energy>3</energy>
     <level>2</level>
     <race>3</race>
   </card>
@@ -568,6 +619,7 @@
     <def>98</def>
     <mdef>86</mdef>
     <health>500</health>
+    <energy>3</energy>
     <level>2</level>
     <race>3</race>
   </card>
@@ -579,6 +631,7 @@
     <def>98</def>
     <mdef>78</mdef>
     <health>490</health>
+    <energy>3</energy>
     <level>2</level>
     <race>3</race>
   </card>
@@ -590,6 +643,7 @@
     <def>80</def>
     <mdef>100</mdef>
     <health>549</health>
+    <energy>3</energy>
     <level>2</level>
     <race>3</race>
   </card>
@@ -601,6 +655,7 @@
     <def>98</def>
     <mdef>100</mdef>
     <health>600</health>
+    <energy>5</energy>
     <level>3</level>
     <race>3</race>
   </card>
@@ -612,6 +667,7 @@
     <def>98</def>
     <mdef>129</mdef>
     <health>620</health>
+    <energy>5</energy>
     <level>3</level>
     <race>3</race>
   </card>
@@ -623,6 +679,7 @@
     <def>120</def>
     <mdef>120</mdef>
     <health>700</health>
+    <energy>5</energy>
     <level>3</level>
     <race>3</race>
   </card>
@@ -634,6 +691,7 @@
     <def>100</def>
     <mdef>95</mdef>
     <health>780</health>
+    <energy>8</energy>
     <level>4</level>
     <race>3</race>
   </card>
@@ -645,6 +703,7 @@
     <def>120</def>
     <mdef>110</mdef>
     <health>820</health>
+    <energy>8</energy>
     <level>4</level>
     <race>3</race>
   </card>
@@ -656,6 +715,7 @@
     <def>129</def>
     <mdef>100</mdef>
     <health>960</health>
+    <energy>10</energy>
     <level>5</level>
     <race>3</race>
   </card>

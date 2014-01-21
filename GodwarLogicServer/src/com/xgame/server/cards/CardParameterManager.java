@@ -72,6 +72,11 @@ public class CardParameterManager
 					parameter.health = Integer.parseInt( child.getTextContent()
 							.trim() );
 				}
+				else if ( child.getNodeName() == "energy" )
+				{
+					parameter.energy = Integer.parseInt( child.getTextContent()
+							.trim() );
+				}
 				else if ( child.getNodeName() == "level" )
 				{
 					parameter.level = Integer.parseInt( child.getTextContent()
