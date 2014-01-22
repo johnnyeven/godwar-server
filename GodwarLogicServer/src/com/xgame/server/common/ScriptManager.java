@@ -132,4 +132,51 @@ public class ScriptManager
 		private static ScriptManager	instance	= new ScriptManager();
 	}
 
+	// public static void main( String[] args )
+	// {
+	// ScriptEngineManager factory = new ScriptEngineManager();
+	// ScriptEngine engine = factory.getEngineByName( "JavaScript" );
+	// Room room = new Room();
+	// Attacker att1 = new Attacker();
+	// att1.setDef( 75 );
+	// Attacker att2 = new Attacker();
+	// att2.setDef( 98 );
+	// Attacker att3 = new Attacker();
+	// att3.setDef( 45 );
+	// Attacker att4 = new Attacker();
+	// att4.setDef( 435345 );
+	// room.add( att1 );
+	// room.add( att2 );
+	// room.add( att3 );
+	// room.add( att4 );
+	// // engine.put("attacker", att1);
+	// // engine.put("room", room);
+	// Reader r;
+	// try
+	// {
+	// r = new FileReader( "test.js" );
+	// }
+	// catch ( FileNotFoundException e1 )
+	// {
+	// e1.printStackTrace();
+	// return;
+	// }
+	//
+	// try
+	// {
+	// engine.eval( r );
+	// Invocable inv = (Invocable) engine;
+	// IScript s = inv.getInterface( IScript.class );
+	// List< AttackLog > log = s.attackArea( att1, room );
+	// for ( int i = 0; i < log.size(); i++ )
+	// {
+	// System.out.println( log.get( i ).def );
+	// }
+	// }
+	// catch ( ScriptException e )
+	// {
+	// e.printStackTrace();
+	// }
+	// }
+
 }
