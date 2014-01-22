@@ -13,7 +13,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.xgame.server.cards.CardParameterManager;
+import com.xgame.server.common.CardParameterManager;
+import com.xgame.server.common.ScriptManager;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
 import com.xgame.server.network.GameServerConnector;
@@ -102,40 +103,6 @@ public class LogicServer
 
 	public void run()
 	{
-		System.out.println( "                MMMM" );
-		System.out
-				.println( " MMM    MMM    MMMMMMM                          MMMMMMMM" );
-		System.out
-				.println( " MMM    MMM   MMMMMMMMM                         MMMMMMMM" );
-		System.out
-				.println( "  MMM  MMM   MMMM   MMM                         MM" );
-		System.out
-				.println( "  MMM  MMM   MMM    MMM    MMM    MM MMM  MMM   MM" );
-		System.out
-				.println( "   MMMMMM    MMM     MM   MMMMMM  MMMMMMMMMMMMM MM" );
-		System.out
-				.println( "   MMMMMM    MMM         MMMMMMM  MMMMMMMMMMMMM MM" );
-		System.out
-				.println( "    MMMM     MM          MM   MM  MM   MMM  MMM MMMMMMMM" );
-		System.out
-				.println( "    MMMM     MM   MMMMM       MM  MM   MMM   MM MMMMMMMM" );
-		System.out
-				.println( "    MMMM     MM   MMMMM    MMMMM  MM   MMM   MM MM" );
-		System.out
-				.println( "   MMMMMM    MMM     MM  MMMMMMM  MM   MMM   MM MM" );
-		System.out
-				.println( "   MMMMMM    MMM     MM  MMMM MM  MM   MMM   MM MM" );
-		System.out
-				.println( "  MMM  MMM   MMM     MM  MM   MM  MM   MMM   MM MM" );
-		System.out
-				.println( " MMMM  MMMM  MMM    MMM  MM   MM  MM   MMM   MM MM" );
-		System.out
-				.println( " MMM    MMM   MMMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
-		System.out
-				.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
-		System.out.println( "                 MMM MM    MM\n" );
-		System.out.println( "LogicServer\n\n" );
-
 		BattleHall.getInstance().setInitialWorldSettings();
 		MeleeHall.getInstance().setInitialWorldSettings();
 
@@ -164,12 +131,32 @@ public class LogicServer
 
 	public static void main( String[] args )
 	{
+		System.out.println( "                MMMM" );
+		System.out.println( " MMM    MMM    MMMMMMM                          MMMMMMMM" );
+		System.out.println( " MMM    MMM   MMMMMMMMM                         MMMMMMMM" );
+		System.out.println( "  MMM  MMM   MMMM   MMM                         MM" );
+		System.out.println( "  MMM  MMM   MMM    MMM    MMM    MM MMM  MMM   MM" );
+		System.out.println( "   MMMMMM    MMM     MM   MMMMMM  MMMMMMMMMMMMM MM" );
+		System.out.println( "   MMMMMM    MMM         MMMMMMM  MMMMMMMMMMMMM MM" );
+		System.out.println( "    MMMM     MM          MM   MM  MM   MMM  MMM MMMMMMMM" );
+		System.out.println( "    MMMM     MM   MMMMM       MM  MM   MMM   MM MMMMMMMM" );
+		System.out.println( "    MMMM     MM   MMMMM    MMMMM  MM   MMM   MM MM" );
+		System.out.println( "   MMMMMM    MMM     MM  MMMMMMM  MM   MMM   MM MM" );
+		System.out.println( "   MMMMMM    MMM     MM  MMMM MM  MM   MMM   MM MM" );
+		System.out.println( "  MMM  MMM   MMM     MM  MM   MM  MM   MMM   MM MM" );
+		System.out.println( " MMMM  MMMM  MMM    MMM  MM   MM  MM   MMM   MM MM" );
+		System.out.println( " MMM    MMM   MMMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
+		System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
+		System.out.println( "                 MMM MM    MM\n" );
+		System.out.println( "LogicServer\n\n" );
+		
 		LogicServer me = new LogicServer();
 		try
 		{
 			me.loadConfig();
 			me.initPool();
 			CardParameterManager.getInstance().initialize();
+			ScriptManager.getInstance().initialize();
 		}
 		catch ( ParserConfigurationException | SAXException | IOException e )
 		{

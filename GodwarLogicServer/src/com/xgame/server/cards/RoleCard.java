@@ -2,17 +2,21 @@ package com.xgame.server.cards;
 
 public class RoleCard extends Card implements IBattlable
 {
+	protected int	lastAttack;
 	protected int	attack;
+	protected int	lastDef;
 	protected int	def;
+	protected int	lastMdef;
 	protected int	mdef;
 	protected int	health;
+	protected int	lastHealthMax;
 	protected int	healthMax;
 
 	public RoleCard()
 	{
 		super();
 	}
-	
+
 	public RoleCard( String id )
 	{
 		super( id );
@@ -94,6 +98,46 @@ public class RoleCard extends Card implements IBattlable
 	public void setHealthMax( int healthMax )
 	{
 		this.healthMax = healthMax;
+	}
+
+	public int getLastAttack()
+	{
+		return lastAttack;
+	}
+
+	public void setLastAttack( int lastAttack )
+	{
+		this.lastAttack = lastAttack;
+	}
+
+	public int getLastDef()
+	{
+		return lastDef;
+	}
+
+	public void setLastDef( int lastDef )
+	{
+		this.lastDef = lastDef;
+	}
+
+	public int getLastMdef()
+	{
+		return lastMdef;
+	}
+
+	public void setLastMdef( int lastMdef )
+	{
+		this.lastMdef = lastMdef;
+	}
+
+	public int getLastHealthMax()
+	{
+		return lastHealthMax;
+	}
+
+	public void setLastHealthMax( int lastHealthMax )
+	{
+		this.lastHealthMax = lastHealthMax;
 	}
 
 }

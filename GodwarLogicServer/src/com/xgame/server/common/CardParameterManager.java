@@ -1,4 +1,4 @@
-package com.xgame.server.cards;
+package com.xgame.server.common;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,6 +12,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.xgame.server.cards.CardParameter;
+import com.xgame.server.cards.HeroCardParameter;
+import com.xgame.server.cards.SoulCardParameter;
 
 public class CardParameterManager
 {
