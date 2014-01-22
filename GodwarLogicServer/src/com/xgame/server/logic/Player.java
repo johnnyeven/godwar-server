@@ -46,10 +46,11 @@ public class Player
 	private int							currentCardGroup;
 
 	private HeroCard					heroCard;
-	private List< Card >				soulCardList;
+	private List< SoulCard >			soulCardList;
 	private List< Card >				supplyCardList;
 	private Map< String, Card >			cardMap;
 	private List< Card >				cardHand;
+	private Map< String, Card >			handMap;
 
 	private String						cardDefenser;
 	private String						cardAttacker1;
@@ -62,10 +63,11 @@ public class Player
 
 	public Player()
 	{
-		soulCardList = new ArrayList< Card >();
+		soulCardList = new ArrayList< SoulCard >();
 		supplyCardList = new ArrayList< Card >();
 		cardMap = new HashMap< String, Card >();
 		cardHand = new ArrayList< Card >();
+		handMap = new HashMap< String, Card >();
 	}
 
 	public boolean loadFromDatabase()
@@ -139,11 +141,11 @@ public class Player
 							soulCard = SoulCardPool.getInstance().getObject();
 							soulCard.loadInfo( cardTmp[1] );
 							soulCardList.add( soulCard );
-							Collections.shuffle( soulCardList );
 							cardMap.put( soulCard.getId(), soulCard );
 						}
 					}
 				}
+				Collections.shuffle( soulCardList );
 			}
 			else
 			{
@@ -195,15 +197,17 @@ public class Player
 	{
 		if ( soulCardList.size() > 0 )
 		{
-			SoulCard card = (SoulCard) soulCardList.remove( 0 );
+			SoulCard card = soulCardList.remove( 0 );
+			cardMap.remove( card.getId() );
 			cardHand.add( card );
+			handMap.put( card.getId(), card );
 
 			return card;
 		}
 		return null;
 	}
 
-	public List< Card > getSoulCardList()
+	public List< SoulCard > getSoulCardList()
 	{
 		return soulCardList;
 	}
