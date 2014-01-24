@@ -13,8 +13,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.xgame.server.common.CardParameterManager;
-import com.xgame.server.common.ScriptManager;
+import com.xgame.server.cards.CardParameterManager;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
 import com.xgame.server.network.GameServerConnector;
@@ -24,6 +23,7 @@ import com.xgame.server.pool.HeroCardPool;
 import com.xgame.server.pool.PlayerPool;
 import com.xgame.server.pool.ServerPackagePool;
 import com.xgame.server.pool.SoulCardPool;
+import com.xgame.server.skill.SkillManager;
 import com.xgame.server.timer.CheckBattleRoomTimerTask;
 import com.xgame.server.timer.RegisterLogicServerTimerTask;
 import com.xgame.server.timer.TimerManager;
@@ -156,7 +156,7 @@ public class LogicServer
 			me.loadConfig();
 			me.initPool();
 			CardParameterManager.getInstance().initialize();
-			ScriptManager.getInstance().initialize();
+			SkillManager.getInstance().initialize();
 		}
 		catch ( ParserConfigurationException | SAXException | IOException e )
 		{

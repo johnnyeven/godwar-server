@@ -52,10 +52,10 @@ public class Player
 	private List< Card >				cardHand;
 	private Map< String, Card >			handMap;
 
-	private String						cardDefenser;
-	private String						cardAttacker1;
-	private String						cardAttacker2;
-	private String						cardAttacker3;
+	private SoulCard					cardDefenser;
+	private SoulCard					cardAttacker1;
+	private SoulCard					cardAttacker2;
+	private SoulCard					cardAttacker3;
 	private boolean						isDeploy		= false;
 
 	private static Log					log				= LogFactory
@@ -342,14 +342,26 @@ public class Player
 		this.heroCard = heroCard;
 	}
 
-	public String getCardDefenser()
+	public SoulCard getCardDefenser()
 	{
 		return cardDefenser;
 	}
 
 	public void setCardDefenser( String cardDefenser )
 	{
-		this.cardDefenser = cardDefenser;
+		if ( handMap.containsKey( cardDefenser ) )
+		{
+			Card card = handMap.get( cardDefenser );
+			if ( card instanceof SoulCard )
+			{
+				this.cardDefenser = (SoulCard) card;
+			}
+			else
+			{
+				//TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardDefenser );
+			}
+		}
 
 		if ( this.cardDefenser != null && this.cardAttacker1 != null
 				&& this.cardAttacker2 != null && this.cardAttacker3 != null )
@@ -358,14 +370,26 @@ public class Player
 		}
 	}
 
-	public String getCardAttacker1()
+	public SoulCard getCardAttacker1()
 	{
 		return cardAttacker1;
 	}
 
 	public void setCardAttacker1( String cardAttacker1 )
 	{
-		this.cardAttacker1 = cardAttacker1;
+		if ( handMap.containsKey( cardAttacker1 ) )
+		{
+			Card card = handMap.get( cardAttacker1 );
+			if ( card instanceof SoulCard )
+			{
+				this.cardAttacker1 = (SoulCard) card;
+			}
+			else
+			{
+				//TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardAttacker1 );
+			}
+		}
 
 		if ( this.cardDefenser != null && this.cardAttacker1 != null
 				&& this.cardAttacker2 != null && this.cardAttacker3 != null )
@@ -374,14 +398,26 @@ public class Player
 		}
 	}
 
-	public String getCardAttacker2()
+	public SoulCard getCardAttacker2()
 	{
 		return cardAttacker2;
 	}
 
 	public void setCardAttacker2( String cardAttacker2 )
 	{
-		this.cardAttacker2 = cardAttacker2;
+		if ( handMap.containsKey( cardAttacker2 ) )
+		{
+			Card card = handMap.get( cardAttacker2 );
+			if ( card instanceof SoulCard )
+			{
+				this.cardAttacker2 = (SoulCard) card;
+			}
+			else
+			{
+				//TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardAttacker2 );
+			}
+		}
 
 		if ( this.cardDefenser != null && this.cardAttacker1 != null
 				&& this.cardAttacker2 != null && this.cardAttacker3 != null )
@@ -390,14 +426,26 @@ public class Player
 		}
 	}
 
-	public String getCardAttacker3()
+	public SoulCard getCardAttacker3()
 	{
 		return cardAttacker3;
 	}
 
 	public void setCardAttacker3( String cardAttacker3 )
 	{
-		this.cardAttacker3 = cardAttacker3;
+		if ( handMap.containsKey( cardAttacker3 ) )
+		{
+			Card card = handMap.get( cardAttacker3 );
+			if ( card instanceof SoulCard )
+			{
+				this.cardAttacker3 = (SoulCard) card;
+			}
+			else
+			{
+				//TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardAttacker3 );
+			}
+		}
 
 		if ( this.cardDefenser != null && this.cardAttacker1 != null
 				&& this.cardAttacker2 != null && this.cardAttacker3 != null )

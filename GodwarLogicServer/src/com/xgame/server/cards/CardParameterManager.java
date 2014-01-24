@@ -1,4 +1,4 @@
-package com.xgame.server.common;
+package com.xgame.server.cards;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,17 +8,17 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.xgame.server.cards.CardParameter;
-import com.xgame.server.cards.HeroCardParameter;
-import com.xgame.server.cards.SoulCardParameter;
-
 public class CardParameterManager
 {
+	private static Log						log	= LogFactory
+														.getLog( CardParameterManager.class );
 	private Map< String, CardParameter >	cardMap;
 
 	public CardParameterManager()
@@ -31,13 +31,16 @@ public class CardParameterManager
 	{
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-
+		
+		log.info( "-----------------------加载英灵卡牌数据开始-----------------------" );
 		Document doc = dbBuilder.parse( "soul_card_config.xml" );
 
 		NodeList list = doc.getElementsByTagName( "card" );
 		NodeList children;
 		Node node;
 		Node child;
+		NodeList skills;
+		Node skill;
 		int length = list.getLength();
 		SoulCardParameter parameter;
 		for ( int i = 0; i < length; i++ )
@@ -91,10 +94,26 @@ public class CardParameterManager
 					parameter.race = Integer.parseInt( child.getTextContent()
 							.trim() );
 				}
+				else if ( child.getNodeName() == "skills" )
+				{
+					skills = child.getChildNodes();
+					for ( int m = 0; m < skills.getLength(); m++ )
+					{
+						skill = skills.item( m );
+						if ( skill.getNodeName() == "skill" )
+						{
+							parameter.skillList.add( skill.getTextContent()
+									.trim() );
+						}
+					}
+				}
 			}
 			cardMap.put( parameter.id, parameter );
+			log.info( "[新增英灵] Id = " + parameter.id + ", Name = " + parameter.name );
 		}
+		log.info( "-----------------------加载英灵卡牌数据结束-----------------------" );
 
+		log.info( "-----------------------加载英雄卡牌数据开始-----------------------" );
 		doc = dbBuilder.parse( "hero_card_config.xml" );
 		list = doc.getElementsByTagName( "card" );
 		length = list.getLength();
@@ -156,7 +175,9 @@ public class CardParameterManager
 				}
 			}
 			cardMap.put( parameter1.id, parameter1 );
+			log.info( "[新增英雄] Id = " + parameter1.id + ", Name = " + parameter1.name );
 		}
+		log.info( "-----------------------加载英雄卡牌数据结束-----------------------" );
 	}
 
 	public CardParameter getCard( String id )

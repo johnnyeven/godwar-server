@@ -15,6 +15,7 @@ import com.xgame.server.common.protocol.ProtocolDeployComplete;
 import com.xgame.server.common.protocol.ProtocolRequestEnterRoom;
 import com.xgame.server.common.protocol.ProtocolRoundStandbyComplete;
 import com.xgame.server.common.protocol.ProtocolRouter;
+import com.xgame.server.common.protocol.ProtocolSpell;
 
 public class AIOSocketMgr
 {
@@ -88,6 +89,9 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.BATTLEROOM_ROUND_STANDBY_CHANGE_FORMATION,
 				ProtocolChangeFormation.class );
+		ProtocolRouter.getInstance()
+				.Bind( EnumProtocol.BATTLEROOM_ROUND_ACTION_SPELL,
+						ProtocolSpell.class );
 	}
 
 	public void startCompletionPort()

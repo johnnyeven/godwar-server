@@ -1,4 +1,4 @@
-package com.xgame.server.common;
+package com.xgame.server.skill;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,15 +18,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class ScriptManager
+public class SkillManager
 {
-	private Map< String, Reader >	scriptList;
-	private static Log				log	= LogFactory
-												.getLog( ScriptManager.class );
+	private Map< String, SkillParameter >	scriptList;
+	private static Log						log	= LogFactory
+														.getLog( SkillManager.class );
 
-	private ScriptManager()
+	private SkillManager()
 	{
-		scriptList = new HashMap< String, Reader >();
+		scriptList = new HashMap< String, SkillParameter >();
 	}
 
 	public void initialize() throws ParserConfigurationException, SAXException,
@@ -35,19 +35,15 @@ public class ScriptManager
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
-		Document doc = dbBuilder.parse( "soul_card_config.xml" );
+		Document doc = dbBuilder.parse( "conf/skill_config.xml" );
 
-		NodeList list = doc.getElementsByTagName( "card" );
+		NodeList list = doc.getElementsByTagName( "skill" );
 		Node node;
 		NodeList children;
 		Node child;
-		NodeList skills;
-		NodeList attributes;
-		Node attribute;
-		String id = null;
-		String script = null;
+		SkillParameter parameter = new SkillParameter();
 
-		log.info( "[InitScript] 初始化脚本" );
+		log.info( "[InitSkill] 初始化技能" );
 		for ( int m = 0; m < list.getLength(); m++ )
 		{
 			node = list.item( m );
@@ -55,65 +51,52 @@ public class ScriptManager
 			for ( int i = 0; i < children.getLength(); i++ )
 			{
 				child = children.item( i );
-				if ( child.getNodeName() == "skills" )
+				if ( child.getNodeName() == "id" )
 				{
-					skills = child.getChildNodes();
-					for ( int j = 0; j < skills.getLength(); j++ )
-					{
-						attributes = skills.item( j ).getChildNodes();
-						for ( int x = 0; x < attributes.getLength(); x++ )
-						{
-							attribute = attributes.item( x );
-							if ( attribute.getNodeName() == "id" )
-							{
-								id = attribute.getTextContent().trim();
-							}
-							else if ( attribute.getNodeName() == "script" )
-							{
-								script = attribute.getTextContent().trim();
-							}
-						}
-						if ( id != null && script != null )
-						{
-							add( id, script );
-							id = null;
-							script = null;
-						}
-					}
+					parameter.id = child.getTextContent().trim();
+				}
+				else if ( child.getNodeName() == "level" )
+				{
+					parameter.level = Integer.parseInt( child.getTextContent()
+							.trim() );
+				}
+				else if ( child.getNodeName() == "name" )
+				{
+					parameter.name = child.getTextContent().trim();
+				}
+				else if ( child.getNodeName() == "target" )
+				{
+					parameter.target = child.getTextContent().trim();
+				}
+				else if ( child.getNodeName() == "script" )
+				{
+					parameter.script = new FileReader( child.getTextContent()
+							.trim() );
+				}
+
+				if ( parameter.id != null && parameter.level > 0
+						&& parameter.name != null && parameter.target != null
+						&& parameter.script != null )
+				{
+					add( parameter.id, parameter );
+					parameter = new SkillParameter();
 				}
 			}
 		}
-		log.info( "[InitScriptComplete] 初始化脚本结束" );
+		log.info( "[InitSkillComplete] 初始化技能结束" );
 	}
 
-	public void add( String key, Reader reader )
+	public void add( String key, SkillParameter parameter )
 	{
 		if ( !scriptList.containsKey( key ) )
 		{
-			scriptList.put( key, reader );
-			log.info( "[AddScript] Id = " + key + ", Script = "
-					+ reader.toString() );
+			scriptList.put( key, parameter );
+			log.info( "[AddSkill] Id = " + key + ", Script = "
+					+ parameter.script.toString() );
 		}
 	}
 
-	public void add( String key, String script )
-	{
-		if ( !scriptList.containsKey( key ) )
-		{
-			try
-			{
-				Reader reader = new FileReader( script );
-				scriptList.put( key, reader );
-				log.info( "[AddScript] Id = " + key + ", Script = " + script );
-			}
-			catch ( FileNotFoundException e )
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public Reader get( String key )
+	public SkillParameter get( String key )
 	{
 		if ( scriptList.containsKey( key ) )
 		{
@@ -122,14 +105,14 @@ public class ScriptManager
 		return null;
 	}
 
-	public static ScriptManager getInstance()
+	public static SkillManager getInstance()
 	{
 		return ScriptManagerHolder.instance;
 	}
 
 	private static class ScriptManagerHolder
 	{
-		private static ScriptManager	instance	= new ScriptManager();
+		private static SkillManager	instance	= new SkillManager();
 	}
 
 	// public static void main( String[] args )

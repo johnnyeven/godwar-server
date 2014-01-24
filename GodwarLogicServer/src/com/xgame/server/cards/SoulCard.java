@@ -1,13 +1,18 @@
 package com.xgame.server.cards;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SoulCard extends RoleCard
 {
-	private int	level;
-	private int	race;
+	private int				level;
+	private int				race;
+	private List< String >	skillList;
 
 	public SoulCard()
 	{
 		super();
+		skillList = new ArrayList< String >();
 	}
 
 	public SoulCard( String id )
@@ -35,6 +40,11 @@ public class SoulCard extends RoleCard
 		this.race = race;
 	}
 
+	public List< String > getSkillList()
+	{
+		return skillList;
+	}
+
 	public void loadInfo()
 	{
 		super.loadInfo();
@@ -44,6 +54,10 @@ public class SoulCard extends RoleCard
 		{
 			level = param.level;
 			race = param.race;
+			for ( int i = 0; i < param.skillList.size(); i++ )
+			{
+				skillList.add( param.skillList.get( i ) );
+			}
 		}
 	}
 

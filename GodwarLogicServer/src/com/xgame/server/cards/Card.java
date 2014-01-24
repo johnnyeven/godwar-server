@@ -1,6 +1,5 @@
 package com.xgame.server.cards;
 
-import com.xgame.server.common.CardParameterManager;
 
 public class Card
 {
