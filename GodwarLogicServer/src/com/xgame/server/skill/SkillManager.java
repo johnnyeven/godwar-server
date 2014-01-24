@@ -5,8 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,11 +23,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.xgame.server.cards.SoulCard;
+import com.xgame.server.logic.Player;
+
 public class SkillManager
 {
+	ScriptEngineManager						factory	= new ScriptEngineManager();
 	private Map< String, SkillParameter >	scriptList;
-	private static Log						log	= LogFactory
-														.getLog( SkillManager.class );
+	private static Log						log		= LogFactory
+															.getLog( SkillManager.class );
 
 	private SkillManager()
 	{
@@ -30,7 +39,7 @@ public class SkillManager
 	}
 
 	public void initialize() throws ParserConfigurationException, SAXException,
-			IOException
+			IOException, ScriptException
 	{
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
@@ -41,6 +50,9 @@ public class SkillManager
 		Node node;
 		NodeList children;
 		Node child;
+		Reader reader;
+		ScriptEngine engine;
+		Invocable inv;
 		SkillParameter parameter = new SkillParameter();
 
 		log.info( "[InitSkill] 初始化技能" );
@@ -70,8 +82,11 @@ public class SkillManager
 				}
 				else if ( child.getNodeName() == "script" )
 				{
-					parameter.script = new FileReader( child.getTextContent()
-							.trim() );
+					reader = new FileReader( child.getTextContent().trim() );
+					engine = factory.getEngineByName( "JavaScript" );
+					engine.eval( reader );
+					inv = (Invocable) engine;
+					parameter.script = inv.getInterface( IScript.class );
 				}
 
 				if ( parameter.id != null && parameter.level > 0
@@ -105,6 +120,23 @@ public class SkillManager
 		return null;
 	}
 
+	public List< AttackInfo > execute( Player attacker, Player defender,
+			String skillId, SoulCard attackerCard, SoulCard defenderCard )
+			throws ScriptException
+	{
+		if ( scriptList.containsKey( skillId ) )
+		{
+			SkillParameter skill = scriptList.get( skillId );
+			if ( skill != null && skill.script != null )
+			{
+				List< AttackInfo > info = skill.script.attack( skillId, attacker,
+						defender, attackerCard, defenderCard );
+				return info;
+			}
+		}
+		return null;
+	}
+
 	public static SkillManager getInstance()
 	{
 		return ScriptManagerHolder.instance;
@@ -114,52 +146,5 @@ public class SkillManager
 	{
 		private static SkillManager	instance	= new SkillManager();
 	}
-
-	// public static void main( String[] args )
-	// {
-	// ScriptEngineManager factory = new ScriptEngineManager();
-	// ScriptEngine engine = factory.getEngineByName( "JavaScript" );
-	// Room room = new Room();
-	// Attacker att1 = new Attacker();
-	// att1.setDef( 75 );
-	// Attacker att2 = new Attacker();
-	// att2.setDef( 98 );
-	// Attacker att3 = new Attacker();
-	// att3.setDef( 45 );
-	// Attacker att4 = new Attacker();
-	// att4.setDef( 435345 );
-	// room.add( att1 );
-	// room.add( att2 );
-	// room.add( att3 );
-	// room.add( att4 );
-	// // engine.put("attacker", att1);
-	// // engine.put("room", room);
-	// Reader r;
-	// try
-	// {
-	// r = new FileReader( "test.js" );
-	// }
-	// catch ( FileNotFoundException e1 )
-	// {
-	// e1.printStackTrace();
-	// return;
-	// }
-	//
-	// try
-	// {
-	// engine.eval( r );
-	// Invocable inv = (Invocable) engine;
-	// IScript s = inv.getInterface( IScript.class );
-	// List< AttackLog > log = s.attackArea( att1, room );
-	// for ( int i = 0; i < log.size(); i++ )
-	// {
-	// System.out.println( log.get( i ).def );
-	// }
-	// }
-	// catch ( ScriptException e )
-	// {
-	// e.printStackTrace();
-	// }
-	// }
 
 }

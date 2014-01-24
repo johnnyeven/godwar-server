@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.TimerTask;
 
+import javax.script.ScriptException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -158,7 +159,7 @@ public class LogicServer
 			CardParameterManager.getInstance().initialize();
 			SkillManager.getInstance().initialize();
 		}
-		catch ( ParserConfigurationException | SAXException | IOException e )
+		catch ( ParserConfigurationException | SAXException | IOException | ScriptException e )
 		{
 			e.printStackTrace();
 		}

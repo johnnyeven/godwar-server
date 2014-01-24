@@ -36,6 +36,7 @@ public class CommandCenter
 		Long longVal;
 		Double doubleVal;
 		Float floatVal;
+		byte byteVal;
 		for ( int i = 0; i < pack.parameter.size(); i++ )
 		{
 			PackageItem item = pack.parameter.get( i );
@@ -97,6 +98,15 @@ public class CommandCenter
 				buffer.putFloat( floatVal );
 				dataLength += 4;
 			}
+			else if ( item.item instanceof Boolean )
+			{
+				buffer.put( (byte) EnumProtocol.TYPE_BOOL );
+				dataLength += 1;
+
+				byteVal = (byte) ( (boolean) item.item ? 0x1 : 0x0 );
+				buffer.put( byteVal );
+				dataLength += 1;
+			}
 		}
 		long timestamp = new Date().getTime();
 		buffer.putLong( timestamp );
@@ -124,5 +134,4 @@ public class CommandCenter
 			ServerPackagePool.getInstance().returnObject( pack );
 		}
 	}
-
 }

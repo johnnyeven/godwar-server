@@ -78,22 +78,22 @@ public class ProtocolChangeFormation implements IProtocol
 			Player player = session.getPlayer();
 			String guid = player.getGuid().toString();
 			int position = Integer.MIN_VALUE;
-			if ( player.getCardDefenser().getId() == cardOut )
+			if ( player.getCardDefenser().getId().equals( cardOut ) )
 			{
 				position = 0;
 				player.setCardDefenser( cardIn );
 			}
-			else if ( player.getCardAttacker1().getId() == cardOut )
+			else if ( player.getCardAttacker1().getId().equals( cardOut ) )
 			{
 				position = 1;
 				player.setCardAttacker1( cardIn );
 			}
-			else if ( player.getCardAttacker2().getId() == cardOut )
+			else if ( player.getCardAttacker2().getId().equals( cardOut ) )
 			{
 				position = 2;
 				player.setCardAttacker2( cardIn );
 			}
-			else if ( player.getCardAttacker3().getId() == cardOut )
+			else if ( player.getCardAttacker3().getId().equals( cardOut ) )
 			{
 				position = 3;
 				player.setCardAttacker3( cardIn );

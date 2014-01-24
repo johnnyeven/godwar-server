@@ -87,6 +87,8 @@ public class RoleCard extends Card implements IBattlable
 
 	public void setHealth( int health )
 	{
+		health = Math.min( healthMax, health );
+		health = Math.max( 0, health );
 		this.health = health;
 	}
 
@@ -97,7 +99,12 @@ public class RoleCard extends Card implements IBattlable
 
 	public void setHealthMax( int healthMax )
 	{
+		healthMax = Math.max( 0, healthMax );
 		this.healthMax = healthMax;
+		if ( healthMax < health )
+		{
+			setHealth( healthMax );
+		}
 	}
 
 	public int getLastAttack()
