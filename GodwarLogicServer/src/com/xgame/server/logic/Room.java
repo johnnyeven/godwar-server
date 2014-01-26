@@ -32,6 +32,7 @@ public abstract class Room
 
 	protected Player				owner;
 	protected List< Player >		playerList;
+	protected Map< String, Player >	playerGuidMap;
 	protected int					startPosition;
 	protected Map< Player, Card >	heroMap;
 	protected RoomStatus			status;
@@ -54,6 +55,7 @@ public abstract class Room
 			playerGuidList = new ArrayList< String >();
 			heroCardIdMap = new HashMap< String, String >();
 			playerList = new ArrayList< Player >();
+			playerGuidMap = new HashMap< String, Player >();
 			heroMap = new HashMap< Player, Card >();
 			createdTime = new Date().getTime();
 		}
@@ -71,9 +73,9 @@ public abstract class Room
 	abstract public Boolean hasPlayerGuid( String guid );
 
 	abstract public void start();
-	
+
 	abstract public void startRound();
-	
+
 	abstract public void step();
 
 	public Boolean addHeroCardId( String guid, String id )
@@ -118,12 +120,14 @@ public abstract class Room
 			if ( playerList.get( i ) == null )
 			{
 				playerList.set( i, p );
+				playerGuidMap.put( p.getGuid().toString(), p );
 
 				noticePlayerJoin( p );
 				return true;
 			}
 		}
 		playerList.add( p );
+		playerGuidMap.put( p.getGuid().toString(), p );
 
 		noticePlayerJoin( p );
 		return true;
@@ -135,6 +139,7 @@ public abstract class Room
 		if ( index >= 0 )
 		{
 			playerList.remove( index );
+			playerGuidMap.remove( p.getGuid().toString() );
 
 			Player player;
 			Iterator< Player > it = playerList.iterator();
@@ -165,6 +170,7 @@ public abstract class Room
 		currentPlayer = null;
 
 		playerList.clear();
+		playerGuidMap.clear();
 		heroMap.clear();
 		peopleCount = 0;
 	}
@@ -240,6 +246,11 @@ public abstract class Room
 		return playerList;
 	}
 
+	public Map< String, Player > getPlayerGuidMap()
+	{
+		return playerGuidMap;
+	}
+
 	public int getStartPosition()
 	{
 		return startPosition;
@@ -247,7 +258,7 @@ public abstract class Room
 
 	public void setStartPosition( int startPosition, int group )
 	{
-		if(group > 1)
+		if ( group > 1 )
 		{
 			startPosition += peopleCount / 2;
 		}
@@ -333,6 +344,7 @@ public abstract class Room
 	{
 		removeAllPlayer();
 		playerList = null;
+		playerGuidMap = null;
 		heroMap = null;
 	}
 }

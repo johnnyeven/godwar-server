@@ -354,12 +354,13 @@ public class Player
 			Card card = handMap.get( cardDefenser );
 			if ( card instanceof SoulCard )
 			{
-				this.cardDefenser = (SoulCard) card;
+				this.cardDefenser = ( SoulCard ) card;
 			}
 			else
 			{
-				//TODO 报错
-				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardDefenser );
+				// TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = "
+						+ cardDefenser );
 			}
 		}
 
@@ -382,12 +383,13 @@ public class Player
 			Card card = handMap.get( cardAttacker1 );
 			if ( card instanceof SoulCard )
 			{
-				this.cardAttacker1 = (SoulCard) card;
+				this.cardAttacker1 = ( SoulCard ) card;
 			}
 			else
 			{
-				//TODO 报错
-				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardAttacker1 );
+				// TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = "
+						+ cardAttacker1 );
 			}
 		}
 
@@ -410,12 +412,13 @@ public class Player
 			Card card = handMap.get( cardAttacker2 );
 			if ( card instanceof SoulCard )
 			{
-				this.cardAttacker2 = (SoulCard) card;
+				this.cardAttacker2 = ( SoulCard ) card;
 			}
 			else
 			{
-				//TODO 报错
-				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardAttacker2 );
+				// TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = "
+						+ cardAttacker2 );
 			}
 		}
 
@@ -438,12 +441,13 @@ public class Player
 			Card card = handMap.get( cardAttacker3 );
 			if ( card instanceof SoulCard )
 			{
-				this.cardAttacker3 = (SoulCard) card;
+				this.cardAttacker3 = ( SoulCard ) card;
 			}
 			else
 			{
-				//TODO 报错
-				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = " + cardAttacker3 );
+				// TODO 报错
+				log.error( "CardDefenser不存在于手牌，或者指定的CardDefenser不是英灵卡牌, Id = "
+						+ cardAttacker3 );
 			}
 		}
 
@@ -452,6 +456,48 @@ public class Player
 		{
 			isDeploy = true;
 		}
+	}
+
+	public SoulCard getFormationCard( String cardId )
+	{
+		if ( cardDefenser.getId().equals( cardId ) )
+		{
+			return cardDefenser;
+		}
+		else if ( cardAttacker1.getId().equals( cardId ) )
+		{
+			return cardAttacker1;
+		}
+		else if ( cardAttacker2.getId().equals( cardId ) )
+		{
+			return cardAttacker2;
+		}
+		else if ( cardAttacker3.getId().equals( cardId ) )
+		{
+			return cardAttacker3;
+		}
+		return null;
+	}
+
+	public int getFormationCardPosition( String cardId )
+	{
+		if ( cardDefenser.getId().equals( cardId ) )
+		{
+			return 0;
+		}
+		else if ( cardAttacker1.getId().equals( cardId ) )
+		{
+			return 1;
+		}
+		else if ( cardAttacker2.getId().equals( cardId ) )
+		{
+			return 2;
+		}
+		else if ( cardAttacker3.getId().equals( cardId ) )
+		{
+			return 3;
+		}
+		return -1;
 	}
 
 	public boolean isDeploy()

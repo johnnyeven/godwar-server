@@ -2,6 +2,7 @@ package com.xgame.server.common.protocol;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 import javax.script.ScriptException;
 
@@ -29,8 +30,8 @@ public class ProtocolSpell implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = (ProtocolPackage) param1;
-		GameSession session = (GameSession) param2;
+		ProtocolPackage parameter = ( ProtocolPackage ) param1;
+		GameSession session = ( GameSession ) param2;
 
 		String attackerCard = null;
 		String defenderGuid = null;
@@ -101,31 +102,11 @@ public class ProtocolSpell implements IProtocol
 		{
 			Player player = session.getPlayer();
 			Room room = player.getCurrentRoom();
-			SoulCard card;
+			SoulCard card = player.getFormationCard( attackerCard );
 			List< AttackInfo > info = null;
-			if ( player.getCardDefenser().getId().equals( attackerCard ) )
+			if ( card != null )
 			{
-				card = player.getCardDefenser();
 				info = soulCardSpell( player, card, skillId, defenderGuid );
-			}
-			else if ( player.getCardAttacker1().getId().equals( attackerCard ) )
-			{
-				card = player.getCardAttacker1();
-				info = soulCardSpell( player, card, skillId, defenderGuid );
-			}
-			else if ( player.getCardAttacker2().getId().equals( attackerCard ) )
-			{
-				card = player.getCardAttacker2();
-				info = soulCardSpell( player, card, skillId, defenderGuid );
-			}
-			else if ( player.getCardAttacker3().getId().equals( attackerCard ) )
-			{
-				card = player.getCardAttacker3();
-				info = soulCardSpell( player, card, skillId, defenderGuid );
-			}
-			else if ( player.getHeroCard().getId().equals( attackerCard ) )
-			{
-
 			}
 			applyAttackInfo( skillId, info, room );
 		}
@@ -179,6 +160,8 @@ public class ProtocolSpell implements IProtocol
 			SoulCard attackerCard = null;
 			SoulCard defenderCard = null;
 			String guid = null;
+			int position = Integer.MIN_VALUE;
+
 			ServerPackage pack = ServerPackagePool.getInstance().getObject();
 			pack.success = EnumProtocol.ACK_CONFIRM;
 			pack.protocolId = EnumProtocol.BATTLEROOM_ROUND_ACTION_SPELL;
@@ -187,7 +170,8 @@ public class ProtocolSpell implements IProtocol
 			{
 				info = list.get( i );
 
-				pack.parameter.add( new PackageItem( info.skillId.length(), info.skillId ) );
+				pack.parameter.add( new PackageItem( info.skillId.length(),
+						info.skillId ) );
 				if ( info.attacker != null )
 				{
 					attacker = info.attacker;
@@ -211,23 +195,31 @@ public class ProtocolSpell implements IProtocol
 
 				if ( info.attackerCard instanceof SoulCard )
 				{
-					attackerCard = (SoulCard) info.attackerCard;
+					attackerCard = ( SoulCard ) info.attackerCard;
 					pack.parameter.add( new PackageItem( attackerCard.getId()
 							.length(), attackerCard.getId() ) );
+					position = attacker.getFormationCardPosition( attackerCard
+							.getId() );
+					pack.parameter.add( new PackageItem( 4, position ) );
 				}
 				else
 				{
 					pack.parameter.add( new PackageItem( 0, "" ) );
+					pack.parameter.add( new PackageItem( 4, -1 ) );
 				}
 				if ( info.defenderCard instanceof SoulCard )
 				{
-					defenderCard = (SoulCard) info.defenderCard;
+					defenderCard = ( SoulCard ) info.defenderCard;
 					pack.parameter.add( new PackageItem( defenderCard.getId()
 							.length(), defenderCard.getId() ) );
+					position = defender.getFormationCardPosition( defenderCard
+							.getId() );
+					pack.parameter.add( new PackageItem( 4, position ) );
 				}
 				else
 				{
 					pack.parameter.add( new PackageItem( 0, "" ) );
+					pack.parameter.add( new PackageItem( 4, -1 ) );
 				}
 
 				if ( attackerCard != null )
