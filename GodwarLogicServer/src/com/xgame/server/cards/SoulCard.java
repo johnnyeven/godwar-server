@@ -49,7 +49,7 @@ public class SoulCard extends RoleCard
 	{
 		super.loadInfo();
 
-		SoulCardParameter param = (SoulCardParameter) parameter;
+		SoulCardParameter param = ( SoulCardParameter ) parameter;
 		if ( param != null )
 		{
 			level = param.level;

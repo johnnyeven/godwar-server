@@ -1,12 +1,12 @@
 package com.xgame.server.cards;
 
-
 public class Card
 {
 	private String			id;
 	private String			name;
 	private int				energy;
 	private String			series;
+	private boolean			isBack	= false;
 	protected CardParameter	parameter;
 
 	public Card()
@@ -60,6 +60,16 @@ public class Card
 	public int getEnergy()
 	{
 		return energy;
+	}
+
+	public boolean isBack()
+	{
+		return isBack;
+	}
+
+	public void setBack( boolean isBack )
+	{
+		this.isBack = isBack;
 	}
 
 	public String toString()
