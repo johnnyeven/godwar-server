@@ -30,8 +30,8 @@ public class ProtocolSpell implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = ( ProtocolPackage ) param1;
-		GameSession session = ( GameSession ) param2;
+		ProtocolPackage parameter = (ProtocolPackage) param1;
+		GameSession session = (GameSession) param2;
 
 		String attackerCard = null;
 		String defenderGuid = null;
@@ -106,14 +106,20 @@ public class ProtocolSpell implements IProtocol
 			List< AttackInfo > info = null;
 			if ( card != null )
 			{
-				info = soulCardSpell( player, card, skillId, defenderGuid );
+				Player defender = null;
+				if ( !defenderGuid.equals( "" ) )
+				{
+					Map< String, Player > guidMap = room.getPlayerGuidMap();
+					defender = guidMap.get( defenderGuid );
+				}
+				info = soulCardSpell( player, card, skillId, defender );
 			}
 			applyAttackInfo( skillId, info, room );
 		}
 	}
 
 	private List< AttackInfo > soulCardSpell( Player attacker,
-			SoulCard attackerCard, String skillId, String defenderGuid )
+			SoulCard attackerCard, String skillId, Player defender )
 	{
 		List< String > list;
 		SkillParameter skill;
@@ -131,6 +137,16 @@ public class ProtocolSpell implements IProtocol
 					{
 						info = SkillManager.getInstance().execute( attacker,
 								attacker, skillId, attackerCard, attackerCard );
+						return info;
+					}
+					else if ( skill.target.equals( "enemy" ) )
+					{
+						int position = attacker
+								.getFormationCardPosition( attackerCard.getId() );
+						SoulCard defenderCard = defender
+								.getFormationCard( position );
+						info = SkillManager.getInstance().execute( attacker,
+								defender, skillId, attackerCard, defenderCard );
 						return info;
 					}
 				}
@@ -195,7 +211,7 @@ public class ProtocolSpell implements IProtocol
 
 				if ( info.attackerCard instanceof SoulCard )
 				{
-					attackerCard = ( SoulCard ) info.attackerCard;
+					attackerCard = (SoulCard) info.attackerCard;
 					pack.parameter.add( new PackageItem( attackerCard.getId()
 							.length(), attackerCard.getId() ) );
 					position = attacker.getFormationCardPosition( attackerCard
@@ -218,7 +234,7 @@ public class ProtocolSpell implements IProtocol
 				}
 				if ( info.defenderCard instanceof SoulCard )
 				{
-					defenderCard = ( SoulCard ) info.defenderCard;
+					defenderCard = (SoulCard) info.defenderCard;
 					pack.parameter.add( new PackageItem( defenderCard.getId()
 							.length(), defenderCard.getId() ) );
 					position = defender.getFormationCardPosition( defenderCard

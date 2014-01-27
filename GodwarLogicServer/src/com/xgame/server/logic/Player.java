@@ -354,7 +354,7 @@ public class Player
 			Card card = handMap.get( cardDefenser );
 			if ( card instanceof SoulCard )
 			{
-				this.cardDefenser = ( SoulCard ) card;
+				this.cardDefenser = (SoulCard) card;
 			}
 			else
 			{
@@ -383,7 +383,7 @@ public class Player
 			Card card = handMap.get( cardAttacker1 );
 			if ( card instanceof SoulCard )
 			{
-				this.cardAttacker1 = ( SoulCard ) card;
+				this.cardAttacker1 = (SoulCard) card;
 			}
 			else
 			{
@@ -412,7 +412,7 @@ public class Player
 			Card card = handMap.get( cardAttacker2 );
 			if ( card instanceof SoulCard )
 			{
-				this.cardAttacker2 = ( SoulCard ) card;
+				this.cardAttacker2 = (SoulCard) card;
 			}
 			else
 			{
@@ -441,7 +441,7 @@ public class Player
 			Card card = handMap.get( cardAttacker3 );
 			if ( card instanceof SoulCard )
 			{
-				this.cardAttacker3 = ( SoulCard ) card;
+				this.cardAttacker3 = (SoulCard) card;
 			}
 			else
 			{
@@ -456,6 +456,27 @@ public class Player
 		{
 			isDeploy = true;
 		}
+	}
+
+	public SoulCard getFormationCard( int position )
+	{
+		if ( position == 0 )
+		{
+			return cardDefenser;
+		}
+		else if ( position == 1 )
+		{
+			return cardAttacker1;
+		}
+		else if ( position == 2 )
+		{
+			return cardAttacker2;
+		}
+		else if ( position == 3 )
+		{
+			return cardAttacker3;
+		}
+		return null;
 	}
 
 	public SoulCard getFormationCard( String cardId )

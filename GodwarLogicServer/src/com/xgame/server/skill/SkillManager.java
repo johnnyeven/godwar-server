@@ -53,6 +53,7 @@ public class SkillManager
 		Reader reader;
 		ScriptEngine engine;
 		Invocable inv;
+		String path;
 		SkillParameter parameter = new SkillParameter();
 
 		log.info( "[InitSkill] 初始化技能" );
@@ -82,11 +83,15 @@ public class SkillManager
 				}
 				else if ( child.getNodeName() == "script" )
 				{
-					reader = new FileReader( child.getTextContent().trim() );
-					engine = factory.getEngineByName( "JavaScript" );
-					engine.eval( reader );
-					inv = (Invocable) engine;
-					parameter.script = inv.getInterface( IScript.class );
+					path = child.getTextContent();
+					if(path != null && !path.equals( "" ))
+					{
+						reader = new FileReader( path.trim() );
+						engine = factory.getEngineByName( "JavaScript" );
+						engine.eval( reader );
+						inv = (Invocable) engine;
+						parameter.script = inv.getInterface( IScript.class );
+					}
 				}
 
 				if ( parameter.id != null && parameter.level > 0
