@@ -8,12 +8,12 @@ function attack(skillId, attacker, defender, attackerCard, defenderCard)
 	var attack = 35;
 	var minAttack = attack * d;
 	var maxAttack = attack;
-	var defense = defender.getMdef();
+	var defense = defenderCard.getMdef();
 	var pdPercent = k * defense / (m + k * defense);
-	// var rand = new java.util.Random();
-	// var randNum = rand.nextFloat();
+	var rand = new java.util.Random();
+	var randNum = rand.nextFloat();
 	var damage = 6;
-	//var damage = ((maxAttack - minAttack) * randNum + minAttack) * levelFix * (1 - pdPercent);
+	var damage = ((maxAttack - minAttack) * randNum + minAttack) * levelFix * (1 - pdPercent);
 
 	var logList = new java.util.ArrayList();
 	var log = new Packages.com.xgame.server.skill.AttackInfo();
