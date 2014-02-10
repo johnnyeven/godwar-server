@@ -20,6 +20,8 @@ function attack(skillId, attacker, defender, attackerCard, defenderCard)
 	log.skillId = skillId;
 	log.attacker = attacker;
 	log.attackerCard = attackerCard;
+	log.attackerCardUp = true;
+	log.attackerCardDisabled = false;
 	log.defender = defender;
 	log.defenderCard = defenderCard;
 	log.defenderHealthChange = -damage;

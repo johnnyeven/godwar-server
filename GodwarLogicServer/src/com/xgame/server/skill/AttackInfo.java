@@ -10,15 +10,19 @@ public class AttackInfo
 	public Player defender;
 	
 	public Card attackerCard;
+	public boolean attackerCardUp = false;
+	public boolean attackerCardDisabled = true;
 	public Card defenderCard;
+	public boolean defenderCardUp = false;
+	public boolean defenderCardDisabled = true;
 	
 	public int attackerAttackChange;
 	public int attackerDefChange;
 	public int attackerMdefChange;
 	public int attackerHealthChange;
 	public int attackerHealthMaxChange;
-	public Boolean attackerIsStatus = false;
-	public int attackerRemainRound;
+	public Boolean attackerIsStatus = false;		//状态标记
+	public int attackerRemainRound;					//状态持续时间
 	
 	public int defenderAttackChange;
 	public int defenderDefChange;

@@ -217,13 +217,21 @@ public class ProtocolSpell implements IProtocol
 					position = attacker.getFormationCardPosition( attackerCard
 							.getId() );
 					pack.parameter.add( new PackageItem( 4, position ) );
-					if ( info.defenderCard == null )
+					if(info.attackerCardUp)
 					{
-						pack.parameter.add( new PackageItem( 1, false ) );
+						pack.parameter.add( new PackageItem( 1, true ) );
 					}
 					else
 					{
+						pack.parameter.add( new PackageItem( 1, false ) );
+					}
+					if(info.attackerCardDisabled)
+					{
 						pack.parameter.add( new PackageItem( 1, true ) );
+					}
+					else
+					{
+						pack.parameter.add( new PackageItem( 1, false ) );
 					}
 				}
 				else
@@ -240,7 +248,22 @@ public class ProtocolSpell implements IProtocol
 					position = defender.getFormationCardPosition( defenderCard
 							.getId() );
 					pack.parameter.add( new PackageItem( 4, position ) );
-					pack.parameter.add( new PackageItem( 1, false ) );
+					if(info.defenderCardUp)
+					{
+						pack.parameter.add( new PackageItem( 1, true ) );
+					}
+					else
+					{
+						pack.parameter.add( new PackageItem( 1, false ) );
+					}
+					if(info.defenderCardDisabled)
+					{
+						pack.parameter.add( new PackageItem( 1, true ) );
+					}
+					else
+					{
+						pack.parameter.add( new PackageItem( 1, false ) );
+					}
 				}
 				else
 				{
