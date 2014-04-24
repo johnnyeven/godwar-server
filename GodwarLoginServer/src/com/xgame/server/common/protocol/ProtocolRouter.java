@@ -7,7 +7,7 @@ public class ProtocolRouter
 	private static ProtocolRouter		instance		= null;
 	private static boolean				allowInstance	= false;
 
-	private HashMap< Short, Class< ? >>	protocolList;
+	private HashMap< Integer, Class< ? >>	protocolList;
 
 	public ProtocolRouter() throws Exception
 	{
@@ -15,7 +15,7 @@ public class ProtocolRouter
 		{
 			throw new Exception();
 		}
-		protocolList = new HashMap< Short, Class< ? >>();
+		protocolList = new HashMap< Integer, Class< ? >>();
 	}
 
 	public static ProtocolRouter getInstance()
@@ -36,12 +36,12 @@ public class ProtocolRouter
 		return instance;
 	}
 
-	public void Bind( Short key, Class< ? > value )
+	public void Bind( Integer key, Class< ? > value )
 	{
 		protocolList.put( key, value );
 	}
 
-	public void UnBind( Short key )
+	public void UnBind( Integer key )
 	{
 		if ( protocolList.containsKey( key ) )
 		{
@@ -49,12 +49,12 @@ public class ProtocolRouter
 		}
 	}
 
-	public boolean HasBind( Short key )
+	public boolean HasBind( Integer key )
 	{
 		return protocolList.containsKey( key );
 	}
 
-	public void Trigger( Short key, Object param1 )
+	public void Trigger( Integer key, Object param1 )
 	{
 		if ( protocolList.containsKey( key ) )
 		{

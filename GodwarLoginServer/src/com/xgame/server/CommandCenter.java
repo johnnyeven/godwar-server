@@ -20,9 +20,9 @@ public class CommandCenter
 		ByteBuffer buffer = ByteBuffer.allocate( 1024 );
 		buffer.position( 4 );
 
-		buffer.putShort( pack.protocolId );
+		buffer.putInt( pack.protocolId );
 		buffer.put( (byte) ( pack.success ) );
-		dataLength += 3;
+		dataLength += 5;
 
 		String strVal;
 		Integer intVal;

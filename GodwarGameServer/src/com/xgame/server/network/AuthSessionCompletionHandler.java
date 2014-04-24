@@ -39,7 +39,7 @@ public class AuthSessionCompletionHandler implements
 		ByteBuffer buffer = arg1.buffer;
 		buffer.flip();
 		int packageLength = buffer.getInt();
-		short protocolId = buffer.getShort();
+		int protocolId = buffer.getInt();
 
 		if ( protocolId == EnumProtocol.INFO_BIND_SESSION )
 		{

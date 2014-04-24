@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ServerPackage
 {
 	public int success;
-	public short protocolId;
+	public int protocolId;
 	public ArrayList<PackageItem> parameter;
 	
 	public ServerPackage()

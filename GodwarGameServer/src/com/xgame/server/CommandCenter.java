@@ -26,9 +26,9 @@ public class CommandCenter
 		ByteBuffer buffer = BufferPool.getInstance().getBuffer();
 		buffer.position( 4 );
 
-		buffer.putShort( pack.protocolId );
+		buffer.putInt( pack.protocolId );
 		buffer.put( (byte) ( pack.success ) );
-		dataLength += 3;
+		dataLength += 5;
 
 		String strVal;
 		Integer intVal;

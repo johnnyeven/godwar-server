@@ -24,7 +24,7 @@ public class ReadCompletionHandler implements
 			ByteBuffer buffer = attachment.getReadBuffer();
 			buffer.flip();
 			buffer.getInt();
-			short protocolId = buffer.getShort();
+			int protocolId = buffer.getInt();
 
 			ProtocolPackage parameter = new ProtocolPackage();
 			parameter.protocolId = protocolId;

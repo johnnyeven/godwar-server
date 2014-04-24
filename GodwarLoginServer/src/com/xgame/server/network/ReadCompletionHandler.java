@@ -28,7 +28,7 @@ public class ReadCompletionHandler implements
 		{
 			attachment.buffer.flip();
 			attachment.buffer.getInt();
-			short protocolId = attachment.buffer.getShort();
+			int protocolId = attachment.buffer.getInt();
 
 			ProtocolParam parameter = new ProtocolParam();
 			parameter.client = attachment.channel;
