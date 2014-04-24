@@ -75,9 +75,9 @@ public class ProtocolRequestLogin implements IProtocol
 		{
 			log.info( "[Login] Name = " + name + ", Pass = " + password );
 
-			password = encode( "MD5", password );
-			String sql = "select * from pulse_account where account_name='"
-					+ name + "' and account_pass='" + password + "'";
+			password = encode("SHA-1", encode( "MD5", password ));
+			String sql = "select * from accounts where name='"
+					+ name + "' and pass='" + password + "'";
 			try
 			{
 				PreparedStatement ps = DatabaseRouter.getInstance()
@@ -85,7 +85,7 @@ public class ProtocolRequestLogin implements IProtocol
 				ResultSet rs = ps.executeQuery();
 				if(rs.next())
 				{
-					long id = rs.getLong( "GUID" );
+					long id = rs.getLong( "id" );
 
 					ServerPackage pack = ServerPackagePool.getInstance()
 							.getObject();

@@ -1,0 +1,11 @@
+<map>
+  <id>1002</id>
+  <width>7040</width>
+  <height>6720</height>
+  <tileNumWidth>20</tileNumWidth>
+  <tileNumHeight>20</tileNumHeight>
+  <blockNumWidth>30</blockNumWidth>
+  <blockNumHeight>30</blockNumHeight>
+  <startTileX>90</startTileX>
+  <startTileY>80</startTileY>
+</map>

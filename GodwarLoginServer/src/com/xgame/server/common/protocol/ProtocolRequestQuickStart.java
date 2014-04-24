@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
@@ -54,15 +55,15 @@ public class ProtocolRequestQuickStart implements IProtocol
 
 		if ( gameId != Integer.MIN_VALUE )
 		{
-			String guid = getGuid().substring( 0, 8 );
+			String guid = getGuid().substring( 0, 12 );
 			String name = "G" + guid;
-			String pass = encode( "MD5", guid );
+			String pass = encode("SHA-1", encode( "MD5", guid ));
 			log.info( "[QuickStart] Name=" + name + ", Pass=" + pass );
 
 			try
 			{
-				String sql = "insert into pulse_account(account_name, account_pass) values ('"
-						+ name + "', '" + pass + "')";
+				String sql = "insert into accounts(name, pass, email, regtime, lasttime) values ('"
+						+ name + "', '" + pass + "', '', " + (new Date().getTime() / 1000) + ", 0)";
 				PreparedStatement st = DatabaseRouter
 						.getInstance()
 						.getDbConnection()

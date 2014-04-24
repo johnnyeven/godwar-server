@@ -13,9 +13,9 @@ public class DatabaseRouter
 	
 	private static final String DRIVER = "com.mysql.jdbc.Driver";
 	private static final String CONNECT_STRING = "jdbc:mysql://localhost/";
-	private static final String DATABASE_NAME = "pulse_platform_db";
-	private static final String USERNAME = "root";
-	private static final String PASSWORD = "84@41%%wi96^4";
+	private static final String DATABASE_NAME = "profzone_accountdb";
+	private static final String USERNAME = "godwar_web";
+	private static final String PASSWORD = "2GpnT5vfRyQ4GfmY";
 	
 	public DatabaseRouter()
 	{
@@ -66,7 +66,7 @@ public class DatabaseRouter
 			if(dbConnection.isClosed())
 			{
 				Class.forName(DRIVER);
-				dbConnection = DriverManager.getConnection(CONNECT_STRING + DATABASE_NAME + "?useUnicode=true&characterEncoding=UTF-8", USERNAME, PASSWORD);
+				dbConnection = DriverManager.getConnection(CONNECT_STRING + DATABASE_NAME + "?autoReconnect=true&failOverReadOnly=false&useUnicode=true&characterEncoding=UTF-8", USERNAME, PASSWORD);
 			}
 		}
 		catch ( SQLException | ClassNotFoundException e )

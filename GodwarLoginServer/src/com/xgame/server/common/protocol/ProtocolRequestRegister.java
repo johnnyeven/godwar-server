@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,9 +76,13 @@ public class ProtocolRequestRegister implements IProtocol
 		{
 			log.info( "[Register] Name = " + name + ", Pass = " + password );
 
-			password = encode( "MD5", password );
-			String sql = "insert into pulse_account(account_name, account_pass) values ('"
-					+ name + "', '" + password + "')";
+			password = encode( "SHA-1", encode( "MD5", password ) );
+			String sql = "insert into accounts(name, pass, email, regtime, lasttime) values ('"
+					+ name
+					+ "', '"
+					+ password
+					+ "', '', "
+					+ ( new Date().getTime() / 1000 ) + ", 0)";
 			try
 			{
 				PreparedStatement st = DatabaseRouter
@@ -88,8 +93,8 @@ public class ProtocolRequestRegister implements IProtocol
 				ResultSet rs = st.getGeneratedKeys();
 				rs.next();
 				long insertId = rs.getLong( 1 );
-				
-				initPlayerDatabase(insertId);
+
+				initPlayerDatabase( insertId );
 
 				ServerPackage pack = ServerPackagePool.getInstance()
 						.getObject();
@@ -118,10 +123,10 @@ public class ProtocolRequestRegister implements IProtocol
 			}
 		}
 	}
-	
-	private void initPlayerDatabase(long guid)
+
+	private void initPlayerDatabase( long guid )
 	{
-		
+
 	}
 
 	private String encode( String algorithm, String str )
