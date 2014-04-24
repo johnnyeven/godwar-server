@@ -2,6 +2,9 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP SCHEMA IF EXISTS `profzone_godwarv2_gamedb` ;
+CREATE SCHEMA IF NOT EXISTS `profzone_godwarv2_gamedb` DEFAULT CHARACTER SET utf8 ;
+USE `profzone_godwarv2_gamedb` ;
 
 -- -----------------------------------------------------
 -- Table `profzone_godwarv2_gamedb`.`role`
@@ -10,10 +13,11 @@ DROP TABLE IF EXISTS `profzone_godwarv2_gamedb`.`role` ;
 
 CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`role` (
   `role_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `game_guid` CHAR(36) NOT NULL DEFAULT '',
   `account_id` BIGINT(20) NOT NULL,
   `level` INT NOT NULL DEFAULT 1,
   `nick_name` CHAR(32) NOT NULL DEFAULT '',
-  `role_picrutre` CHAR(16) NOT NULL DEFAULT '',
+  `role_picture` CHAR(16) NOT NULL DEFAULT '',
   `account_cash` BIGINT(20) NOT NULL DEFAULT 0,
   `direction` TINYINT NOT NULL DEFAULT 0,
   `action` TINYINT NOT NULL DEFAULT 0,
@@ -23,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`role` (
   `max_energy` INT NOT NULL DEFAULT 1000,
   `account_lastlogin` BIGINT NOT NULL DEFAULT 0,
   `account_lastlogout` BIGINT NOT NULL DEFAULT 0,
-  `map_id` INT NOT NULL DEFAULT 0,
+  `map_id` INT NOT NULL DEFAULT 1001,
   `x` INT NOT NULL DEFAULT 0,
   `y` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`role_id`),
@@ -90,7 +94,7 @@ DROP TABLE IF EXISTS `profzone_godwarv2_gamedb`.`game_card_group` ;
 
 CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_card_group` (
   `group_id` INT NOT NULL AUTO_INCREMENT,
-  `account_id` BIGINT NOT NULL,
+  `role_id` BIGINT NOT NULL,
   `group_name` CHAR(32) NOT NULL,
   `current` TINYINT NOT NULL DEFAULT 0,
   `card_list` TEXT NOT NULL,
@@ -104,10 +108,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `profzone_godwarv2_gamedb`.`game_card` ;
 
 CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_card` (
-  `account_id` BIGINT NOT NULL,
+  `role_id` BIGINT NOT NULL,
   `card_list` TEXT NOT NULL,
   `hero_card_list` TEXT NOT NULL,
-  PRIMARY KEY (`account_id`))
+  PRIMARY KEY (`role_id`))
 ENGINE = InnoDB;
 
 

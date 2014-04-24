@@ -75,7 +75,7 @@ public class AuthSessionCompletionHandler implements
 			{
 				try
 				{
-					String sql = "SELECT * FROM `pulse_account` WHERE `account_name`='"
+					String sql = "SELECT * FROM `accounts` WHERE `name`='"
 							+ accountName + "'";
 					PreparedStatement st = DatabaseRouter.getInstance()
 							.getConnection( "accountdb" )
@@ -84,7 +84,7 @@ public class AuthSessionCompletionHandler implements
 					long guid = Long.MIN_VALUE;
 					if ( rs.first() )
 					{
-						guid = rs.getLong( "GUID" );
+						guid = rs.getLong( "id" );
 					}
 
 					WorldSession s = new WorldSession( guid, arg1.channel,

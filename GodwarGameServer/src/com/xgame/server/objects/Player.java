@@ -20,6 +20,7 @@ import com.xgame.server.network.WorldSession;
 public class Player extends InteractiveObject
 {
 	private UUID						guid;
+	public long							roleId				= Long.MIN_VALUE;
 	public long							accountId			= Long.MIN_VALUE;
 	public int							level				= 0;
 	public String						name				= "";
@@ -55,39 +56,41 @@ public class Player extends InteractiveObject
 
 	public boolean loadFromDatabase()
 	{
-		if ( accountId == Long.MIN_VALUE )
+		if ( roleId == Long.MIN_VALUE )
 		{
 			log.error( "loadFromDatabase() accountId没有初始化" );
 			return false;
 		}
 		try
 		{
-			String sql = "SELECT * FROM `game_account` WHERE `account_id`="
-					+ accountId;
+			String sql = "SELECT * FROM `role` WHERE `role_id`=" + roleId;
 			PreparedStatement st = DatabaseRouter.getInstance()
 					.getConnection( "gamedb" ).prepareStatement( sql );
 			ResultSet rs = st.executeQuery();
 
 			if ( rs.first() )
 			{
+				accountId = rs.getLong( "account_id" );
 				level = rs.getInt( "level" );
 				name = rs.getString( "nick_name" );
 				accountCash = rs.getLong( "account_cash" );
 				rolePicture = rs.getString( "role_picture" );
-				honor = rs.getInt( "honor" );
-				energy = rs.getInt( "energy" );
-				energyMax = rs.getInt( "max_energy" );
 				direction = rs.getInt( "direction" );
 				action = rs.getInt( "action" );
 				setSpeed( rs.getFloat( "speed" ) );
+				honor = rs.getInt( "honor" );
+				energy = rs.getInt( "energy" );
+				energyMax = rs.getInt( "max_energy" );
+				setMapId( rs.getInt( "map_id" ) );
+				setX( rs.getInt( "x" ) );
+				setY( rs.getInt( "y" ) );
 			}
 			else
 			{
-				log.error( "[loadFromDatabase] 没有找到对应的角色数据 accountId="
-						+ accountId );
+				log.error( "[loadFromDatabase] 没有找到对应的角色数据 roleId=" + roleId );
 				return false;
 			}
-			long accountGuid = rs.getLong( "account_guid" );
+			long accountGuid = rs.getLong( "account_id" );
 			if ( accountGuid != session.getId() )
 			{
 				log.error( "[loadFromDatabase] accountId与WorldSession使用的accountId不匹配" );
@@ -105,15 +108,14 @@ public class Player extends InteractiveObject
 						+ "', ";
 			}
 
-			sql = "UPDATE `game_account` SET " + guidSql
-					+ " `account_lastlogin`=" + new Date().getTime()
-					+ " WHERE `account_id`=" + accountId;
+			sql = "UPDATE `role` SET " + guidSql + " `account_lastlogin`="
+					+ new Date().getTime() + " WHERE `role_id`=" + roleId;
 			st.executeUpdate( sql );
 
 			rs.close();
 
-			sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
-					+ accountId + " AND `current`=1";
+			sql = "SELECT * FROM `game_card_group` WHERE `role_id`=" + roleId
+					+ " AND `current`=1";
 			st = DatabaseRouter.getInstance().getConnection( "gamedb" )
 					.prepareStatement( sql );
 			rs = st.executeQuery();

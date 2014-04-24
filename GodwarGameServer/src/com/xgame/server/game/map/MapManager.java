@@ -5,10 +5,15 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class MapManager
 {
 	private static MapManager		instance		= new MapManager();
 	private HashMap< Integer, Map >	mapContainer	= new HashMap< Integer, Map >();
+	private static Log				log				= LogFactory
+															.getLog( MapManager.class );
 
 	private MapManager()
 	{
@@ -39,6 +44,7 @@ public class MapManager
 			if ( config != null )
 			{
 				m = new Map( id, config );
+				log.info( "Created new Map, id=" + id );
 			}
 			mapContainer.put( id, m );
 		}

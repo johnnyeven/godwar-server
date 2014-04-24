@@ -33,10 +33,10 @@ public class DatabaseRouter
 		configSet = new HashMap< String, DatabaseConfig >();
 		configSet.put( "accountdb", new DatabaseConfig( "accountdb",
 				"com.mysql.jdbc.Driver", "jdbc:mysql://localhost/",
-				"pulse_db_platform", "root", "84@41%%wi96^4" ) );
+				"profzone_accountdb", "godwar_web", "2GpnT5vfRyQ4GfmY" ) );
 		configSet.put( "gamedb", new DatabaseConfig( "accountdb",
 				"com.mysql.jdbc.Driver", "jdbc:mysql://localhost/",
-				"pulse_db_game", "root", "84@41%%wi96^4" ) );
+				"profzone_godwarv2_gamedb", "root", "84@41%%wi96^4" ) );
 
 		connectionSet = new HashMap< String, Connection >();
 

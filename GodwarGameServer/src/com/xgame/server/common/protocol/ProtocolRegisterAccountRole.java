@@ -15,6 +15,7 @@ import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.game.GameServer;
 import com.xgame.server.game.ProtocolPackage;
+import com.xgame.server.game.map.MapManager;
 import com.xgame.server.network.WorldSession;
 import com.xgame.server.objects.ObjectManager;
 import com.xgame.server.objects.Player;
@@ -79,7 +80,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		{
 			try
 			{
-				String sql = "INSERT INTO game_account(account_guid, nick_name)VALUES";
+				String sql = "INSERT INTO role(account_id, nick_name)VALUES";
 				sql += "(" + guid + ", '" + nickName + "')";
 				PreparedStatement st = DatabaseRouter
 						.getInstance()
@@ -93,7 +94,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 
 				// TODO 创建Player对象
 				Player p = PlayerPool.getInstance().getObject();
-				p.accountId = lastInsertId;
+				p.roleId = lastInsertId;
 				p.setChannel( parameter.client );
 				session.setPlayer( p );
 				if ( !p.loadFromDatabase() )
@@ -102,6 +103,13 @@ public class ProtocolRegisterAccountRole implements IProtocol
 					return;
 				}
 				initRoleDatabase( p );
+
+				if ( !MapManager.getInstance().getMap( p.getMapId() ).add( p ) )
+				{
+					log.error( "Map::add() 失败，Player=" + p.name );
+					return;
+				}
+				
 				responseUserData( session );
 
 				ObjectManager.getInstance().addPlayer( p );
@@ -121,8 +129,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		sql += "(" + p.accountId + ", '第一卡组', '')";
 		try
 		{
-			PreparedStatement st = DatabaseRouter
-					.getInstance()
+			PreparedStatement st = DatabaseRouter.getInstance()
 					.getConnection( "gamedb" )
 					.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS );
 			st.executeUpdate();
@@ -131,13 +138,13 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		{
 			e.printStackTrace();
 		}
-		
+
 		sql = "INSERT INTO `game_card`(`account_id`, `card_list`, `hero_card_list`)VALUES";
-		sql += "(" + p.accountId + ", '" + GameServer.initSoulCardConfig + "', '" + GameServer.initHeroCardConfig + "')";
+		sql += "(" + p.accountId + ", '" + GameServer.initSoulCardConfig
+				+ "', '" + GameServer.initHeroCardConfig + "')";
 		try
 		{
-			PreparedStatement st = DatabaseRouter
-					.getInstance()
+			PreparedStatement st = DatabaseRouter.getInstance()
 					.getConnection( "gamedb" )
 					.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS );
 			st.executeUpdate();
@@ -163,6 +170,9 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		pack.parameter.add( new PackageItem( 4, p.energy ) );
 		pack.parameter.add( new PackageItem( p.rolePicture.length(),
 				p.rolePicture ) );
+		pack.parameter.add( new PackageItem( 4, p.getMapId() ) );
+		pack.parameter.add( new PackageItem( 4, p.getX() ) );
+		pack.parameter.add( new PackageItem( 4, p.getY() ) );
 		CommandCenter.send( session.getChannel(), pack );
 	}
 

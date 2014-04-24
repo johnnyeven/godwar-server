@@ -12,6 +12,7 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.game.ProtocolPackage;
+import com.xgame.server.game.map.MapManager;
 import com.xgame.server.network.WorldSession;
 import com.xgame.server.objects.ObjectManager;
 import com.xgame.server.objects.Player;
@@ -51,7 +52,7 @@ public class ProtocolRequestAccountRole implements IProtocol
 		{
 			try
 			{
-				String sql = "SELECT *  FROM `game_account` WHERE `account_guid` = "
+				String sql = "SELECT *  FROM `role` WHERE `account_id` = "
 						+ guid;
 				PreparedStatement st = DatabaseRouter.getInstance()
 						.getConnection( "gamedb" ).prepareStatement( sql );
@@ -60,13 +61,20 @@ public class ProtocolRequestAccountRole implements IProtocol
 				{
 					// TODO 创建Player对象
 					Player p = PlayerPool.getInstance().getObject();
-					p.accountId = rs.getLong( "account_id" );
+					p.roleId = rs.getLong( "role_id" );
 					p.setChannel( parameter.client );
 					session.setPlayer( p );
 					if ( !p.loadFromDatabase() )
 					{
 
 					}
+
+					if ( !MapManager.getInstance().getMap( p.getMapId() ).add( p ) )
+					{
+						log.error( "Map::add() 失败，Player=" + p.name );
+						return;
+					}
+					
 					responseUserData( session );
 
 					ObjectManager.getInstance().addPlayer( p );
@@ -106,6 +114,9 @@ public class ProtocolRequestAccountRole implements IProtocol
 		pack.parameter.add( new PackageItem( 4, p.energy ) );
 		pack.parameter.add( new PackageItem( p.rolePicture.length(),
 				p.rolePicture ) );
+		pack.parameter.add( new PackageItem( 4, p.getMapId() ) );
+		pack.parameter.add( new PackageItem( 4, p.getX() ) );
+		pack.parameter.add( new PackageItem( 4, p.getY() ) );
 		CommandCenter.send( session.getChannel(), pack );
 	}
 
