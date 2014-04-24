@@ -52,6 +52,7 @@ public class Player extends InteractiveObject
 	public Player()
 	{
 		guid = UUID.randomUUID();
+		motion = new Motion( this );
 	}
 
 	public boolean loadFromDatabase()

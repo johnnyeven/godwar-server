@@ -56,7 +56,7 @@ public class LogicServerHolderThread implements Runnable
 					pack.setSocketAddress( p.getSocketAddress() );
 					ByteBuffer bf = BufferPool.getInstance().getBuffer();
 
-					bf.putShort( EnumProtocol.BASE_REGISTER_LOGIC_SERVER_CONFIRM );
+					bf.putInt( EnumProtocol.BASE_REGISTER_LOGIC_SERVER_CONFIRM );
 					bf.put( ( byte ) EnumProtocol.TYPE_INT );
 					bf.putInt( 1 );
 

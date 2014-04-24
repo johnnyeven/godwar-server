@@ -5,7 +5,7 @@ import java.nio.channels.AsynchronousSocketChannel;
 
 public class ProtocolPackage
 {
-	public short						protocolId;
+	public int						protocolId;
 	public AsynchronousSocketChannel	client;
 	public ByteBuffer					receiveData;
 	public int							receiveDataLength;

@@ -204,19 +204,19 @@ public class Map
 		verifyMap.parameter.add( new PackageItem( 4, p.direction ) );
 		CommandCenter.send( p.getChannel(), verifyMap );
 
-		ServerPackage pack = ServerPackagePool.getInstance().getObject();
-		pack.success = EnumProtocol.ACK_CONFIRM;
-		pack.protocolId = EnumProtocol.REGISTER_ACCOUNT_ROLE;
-		pack.parameter.add( new PackageItem( 8, p.accountId ) );
-		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
-		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
-		pack.parameter.add( new PackageItem( 4, p.direction ) );
-		pack.parameter.add( new PackageItem( 4, p.getSpeed() ) );
-		pack.parameter.add( new PackageItem( 4, p.energy ) );
-		pack.parameter.add( new PackageItem( 4, p.energyMax ) );
-		pack.parameter.add( new PackageItem( 8, p.getX() ) );
-		pack.parameter.add( new PackageItem( 8, p.getY() ) );
-		CommandCenter.send( p.getChannel(), pack );
+//		ServerPackage pack = ServerPackagePool.getInstance().getObject();
+//		pack.success = EnumProtocol.ACK_CONFIRM;
+//		pack.protocolId = EnumProtocol.REGISTER_ACCOUNT_ROLE;
+//		pack.parameter.add( new PackageItem( 8, p.accountId ) );
+//		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
+//		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
+//		pack.parameter.add( new PackageItem( 4, p.direction ) );
+//		pack.parameter.add( new PackageItem( 4, p.getSpeed() ) );
+//		pack.parameter.add( new PackageItem( 4, p.energy ) );
+//		pack.parameter.add( new PackageItem( 4, p.energyMax ) );
+//		pack.parameter.add( new PackageItem( 8, p.getX() ) );
+//		pack.parameter.add( new PackageItem( 8, p.getY() ) );
+//		CommandCenter.send( p.getChannel(), pack );
 	}
 
 	private void updateVisibility( Player p, Grid g )
