@@ -10,11 +10,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.common.protocol.ProtocolCreateGroup;
+import com.xgame.server.common.protocol.ProtocolDeleteGroup;
+import com.xgame.server.common.protocol.ProtocolHeartBeat;
+import com.xgame.server.common.protocol.ProtocolPlayerSelectHero;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
+import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
+import com.xgame.server.common.protocol.ProtocolRequestCardList;
+import com.xgame.server.common.protocol.ProtocolRequestEnterRoom;
 import com.xgame.server.common.protocol.ProtocolRequestFindPath;
 import com.xgame.server.common.protocol.ProtocolRequestHotkey;
+import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
+import com.xgame.server.common.protocol.ProtocolSaveCardConfig;
+import com.xgame.server.common.protocol.ProtocolShowRoomList;
+import com.xgame.server.common.protocol.ProtocolUpdatePlayerReady;
 import com.xgame.server.common.protocol.ProtocolUpdatePlayerStatus;
 
 public class AIOSocketMgr
@@ -77,14 +88,40 @@ public class AIOSocketMgr
 
 	private void bindProtocol()
 	{
-		ProtocolRouter.getInstance().Bind( EnumProtocol.REQUEST_ACCOUNT_ROLE,
-				ProtocolRequestAccountRole.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,
-				ProtocolRegisterAccountRole.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.BASE_UPDATE_STATUS,
 				ProtocolUpdatePlayerStatus.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.REQUEST_FIND_PATH,
 				ProtocolRequestFindPath.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_HEART_BEAT,
+				ProtocolHeartBeat.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.REQUEST_ACCOUNT_ROLE,
+				ProtocolRequestAccountRole.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,
+				ProtocolRegisterAccountRole.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_SHOW_ROOM_LIST,
+				ProtocolShowRoomList.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.HALL_REQUEST_ROOM,
+				ProtocolRequestRoom.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.HALL_REQUEST_ENTER_ROOM,
+				ProtocolRequestEnterRoom.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_CREATE_GROUP,
+				ProtocolCreateGroup.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_DELETE_GROUP,
+				ProtocolDeleteGroup.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_SAVE_CARD_GROUP,
+				ProtocolSaveCardConfig.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.INFO_REQUEST_CARD_GROUP,
+				ProtocolRequestCardGroup.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.INFO_REQUEST_CARD_LIST,
+				ProtocolRequestCardList.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.BATTLEROOM_PLAYER_SELECTED_HERO,
+				ProtocolPlayerSelectHero.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.BATTLEROOM_PLAYER_READY,
+				ProtocolUpdatePlayerReady.class );
 	}
 
 	public void startCompletionPort()

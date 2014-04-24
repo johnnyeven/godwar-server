@@ -4,9 +4,6 @@ import java.util.Iterator;
 import java.util.UUID;
 import java.util.Map.Entry;
 
-import com.xgame.server.events.AOIEvent;
-import com.xgame.server.events.AOIEventHandler;
-import com.xgame.server.events.EventManager;
 import com.xgame.server.objects.hashmap.PlayerMap;
 
 public class ObjectManager
@@ -26,19 +23,10 @@ public class ObjectManager
 		}
 		return instance;
 	}
-
-	public void addObject( WorldObject target )
+	
+	public void addPlayer(Player target)
 	{
-		if ( target instanceof InteractiveObject )
-		{
-			EventManager.getInstance().addEventListener( ( (InteractiveObject) target ), AOIEvent.AOI_ENTER, AOIEventHandler.getInstance() );
-			EventManager.getInstance().addEventListener( ( (InteractiveObject) target ), AOIEvent.AOI_LEAVE, AOIEventHandler.getInstance() );
-		}
-		
-		if ( target instanceof Player )
-		{
-			PlayerMap.getInstance().add( (Player) target );
-		}
+		PlayerMap.getInstance().add( target );
 	}
 
 	public Player getPlayer( UUID guid )
