@@ -73,8 +73,8 @@ public class World
 
 	public void addSession( WorldSession session )
 	{
-		WorldSession old = sessionMap.get( session.getAccountId() );
-		sessionMap.put( session.getAccountId(), session );
+		WorldSession old = sessionMap.get( session.getId() );
+		sessionMap.put( session.getId(), session );
 	}
 
 	public void removeSession( long id )

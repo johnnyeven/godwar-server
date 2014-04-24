@@ -11,42 +11,46 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.database.DatabaseRouter;
-import com.xgame.server.enums.Direction;
 import com.xgame.server.enums.Action;
+import com.xgame.server.enums.Direction;
 import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.game.WorldThread;
-import com.xgame.server.game.map.Map;
 import com.xgame.server.network.WorldSession;
 
 public class Player extends InteractiveObject
 {
-	public long							accountId	= Long.MIN_VALUE;
-	public int							level		= 0;
-	public String						name		= "";
-	private float						speed		= 0;
-	private double						moveSpeed	= 0;
-	public long							accountCash	= Long.MIN_VALUE;
-	public int							direction	= Direction.DOWN;
-	public int							action		= Action.STOP;
-	public int							healthMax	= Integer.MIN_VALUE;
-	public int							health		= Integer.MIN_VALUE;
-	public int							manaMax		= Integer.MIN_VALUE;
-	public int							mana		= Integer.MIN_VALUE;
-	public int							energyMax	= Integer.MIN_VALUE;
-	public int							energy		= Integer.MIN_VALUE;
-	public PlayerStatus					status		= PlayerStatus.PENDING;
+	private UUID						guid;
+	public long							accountId			= Long.MIN_VALUE;
+	public int							level				= 0;
+	public String						name				= "";
+	public long							accountCash			= Long.MIN_VALUE;
+	public String						rolePicture			= "";
+	private float						speed				= 0;
+	private double						moveSpeed			= 0;
+	public int							honor				= 0;
+	public int							energy				= 0;
+	public int							energyMax			= Integer.MIN_VALUE;
+	public PlayerStatus					status				= PlayerStatus.NORMAL;
+	public int							direction			= Direction.DOWN;
+	public int							action				= Action.STOP;
 
 	private Motion						motion;
 	private AsynchronousSocketChannel	channel;
 	private WorldSession				session;
+	private int							currentGroup;											// 玩家阵营
+																								// 1=红队
+																								// 2=蓝队
+	private int							currentPosition;
+	private int							currentCardGroup;
+	private String						lastHeroCardId		= "";
+	private String						currentHeroCardId	= "";
 
-	private static Log					log			= LogFactory
-															.getLog( Player.class );
+	private static Log					log					= LogFactory
+																	.getLog( Player.class );
 
 	public Player()
 	{
-		super();
-		motion = new Motion( this );
+		guid = UUID.randomUUID();
 	}
 
 	public boolean loadFromDatabase()
@@ -66,32 +70,27 @@ public class Player extends InteractiveObject
 
 			if ( rs.first() )
 			{
-				setMapId( rs.getInt( "map_id" ) );
 				level = rs.getInt( "level" );
 				name = rs.getString( "nick_name" );
 				accountCash = rs.getLong( "account_cash" );
+				rolePicture = rs.getString( "role_picture" );
+				honor = rs.getInt( "honor" );
+				energy = rs.getInt( "energy" );
+				energyMax = rs.getInt( "max_energy" );
 				direction = rs.getInt( "direction" );
 				action = rs.getInt( "action" );
 				setSpeed( rs.getFloat( "speed" ) );
-				health = rs.getInt( "current_health" );
-				healthMax = rs.getInt( "max_health" );
-				mana = rs.getInt( "current_mana" );
-				manaMax = rs.getInt( "max_mana" );
-				energy = rs.getInt( "current_energy" );
-				energyMax = rs.getInt( "max_energy" );
-				setX( rs.getDouble( "current_x" ) );
-				setY( rs.getDouble( "current_y" ) );
 			}
 			else
 			{
-				log.error( "loadFromDatabase() 没有找到对应的角色数据 accountId="
+				log.error( "[loadFromDatabase] 没有找到对应的角色数据 accountId="
 						+ accountId );
 				return false;
 			}
 			long accountGuid = rs.getLong( "account_guid" );
-			if ( accountGuid != session.getAccountId() )
+			if ( accountGuid != session.getId() )
 			{
-				log.error( "loadFromDatabase() accountId与WorldSession使用的accountId不匹配" );
+				log.error( "[loadFromDatabase] accountId与WorldSession使用的accountId不匹配" );
 				return false;
 			}
 			String gameGuid = rs.getString( "game_guid" );
@@ -106,12 +105,24 @@ public class Player extends InteractiveObject
 						+ "', ";
 			}
 
-			getMap();
-
 			sql = "UPDATE `game_account` SET " + guidSql
 					+ " `account_lastlogin`=" + new Date().getTime()
 					+ " WHERE `account_id`=" + accountId;
 			st.executeUpdate( sql );
+
+			rs.close();
+
+			sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
+					+ accountId + " AND `current`=1";
+			st = DatabaseRouter.getInstance().getConnection( "gamedb" )
+					.prepareStatement( sql );
+			rs = st.executeQuery();
+
+			if ( rs.first() )
+			{
+				int groupId = rs.getInt( "group_id" );
+				setCurrentCardGroup( groupId );
+			}
 
 			rs.close();
 		}
@@ -137,7 +148,17 @@ public class Player extends InteractiveObject
 	public void killPlayer()
 	{
 		// TODO 死亡处理
-		action = Action.CORPSE;
+
+	}
+
+	public int getCurrentCardGroup()
+	{
+		return currentCardGroup;
+	}
+
+	public void setCurrentCardGroup( int currentCardGroup )
+	{
+		this.currentCardGroup = currentCardGroup;
 	}
 
 	public WorldSession getSession()
@@ -158,6 +179,52 @@ public class Player extends InteractiveObject
 	public void setChannel( AsynchronousSocketChannel channel )
 	{
 		this.channel = channel;
+	}
+
+	public UUID getGuid()
+	{
+		return guid;
+	}
+
+	public void setGuid( UUID guid )
+	{
+		this.guid = guid;
+	}
+
+	public int getCurrentPosition()
+	{
+		return currentPosition;
+	}
+
+	public void setCurrentPosition( int currentPosition )
+	{
+		this.currentPosition = currentPosition;
+	}
+
+	public int getCurrentGroup()
+	{
+		return currentGroup;
+	}
+
+	public void setCurrentGroup( int currentGroup )
+	{
+		this.currentGroup = currentGroup;
+	}
+
+	public String getCurrentHeroCardId()
+	{
+		return currentHeroCardId;
+	}
+
+	public void setCurrentHeroCardId( String currentHeroCardId )
+	{
+		lastHeroCardId = this.currentHeroCardId;
+		this.currentHeroCardId = currentHeroCardId;
+	}
+
+	public String getLastHeroCardId()
+	{
+		return lastHeroCardId;
 	}
 
 	public Motion getMotion()

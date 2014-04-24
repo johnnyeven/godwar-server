@@ -13,17 +13,18 @@ import com.xgame.server.pool.BufferPool;
 
 public class WorldSession
 {
-	private long						accountId;
+	private long						id;
 	private List< ProtocolPackage >		recvQueue;
 	private Player						player;
 	private AsynchronousSocketChannel	channel;
 	private String						address;
 	private long						generateTime;
+	private long						heartBeatTime;
 	private ByteBuffer					readBuffer;
 
 	public WorldSession( long id, AsynchronousSocketChannel c, long time )
 	{
-		accountId = id;
+		this.id = id;
 		channel = c;
 		try
 		{
@@ -52,6 +53,16 @@ public class WorldSession
 		recvQueue.add( pack );
 	}
 
+	public long getHeartBeatTime()
+	{
+		return heartBeatTime;
+	}
+
+	public void setHeartBeatTime( long heartBeatTime )
+	{
+		this.heartBeatTime = heartBeatTime;
+	}
+
 	public void setPlayer( Player p )
 	{
 		if ( p != null )
@@ -66,9 +77,9 @@ public class WorldSession
 		return player;
 	}
 
-	public long getAccountId()
+	public long getId()
 	{
-		return accountId;
+		return id;
 	}
 
 	public AsynchronousSocketChannel getChannel()

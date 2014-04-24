@@ -118,11 +118,6 @@ public class ProtocolRequestAccountRole implements IProtocol
 					p.setMapId( mapId );
 					p.setX( currentX );
 					p.setX( currentY );
-					p.healthMax = maxHealth;
-					p.health = currentHealth;
-					p.manaMax = maxMana;
-					p.mana = currentMana;
-					p.energyMax = maxEnergy;
 					p.energy = currentEnergy;
 					p.setChannel( parameter.client );
 				}

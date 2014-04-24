@@ -212,10 +212,6 @@ public class Map
 		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
 		pack.parameter.add( new PackageItem( 4, p.direction ) );
 		pack.parameter.add( new PackageItem( 4, p.getSpeed() ) );
-		pack.parameter.add( new PackageItem( 4, p.health ) );
-		pack.parameter.add( new PackageItem( 4, p.healthMax ) );
-		pack.parameter.add( new PackageItem( 4, p.mana ) );
-		pack.parameter.add( new PackageItem( 4, p.manaMax ) );
 		pack.parameter.add( new PackageItem( 4, p.energy ) );
 		pack.parameter.add( new PackageItem( 4, p.energyMax ) );
 		pack.parameter.add( new PackageItem( 8, p.getX() ) );
@@ -262,10 +258,6 @@ public class Map
 					pack.parameter.add( new PackageItem( 8, p.accountCash ) );
 					pack.parameter.add( new PackageItem( 4, p.direction ) );
 					pack.parameter.add( new PackageItem( 4, p.getSpeed() ) );
-					pack.parameter.add( new PackageItem( 4, p.health ) );
-					pack.parameter.add( new PackageItem( 4, p.healthMax ) );
-					pack.parameter.add( new PackageItem( 4, p.mana ) );
-					pack.parameter.add( new PackageItem( 4, p.manaMax ) );
 					pack.parameter.add( new PackageItem( 4, p.energy ) );
 					pack.parameter.add( new PackageItem( 4, p.energyMax ) );
 					pack.parameter.add( new PackageItem( 8, p.getX() ) );
@@ -286,14 +278,6 @@ public class Map
 							currentPlayer.direction ) );
 					pack.parameter.add( new PackageItem( 4, currentPlayer
 							.getSpeed() ) );
-					pack.parameter.add( new PackageItem( 4,
-							currentPlayer.health ) );
-					pack.parameter.add( new PackageItem( 4,
-							currentPlayer.healthMax ) );
-					pack.parameter
-							.add( new PackageItem( 4, currentPlayer.mana ) );
-					pack.parameter.add( new PackageItem( 4,
-							currentPlayer.manaMax ) );
 					pack.parameter.add( new PackageItem( 4,
 							currentPlayer.energy ) );
 					pack.parameter.add( new PackageItem( 4,
@@ -358,14 +342,6 @@ public class Map
 							currentPlayer.direction ) );
 					pack.parameter.add( new PackageItem( 4, currentPlayer
 							.getSpeed() ) );
-					pack.parameter.add( new PackageItem( 4,
-							currentPlayer.health ) );
-					pack.parameter.add( new PackageItem( 4,
-							currentPlayer.healthMax ) );
-					pack.parameter
-							.add( new PackageItem( 4, currentPlayer.mana ) );
-					pack.parameter.add( new PackageItem( 4,
-							currentPlayer.manaMax ) );
 					pack.parameter.add( new PackageItem( 4,
 							currentPlayer.energy ) );
 					pack.parameter.add( new PackageItem( 4,

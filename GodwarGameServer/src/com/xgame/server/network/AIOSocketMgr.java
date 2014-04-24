@@ -81,8 +81,6 @@ public class AIOSocketMgr
 				ProtocolRequestAccountRole.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.REGISTER_ACCOUNT_ROLE,
 				ProtocolRegisterAccountRole.class );
-		ProtocolRouter.getInstance().Bind( EnumProtocol.REQUEST_HOTKEY,
-				ProtocolRequestHotkey.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.BASE_UPDATE_STATUS,
 				ProtocolUpdatePlayerStatus.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.REQUEST_FIND_PATH,

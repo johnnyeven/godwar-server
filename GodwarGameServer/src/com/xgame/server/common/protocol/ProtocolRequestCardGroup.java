@@ -3,6 +3,7 @@ package com.xgame.server.common.protocol;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,9 +16,10 @@ import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.network.WorldSession;
 import com.xgame.server.pool.ServerPackagePool;
 
-public class ProtocolRequestHotkey implements IProtocol
+public class ProtocolRequestCardGroup implements IProtocol
 {
-	private static Log	log	= LogFactory.getLog( ProtocolRequestHotkey.class );
+	private static Log	log	= LogFactory
+									.getLog( ProtocolRequestCardGroup.class );
 
 	@Override
 	public void Execute( Object param1, Object param2 )
@@ -25,7 +27,8 @@ public class ProtocolRequestHotkey implements IProtocol
 		ProtocolPackage parameter = (ProtocolPackage) param1;
 		WorldSession session = (WorldSession) param2;
 
-		long accountId = Long.MIN_VALUE;
+		long timestamp = Long.MIN_VALUE;
+
 		for ( int i = parameter.offset; i < parameter.receiveDataLength; )
 		{
 			int length = parameter.receiveData.getInt();
@@ -33,47 +36,47 @@ public class ProtocolRequestHotkey implements IProtocol
 			switch ( type )
 			{
 				case EnumProtocol.TYPE_LONG:
-					if ( accountId == Long.MIN_VALUE )
+					if ( timestamp == Long.MIN_VALUE )
 					{
-						accountId = parameter.receiveData.getLong();
+						timestamp = parameter.receiveData.getLong();
 					}
 					break;
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[RequestHotkey] AccountId=" + accountId );
+		log.info( "[RequestCardGroup] AccountId = "
+				+ session.getPlayer().accountId );
 
-		if ( accountId != Long.MIN_VALUE )
+		if ( session.getPlayer().accountId > 0 )
 		{
+			String sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
+					+ session.getPlayer().accountId;
+
+			PreparedStatement st;
 			try
 			{
-				String sql = "SELECT *  FROM `game_hotkey_config` WHERE `account_id` = "
-						+ accountId;
-				PreparedStatement st = DatabaseRouter.getInstance()
-						.getConnection( "gamedb" ).prepareStatement( sql );
+				st = DatabaseRouter.getInstance().getConnection( "gamedb" )
+						.prepareStatement( sql );
 				ResultSet rs = st.executeQuery();
+
 				ServerPackage pack = ServerPackagePool.getInstance()
 						.getObject();
 				pack.success = EnumProtocol.ACK_CONFIRM;
-//				pack.protocolId = EnumProtocol.REQUEST_HOTKEY;
-				if ( rs.first() )
+				pack.protocolId = EnumProtocol.INFO_REQUEST_CARD_GROUP;
+
+				String groupName;
+				String cardList;
+				while ( rs.next() )
 				{
-					String config = rs.getString( "config" );
-					pack.parameter.add( new PackageItem( config.length(),
-							config ) );
+					groupName = rs.getString( "group_name" );
+					pack.parameter.add( new PackageItem( 4, rs
+							.getInt( "group_id" ) ) );
+					pack.parameter.add( new PackageItem( groupName.length(),
+							groupName ) );
+					cardList = rs.getString( "card_list" );
+					pack.parameter.add( new PackageItem( cardList.length(),
+							cardList ) );
 				}
-				else
-				{
-					String initConfig = "<skill><hotkey code=\"112\" class=\"skill.Skill1\" /><hotkey code=\"113\" class=\"skill.Sheild1\" /></skill>";
-					sql = "INSERT INTO `game_hotkey_config`(`config`)VALUES('"
-							+ initConfig + "')";
-					PreparedStatement st1 = DatabaseRouter.getInstance()
-							.getConnection( "gamedb" ).prepareStatement( sql );
-					st1.executeUpdate();
-					pack.parameter.add( new PackageItem( initConfig.length(),
-							initConfig ) );
-				}
-				rs.close();
 				CommandCenter.send( parameter.client, pack );
 			}
 			catch ( SQLException e )
