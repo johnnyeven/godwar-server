@@ -80,6 +80,10 @@ public class GameServer
 		wt.setPriority( 10 );
 		wt.start();
 
+		Thread thLogicServerListen = new Thread( new LogicServerListenThread() );
+		thLogicServerListen.setName( "LogicServerListenThread" );
+		thLogicServerListen.start();
+
 		startLogicServerHolderThread();
 
 		AIOSocketMgr.getInstance().startCompletionPort();
