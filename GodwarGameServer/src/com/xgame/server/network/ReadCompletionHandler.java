@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.CompletionHandler;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.pool.BufferPool;
 
 public class ReadCompletionHandler implements
 		CompletionHandler< Integer, WorldSession >
 {
+	private static Log	log	= LogFactory.getLog( ReadCompletionHandler.class );
 
 	public ReadCompletionHandler()
 	{
@@ -42,7 +46,9 @@ public class ReadCompletionHandler implements
 		{
 			try
 			{
-				attachment.getChannel().close();
+				log.info( "¶Ï¿ªÁ¬½Ó IP="
+						+ attachment.getChannel().getRemoteAddress().toString()
+						+ ", Player=" + attachment.getPlayer().name );
 			}
 			catch ( IOException e )
 			{
@@ -50,8 +56,7 @@ public class ReadCompletionHandler implements
 			}
 			finally
 			{
-				BufferPool.getInstance().releaseBuffer(
-						attachment.getReadBuffer() );
+				attachment.dispose();
 			}
 		}
 	}

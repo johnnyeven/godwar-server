@@ -117,6 +117,11 @@ public class WorldSession
 		{
 			player = null;
 		}
+		if ( readBuffer != null )
+		{
+			BufferPool.getInstance().releaseBuffer( readBuffer );
+			readBuffer = null;
+		}
 		if ( channel != null )
 		{
 			try
