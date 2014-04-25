@@ -80,8 +80,8 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		{
 			try
 			{
-				String sql = "INSERT INTO role(account_id, nick_name)VALUES";
-				sql += "(" + guid + ", '" + nickName + "')";
+				String sql = "INSERT INTO role(account_id, nick_name, map_id, x, y)VALUES";
+				sql += "(" + guid + ", '" + nickName + "', 1001, 700, 700)";
 				PreparedStatement st = DatabaseRouter
 						.getInstance()
 						.getConnection( "gamedb" )
@@ -109,7 +109,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 					log.error( "Map::add() Ê§°Ü£¬Player=" + p.name );
 					return;
 				}
-				
+
 				responseUserData( session );
 
 				ObjectManager.getInstance().addPlayer( p );
@@ -125,7 +125,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 
 	private void initRoleDatabase( Player p )
 	{
-		String sql = "INSERT INTO `game_card_group`(`account_id`, `group_name`, `card_list`)VALUES";
+		String sql = "INSERT INTO `game_card_group`(`role_id`, `group_name`, `card_list`)VALUES";
 		sql += "(" + p.accountId + ", 'µÚÒ»¿¨×é', '')";
 		try
 		{
@@ -139,7 +139,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 			e.printStackTrace();
 		}
 
-		sql = "INSERT INTO `game_card`(`account_id`, `card_list`, `hero_card_list`)VALUES";
+		sql = "INSERT INTO `game_card`(`role_id`, `card_list`, `hero_card_list`)VALUES";
 		sql += "(" + p.accountId + ", '" + GameServer.initSoulCardConfig
 				+ "', '" + GameServer.initHeroCardConfig + "')";
 		try
@@ -163,16 +163,22 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		pack.protocolId = EnumProtocol.REGISTER_ACCOUNT_ROLE;
 		String uuid = p.getGuid().toString();
 		pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
+		pack.parameter.add( new PackageItem( 8, p.roleId ) );
 		pack.parameter.add( new PackageItem( 8, p.accountId ) );
 		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
 		pack.parameter.add( new PackageItem( 4, p.level ) );
 		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
-		pack.parameter.add( new PackageItem( 4, p.energy ) );
 		pack.parameter.add( new PackageItem( p.rolePicture.length(),
 				p.rolePicture ) );
+		pack.parameter.add( new PackageItem( 4, p.getSpeed() ) );
+		pack.parameter.add( new PackageItem( 4, p.honor ) );
+		pack.parameter.add( new PackageItem( 4, p.energy ) );
+		pack.parameter.add( new PackageItem( 4, p.energyMax ) );
+		pack.parameter.add( new PackageItem( 4, p.direction ) );
+		pack.parameter.add( new PackageItem( 4, p.action ) );
 		pack.parameter.add( new PackageItem( 4, p.getMapId() ) );
-		pack.parameter.add( new PackageItem( 4, p.getX() ) );
-		pack.parameter.add( new PackageItem( 4, p.getY() ) );
+		pack.parameter.add( new PackageItem( 8, p.getX() ) );
+		pack.parameter.add( new PackageItem( 8, p.getY() ) );
 		CommandCenter.send( session.getChannel(), pack );
 	}
 

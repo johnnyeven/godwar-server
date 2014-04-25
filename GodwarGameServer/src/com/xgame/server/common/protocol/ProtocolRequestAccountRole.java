@@ -107,16 +107,22 @@ public class ProtocolRequestAccountRole implements IProtocol
 		pack.protocolId = EnumProtocol.REQUEST_ACCOUNT_ROLE;
 		String uuid = p.getGuid().toString();
 		pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
+		pack.parameter.add( new PackageItem( 8, p.roleId ) );
 		pack.parameter.add( new PackageItem( 8, p.accountId ) );
 		pack.parameter.add( new PackageItem( p.name.length(), p.name ) );
 		pack.parameter.add( new PackageItem( 4, p.level ) );
 		pack.parameter.add( new PackageItem( 8, p.accountCash ) );
-		pack.parameter.add( new PackageItem( 4, p.energy ) );
 		pack.parameter.add( new PackageItem( p.rolePicture.length(),
 				p.rolePicture ) );
+		pack.parameter.add( new PackageItem( 4, p.getSpeed() ) );
+		pack.parameter.add( new PackageItem( 4, p.honor ) );
+		pack.parameter.add( new PackageItem( 4, p.energy ) );
+		pack.parameter.add( new PackageItem( 4, p.energyMax ) );
+		pack.parameter.add( new PackageItem( 4, p.direction ) );
+		pack.parameter.add( new PackageItem( 4, p.action ) );
 		pack.parameter.add( new PackageItem( 4, p.getMapId() ) );
-		pack.parameter.add( new PackageItem( 4, p.getX() ) );
-		pack.parameter.add( new PackageItem( 4, p.getY() ) );
+		pack.parameter.add( new PackageItem( 8, p.getX() ) );
+		pack.parameter.add( new PackageItem( 8, p.getY() ) );
 		CommandCenter.send( session.getChannel(), pack );
 	}
 

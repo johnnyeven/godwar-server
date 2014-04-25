@@ -35,7 +35,7 @@ public class ReadCompletionHandler implements
 			parameter.client = attachment.getChannel();
 			parameter.receiveDataLength = result;
 			parameter.receiveData = buffer.duplicate();
-			parameter.offset = 6;
+			parameter.offset = 8;
 
 			attachment.addParameterQueue( parameter );
 

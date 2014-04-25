@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`role` (
   `account_cash` BIGINT(20) NOT NULL DEFAULT 0,
   `direction` TINYINT NOT NULL DEFAULT 0,
   `action` TINYINT NOT NULL DEFAULT 0,
-  `speed` INT NOT NULL DEFAULT 10,
+  `speed` INT NOT NULL DEFAULT 210,
   `honor` INT NOT NULL DEFAULT 0,
   `energy` INT NOT NULL DEFAULT 1000,
   `max_energy` INT NOT NULL DEFAULT 1000,

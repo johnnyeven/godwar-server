@@ -34,7 +34,7 @@ public class ReadCompletionHandler implements
 			parameter.client = attachment.channel;
 			parameter.receiveDataLength = result;
 			parameter.receiveData = attachment.buffer;
-			parameter.offset = 6;
+			parameter.offset = 8;
 			ProtocolRouter.getInstance().Trigger( protocolId, parameter );
 
 			BufferPool.getInstance().releaseBuffer( attachment.buffer );
