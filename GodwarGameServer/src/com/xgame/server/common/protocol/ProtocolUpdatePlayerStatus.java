@@ -17,7 +17,7 @@ public class ProtocolUpdatePlayerStatus implements IProtocol
 		ProtocolPackage parameter = (ProtocolPackage) param1;
 		WorldSession session = (WorldSession) param2;
 
-		long accountId = Long.MIN_VALUE;
+		long roleId = Long.MIN_VALUE;
 
 		for ( int i = parameter.offset; i < parameter.receiveDataLength; )
 		{
@@ -26,25 +26,25 @@ public class ProtocolUpdatePlayerStatus implements IProtocol
 			switch ( type )
 			{
 				case EnumProtocol.TYPE_LONG:
-					if ( accountId == Long.MIN_VALUE )
+					if ( roleId == Long.MIN_VALUE )
 					{
-						accountId = parameter.receiveData.getLong();
+						roleId = parameter.receiveData.getLong();
 					}
 					break;
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[UpdatePlayerStatus] AccountId=" + accountId );
+		log.info( "[UpdatePlayerStatus] RoleId=" + roleId );
 
-		if ( accountId == session.getPlayer().accountId )
+		if ( roleId == session.getPlayer().roleId )
 		{
 			session.getPlayer().getMap()
 					.updatePlayerStatus( session.getPlayer() );
 		}
 		else
 		{
-			log.error( "收到的AccountId与会话中保存的AccountId不符，现有的Id="
-					+ session.getPlayer().accountId + ", 收到的Id=" + accountId );
+			log.error( "收到的RoleId与会话中保存的RoleId不符，现有的Id="
+					+ session.getPlayer().roleId + ", 收到的Id=" + roleId );
 		}
 	}
 

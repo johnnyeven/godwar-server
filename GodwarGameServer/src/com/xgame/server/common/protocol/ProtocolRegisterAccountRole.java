@@ -81,7 +81,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 			try
 			{
 				String sql = "INSERT INTO role(account_id, nick_name, map_id, x, y)VALUES";
-				sql += "(" + guid + ", '" + nickName + "', 1001, 700, 700)";
+				sql += "(" + guid + ", '" + nickName + "', 1001, 600, 600)";
 				PreparedStatement st = DatabaseRouter
 						.getInstance()
 						.getConnection( "gamedb" )
