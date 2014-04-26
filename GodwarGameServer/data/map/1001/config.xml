@@ -2,8 +2,8 @@
   <id>1001</id>
   <width>3840</width>
   <height>2400</height>
-  <tileNumWidth>30</tileNumWidth>
-  <tileNumHeight>20</tileNumHeight>
+  <tileNumWidth>15</tileNumWidth>
+  <tileNumHeight>10</tileNumHeight>
   <blockNumWidth>160</blockNumWidth>
   <blockNumHeight>100</blockNumHeight>
   <startTileX>90</startTileX>

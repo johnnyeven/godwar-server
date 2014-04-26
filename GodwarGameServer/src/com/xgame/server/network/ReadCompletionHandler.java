@@ -64,7 +64,20 @@ public class ReadCompletionHandler implements
 	@Override
 	public void failed( Throwable exc, WorldSession attachment )
 	{
-		BufferPool.getInstance().releaseBuffer( attachment.getReadBuffer() );
+		try
+		{
+			log.info( "意外断开连接 IP="
+					+ attachment.getChannel().getRemoteAddress().toString()
+					+ ", Player=" + attachment.getPlayer().name );
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			attachment.dispose();
+		}
 	}
 
 }
