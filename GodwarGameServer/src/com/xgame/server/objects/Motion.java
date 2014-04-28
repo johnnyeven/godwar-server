@@ -7,21 +7,31 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.CommandCenter;
 import com.xgame.server.common.Angle;
+import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.Point;
+import com.xgame.server.common.ServerPackage;
+import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.enums.Action;
 import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.game.WorldThread;
 import com.xgame.server.game.astar.Node;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class Motion
 {
-	private Player			p;
-	private List< Point >	path;
-	private int				currentStep;
-	private Point			nextPoint;
-	private Point			endPoint;
-	private static Log		log	= LogFactory.getLog( Motion.class );
+	private Player				p;
+	private List< Point >		path;
+	private int					currentStep;
+	private Point				nextPoint;
+	private Point				endPoint;
+
+	private long				lastSyncPositionTime	= 0;
+
+	private static final int	SYNC_POSITION_TRIGGER	= 1500;
+	private static Log			log						= LogFactory
+																.getLog( Motion.class );
 
 	public Motion( Player p )
 	{
@@ -86,10 +96,13 @@ public class Motion
 			if ( currentStep >= path.size() )
 			{
 				clearPath();
+				syncPosition( true );
+				lastSyncPositionTime = 0;
 				return;
 			}
 		}
 		moveTo( p.getX() + xSpeed, p.getY() + ySpeed );
+		syncPosition();
 	}
 
 	public void clearPath()
@@ -110,6 +123,11 @@ public class Motion
 			en = it.next();
 			this.path.add( new Point( en.x, en.y ) );
 		}
+
+		if ( lastSyncPositionTime == 0 )
+		{
+			lastSyncPositionTime = System.currentTimeMillis();
+		}
 	}
 
 	private void moveTo( double x, double y )
@@ -119,7 +137,29 @@ public class Motion
 			p.setX( x );
 			p.setY( y );
 			p.action = Action.MOVE;
-//			log.debug( p.name + " 移动到 x=" + x + ", y=" + y );
+		}
+	}
+
+	public void syncPosition()
+	{
+		syncPosition( false );
+	}
+
+	public void syncPosition( boolean forced )
+	{
+		long currentTime = System.currentTimeMillis();
+		if ( forced
+				|| ( currentTime - lastSyncPositionTime >= SYNC_POSITION_TRIGGER ) )
+		{
+			lastSyncPositionTime = currentTime;
+			log.debug( p.name + " 移动同步，移动到 x=" + p.getX() + ", y=" + p.getY() );
+
+			ServerPackage pack = ServerPackagePool.getInstance().getObject();
+			pack.success = EnumProtocol.ACK_CONFIRM;
+			pack.protocolId = EnumProtocol.SYNC_MOVE;
+			pack.parameter.add( new PackageItem( 4, (int)p.getX() ) );
+			pack.parameter.add( new PackageItem( 4, (int)p.getY() ) );
+			CommandCenter.send( p.getChannel(), pack );
 		}
 	}
 }

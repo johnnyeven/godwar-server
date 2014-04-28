@@ -112,7 +112,7 @@ public class CommandCenter
 		{
 			int length = f.get();
 			BufferPool.getInstance().releaseBuffer( buffer );
-			log.debug( "send() Length=" + length );
+//			log.debug( "send() Length=" + length );
 		}
 		catch ( InterruptedException | ExecutionException e )
 		{

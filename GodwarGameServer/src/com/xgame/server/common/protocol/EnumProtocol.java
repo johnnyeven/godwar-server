@@ -10,7 +10,7 @@ public final class EnumProtocol
 	public static final int	CONTROLLER_INFO								= 0;
 	// MOVE
 	public static final int	ACTION_REQUEST_FINDPATH						= 0;
-	public static final int	ACTION_VERIFY_MOVE							= 1;
+	public static final int	ACTION_SYNC_MOVE							= 1;
 	public static final int	ACTION_SEND_PATH							= 2;
 	// INFO
 	public static final int	ACTION_LOGIN								= 0;
@@ -26,7 +26,8 @@ public final class EnumProtocol
 	public static final int	ACTION_CREATE_GROUP							= 10;
 	public static final int	ACTION_DELETE_GROUP							= 11;
 	public static final int	ACTION_SAVE_CARD_GROUP						= 12;
-	public static final int	ACTION_HEART_BEAT							= 127;
+	public static final int	ACTION_HEART_BEAT							= 126;
+	public static final int	ACTION_HEART_BEAT_ECHO						= 127;
 	// BASE
 	public static final int	ACTION_REGISTER_LOGIC_SERVER				= 0;
 	public static final int	ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
@@ -70,6 +71,8 @@ public final class EnumProtocol
 	// MOVE
 	public static final int	REQUEST_FIND_PATH							= ACTION_REQUEST_FINDPATH << 8
 																				| CONTROLLER_MOVE;
+	public static final int	SYNC_MOVE									= ACTION_SYNC_MOVE << 8
+																				| CONTROLLER_MOVE;
 	public static final int	SEND_PATH									= ACTION_SEND_PATH << 8
 																				| CONTROLLER_MOVE;
 	// INFO
@@ -100,6 +103,8 @@ public final class EnumProtocol
 	public static final int	INFO_SAVE_CARD_GROUP						= ACTION_SAVE_CARD_GROUP << 8
 																				| CONTROLLER_INFO;
 	public static final int	INFO_HEART_BEAT								= ACTION_HEART_BEAT << 8
+																				| CONTROLLER_INFO;
+	public static final int	INFO_HEART_BEAT_ECHO						= ACTION_HEART_BEAT_ECHO << 8
 																				| CONTROLLER_INFO;
 	// BASE
 	public static final int	BASE_VERIFY_MAP								= ACTION_VERIFY_MAP << 8
