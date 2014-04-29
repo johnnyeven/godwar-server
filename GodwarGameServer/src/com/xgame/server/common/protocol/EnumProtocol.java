@@ -28,6 +28,11 @@ public final class EnumProtocol
 	public static final int	ACTION_SAVE_CARD_GROUP						= 12;
 	public static final int	ACTION_HEART_BEAT							= 126;
 	public static final int	ACTION_HEART_BEAT_ECHO						= 127;
+	// MSG
+	public static final int	ACTION_SEND_PUBLIC							= 0;								// 附近
+	public static final int	ACTION_SEND_TEAM							= 1;								// 组队
+	public static final int	ACTION_SEND_PRIVATE							= 2;								// 密语
+	public static final int	ACTION_SEND_WORLD							= 3;								// 世界
 	// BASE
 	public static final int	ACTION_REGISTER_LOGIC_SERVER				= 0;
 	public static final int	ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
@@ -106,6 +111,15 @@ public final class EnumProtocol
 																				| CONTROLLER_INFO;
 	public static final int	INFO_HEART_BEAT_ECHO						= ACTION_HEART_BEAT_ECHO << 8
 																				| CONTROLLER_INFO;
+	// MSG
+	public static final int	MSG_SEND_PUBLIC								= ACTION_SEND_PUBLIC << 8
+																				| CONTROLLER_MSG;
+	public static final int	MSG_SEND_TEAM								= ACTION_SEND_TEAM << 8
+																				| CONTROLLER_MSG;
+	public static final int	MSG_SEND_PRIVATE							= ACTION_SEND_PRIVATE << 8
+																				| CONTROLLER_MSG;
+	public static final int	MSG_SEND_WORLD								= ACTION_SEND_WORLD << 8
+																				| CONTROLLER_MSG;
 	// BASE
 	public static final int	BASE_VERIFY_MAP								= ACTION_VERIFY_MAP << 8
 																				| CONTROLLER_BASE;
