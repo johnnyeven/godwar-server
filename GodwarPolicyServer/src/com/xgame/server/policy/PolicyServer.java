@@ -1,5 +1,7 @@
 package com.xgame.server.policy;
 
+import java.io.IOException;
+
 import com.xgame.server.common.protocol.*;
 import com.xgame.server.network.AIOSocketMgr;
 
@@ -33,6 +35,15 @@ public class PolicyServer
 	    System.out.println( "PolicyServer\n\n");
 		
 		AIOSocketMgr.getInstance().startCompletionPort();
+
+		try
+		{
+			System.in.read();
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
     }
 	
 	public static void main(String[] args)
