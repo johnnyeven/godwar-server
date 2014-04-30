@@ -39,7 +39,7 @@ public class ProtocolUpdatePlayerStatus implements IProtocol
 		if ( roleId == session.getPlayer().roleId )
 		{
 			session.getPlayer().getMap()
-					.updatePlayerStatus( session.getPlayer() );
+					.updatePlayerStatus( session.getPlayer(), true );
 		}
 		else
 		{

@@ -102,7 +102,6 @@ public class ProtocolRequestFindPath implements IProtocol
 				}
 
 				CommandCenter.send( parameter.client, pack );
-				ServerPackagePool.getInstance().returnObject( pack );
 
 				session.getPlayer().getMotion().move( path );
 
@@ -140,7 +139,6 @@ public class ProtocolRequestFindPath implements IProtocol
 								continue;
 							}
 							CommandCenter.send( currentPlayer.getChannel(), pack1 );
-							ServerPackagePool.getInstance().returnObject( pack1 );
 						}
 					}
 				}

@@ -150,6 +150,14 @@ public class Map
 		return true;
 	}
 
+	public boolean remove( Player p )
+	{
+		p.getCurrentGrid().removeWorldObject( p.getGuid() );
+		updatePlayerStatus(p, false);
+		
+		return true;
+	}
+
 	public boolean check( Player p )
 	{
 		Grid g1 = p.getCurrentGrid();
@@ -171,7 +179,7 @@ public class Map
 		return true;
 	}
 
-	public boolean updatePlayerStatus( Player p )
+	public boolean updatePlayerStatus( Player p, boolean show )
 	{
 		if ( p.getMapId() != id )
 		{
@@ -185,12 +193,19 @@ public class Map
 			return false;
 		}
 
-		// 同屏其他玩家可见
-		updateVisibility( p, g );
-		// 可见同屏其他玩家
-		// updateOtherVisibility(p, g);
+		if ( show )
+		{
+			// 同屏其他玩家可见
+			updateVisibilityShow( p, g );
+			// 可见同屏其他玩家
+			// updateOtherVisibility(p, g);
 
-		p.status = PlayerStatus.NORMAL;
+			p.status = PlayerStatus.NORMAL;
+		}
+		else
+		{
+			updateVisibilityRemove( p, g );
+		}
 
 		return true;
 	}
@@ -219,7 +234,7 @@ public class Map
 		// CommandCenter.send( p.getChannel(), pack );
 	}
 
-	private void updateVisibility( Player p, Grid g )
+	private void updateVisibilityShow( Player p, Grid g )
 	{
 		ArrayList< Grid > list = getViewGrid( g );
 		Iterator< Grid > it = list.iterator();
@@ -267,7 +282,6 @@ public class Map
 					pack.parameter.add( new PackageItem( 8, p.getX() ) );
 					pack.parameter.add( new PackageItem( 8, p.getY() ) );
 					CommandCenter.send( currentPlayer.getChannel(), pack );
-					ServerPackagePool.getInstance().returnObject( pack );
 
 					pack = ServerPackagePool.getInstance().getObject();
 					pack.success = EnumProtocol.ACK_CONFIRM;
@@ -295,7 +309,48 @@ public class Map
 					pack.parameter.add( new PackageItem( 8, currentPlayer
 							.getY() ) );
 					CommandCenter.send( p.getChannel(), pack );
-					ServerPackagePool.getInstance().returnObject( pack );
+				}
+			}
+		}
+	}
+
+	private void updateVisibilityRemove( Player p, Grid g )
+	{
+		ArrayList< Grid > list = getViewGrid( g );
+		Iterator< Grid > it = list.iterator();
+		Grid currentGrid;
+		Entry< UUID, WorldObject > en;
+		Player currentPlayer;
+		String uuid;
+		while ( it.hasNext() )
+		{
+			currentGrid = it.next();
+
+			if ( currentGrid == null )
+			{
+				continue;
+			}
+
+			Iterator< Entry< UUID, WorldObject >> gridIt = currentGrid
+					.getWorldObjectIterator();
+			while ( gridIt.hasNext() )
+			{
+				en = gridIt.next();
+				if ( en.getValue() instanceof Player )
+				{
+					currentPlayer = (Player) en.getValue();
+					if ( !currentPlayer.getChannel().isOpen() )
+					{
+						continue;
+					}
+
+					ServerPackage pack = ServerPackagePool.getInstance()
+							.getObject();
+					pack.success = EnumProtocol.ACK_CONFIRM;
+					pack.protocolId = EnumProtocol.SCENE_REMOVE_PLAYER;
+					uuid = p.getGuid().toString();
+					pack.parameter.add( new PackageItem( uuid.length(), uuid ) );
+					CommandCenter.send( currentPlayer.getChannel(), pack );
 				}
 			}
 		}

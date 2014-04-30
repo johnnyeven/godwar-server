@@ -115,7 +115,7 @@ public class WorldSession
 	{
 		if ( player != null )
 		{
-			player.getCurrentGrid().removeWorldObject(player.getGuid());
+			player.getMap().remove( player );
 			player = null;
 		}
 		if ( readBuffer != null )

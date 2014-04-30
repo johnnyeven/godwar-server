@@ -113,7 +113,6 @@ public class ProtocolMessageSendPublic implements IProtocol
 						continue;
 					}
 					CommandCenter.send( currentPlayer.getChannel(), pack );
-					ServerPackagePool.getInstance().returnObject( pack );
 				}
 			}
 		}

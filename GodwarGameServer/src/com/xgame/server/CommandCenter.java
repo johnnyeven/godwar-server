@@ -14,6 +14,7 @@ import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.pool.BufferPool;
+import com.xgame.server.pool.ServerPackagePool;
 
 public class CommandCenter
 {
@@ -112,6 +113,7 @@ public class CommandCenter
 		{
 			int length = f.get();
 			BufferPool.getInstance().releaseBuffer( buffer );
+			ServerPackagePool.getInstance().returnObject( pack );
 //			log.debug( "send() Length=" + length );
 		}
 		catch ( InterruptedException | ExecutionException e )
