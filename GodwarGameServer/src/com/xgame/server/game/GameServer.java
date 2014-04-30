@@ -19,6 +19,7 @@ import com.xgame.server.network.AIOSocketMgr;
 public class GameServer
 {
 	public final static int	PORT				= 9050;
+	public static String	path				= "";
 	public static String	initSoulCardConfig	= "";
 	public static String	initHeroCardConfig	= "";
 	public static String	freeHeroCardConfig	= "";
@@ -87,7 +88,7 @@ public class GameServer
 		startLogicServerHolderThread();
 
 		AIOSocketMgr.getInstance().startCompletionPort();
-		
+
 		try
 		{
 			Thread.sleep( Long.MAX_VALUE );
@@ -104,7 +105,7 @@ public class GameServer
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
-		Document doc = dbBuilder.parse( "init_card_config.xml" );
+		Document doc = dbBuilder.parse( path + "init_card_config.xml" );
 
 		Node serverNode = doc.getElementsByTagName( "soul_cards" ).item( 0 );
 		NodeList list = serverNode.getChildNodes();
@@ -113,8 +114,8 @@ public class GameServer
 		serverNode = doc.getElementsByTagName( "hero_cards" ).item( 0 );
 		list = serverNode.getChildNodes();
 		initHeroCardConfig = list.item( 0 ).getTextContent();
-		
-		doc = dbBuilder.parse( "free_card_config.xml" );
+
+		doc = dbBuilder.parse( path + "free_card_config.xml" );
 		serverNode = doc.getElementsByTagName( "free_cards" ).item( 0 );
 		list = serverNode.getChildNodes();
 		freeHeroCardConfig = list.item( 0 ).getTextContent();
@@ -133,6 +134,13 @@ public class GameServer
 
 	public static void main( String[] args )
 	{
+		if(args.length > 1)
+		{
+			if(args[0].equals( "--path" ))
+			{
+				path = args[1];
+			}
+		}
 		new GameServer().run();
 	}
 
