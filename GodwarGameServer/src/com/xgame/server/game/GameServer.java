@@ -87,6 +87,15 @@ public class GameServer
 		startLogicServerHolderThread();
 
 		AIOSocketMgr.getInstance().startCompletionPort();
+		
+		try
+		{
+			Thread.sleep( Long.MAX_VALUE );
+		}
+		catch ( InterruptedException e )
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void loadConfig() throws ParserConfigurationException, SAXException,

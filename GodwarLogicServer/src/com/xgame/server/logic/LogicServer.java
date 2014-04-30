@@ -118,6 +118,15 @@ public class LogicServer
 		thGameServerHolder.start();
 
 		AIOSocketMgr.getInstance().startCompletionPort();
+		
+		try
+		{
+			Thread.sleep( Long.MAX_VALUE );
+		}
+		catch ( InterruptedException e )
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private void initPool()

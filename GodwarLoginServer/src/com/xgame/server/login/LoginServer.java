@@ -1,16 +1,12 @@
 package com.xgame.server.login;
 
-import java.io.IOException;
-
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.common.protocol.*;
 import com.xgame.server.network.AIOSocketMgr;
 
 public class LoginServer
 {
-	private ProtocolRouter router;
-    
-    public LoginServer()
+	public LoginServer()
     {
 		DatabaseRouter.getInstance();
     }
@@ -36,15 +32,15 @@ public class LoginServer
 	    System.out.println( "                 MMM MM    MM\n");
 	    System.out.println( "LoginServer\n\n");
 
-		router = ProtocolRouter.getInstance();
+		ProtocolRouter.getInstance();
 		
 		AIOSocketMgr.getInstance().startCompletionPort();
-
+		
 		try
 		{
-			System.in.read();
+			Thread.sleep( Long.MAX_VALUE );
 		}
-		catch ( IOException e )
+		catch ( InterruptedException e )
 		{
 			e.printStackTrace();
 		}

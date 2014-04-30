@@ -1,13 +1,9 @@
 package com.xgame.server.policy;
 
-import java.io.IOException;
-
-import com.xgame.server.common.protocol.*;
 import com.xgame.server.network.AIOSocketMgr;
 
 public class PolicyServer
 {
-	private ProtocolRouter router;
     
     public PolicyServer()
     {
@@ -35,12 +31,12 @@ public class PolicyServer
 	    System.out.println( "PolicyServer\n\n");
 		
 		AIOSocketMgr.getInstance().startCompletionPort();
-
+		
 		try
 		{
-			System.in.read();
+			Thread.sleep( Long.MAX_VALUE );
 		}
-		catch ( IOException e )
+		catch ( InterruptedException e )
 		{
 			e.printStackTrace();
 		}

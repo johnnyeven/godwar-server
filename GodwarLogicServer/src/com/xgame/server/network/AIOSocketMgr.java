@@ -98,15 +98,6 @@ public class AIOSocketMgr
 	{
 		log.info( "服务器已启动" );
 		server.accept( this, acceptHandler );
-
-		try
-		{
-			System.in.read();
-		}
-		catch ( IOException e )
-		{
-			e.printStackTrace();
-		}
 	}
 
 	public void stopCompletionPort()
