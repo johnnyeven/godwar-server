@@ -36,9 +36,9 @@ public class ReadCompletionHandler implements
 			String request = new String( dst );
 			log.info( request );
 
-			String policyFile = "<?xml version=\"1.0\"?><cross-domain-policy>"
+			String policyFile = "<cross-domain-policy>"
 					+ "<allow-access-from domain=\"*\" to-ports=\"9000-9999\"/>"
-					+ "</cross-domain-policy>\0";
+					+ "</cross-domain-policy>";
 			byte[] strBytes = policyFile.getBytes();
 			ByteBuffer buffer = BufferPool.getInstance().getBuffer();
 			buffer.put( strBytes, 0, strBytes.length );
