@@ -87,7 +87,7 @@ public class SkillManager
 					path = child.getTextContent();
 					if(path != null && !path.equals( "" ))
 					{
-						reader = new FileReader( path.trim() );
+						reader = new FileReader( LogicServer.path + path.trim() );
 						engine = factory.getEngineByName( "JavaScript" );
 						engine.eval( reader );
 						inv = (Invocable) engine;
