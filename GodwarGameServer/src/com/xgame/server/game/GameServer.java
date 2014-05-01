@@ -90,10 +90,9 @@ public class GameServer
 
 		try
 		{
-			System.in.read();
-		}
-		catch ( IOException e )
-		{
+			Thread.sleep(Long.MIN_VALUE);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

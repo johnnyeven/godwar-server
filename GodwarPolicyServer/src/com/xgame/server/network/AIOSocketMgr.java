@@ -66,15 +66,6 @@ public class AIOSocketMgr
 	{
 		server.accept( this, acceptHandler );
 		log.info( "安全策略服务器已启动" );
-
-		try
-		{
-			System.in.read();
-		}
-		catch ( IOException e )
-		{
-			e.printStackTrace();
-		}
 	}
 
 	public void stopCompletionPort()
