@@ -20,6 +20,7 @@ import com.xgame.server.common.Point;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.enums.PlayerStatus;
+import com.xgame.server.game.GameServer;
 import com.xgame.server.game.astar.SilzAstar;
 import com.xgame.server.objects.Player;
 import com.xgame.server.objects.WorldObject;
@@ -57,7 +58,7 @@ public class Map
 	{
 		try
 		{
-			BufferedImage img = ImageIO.read( new FileInputStream( "data/map/"
+			BufferedImage img = ImageIO.read( new FileInputStream( GameServer.path + "data/map/"
 					+ id + "/road.png" ) );
 			double roadScale = (double) img.getWidth() / config.width;
 			long color;
