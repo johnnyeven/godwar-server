@@ -15,6 +15,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.xgame.server.logic.LogicServer;
+
 public class CardParameterManager
 {
 	private static Log						log	= LogFactory
@@ -33,7 +35,7 @@ public class CardParameterManager
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 		
 		log.info( "-----------------------加载英灵卡牌数据开始-----------------------" );
-		Document doc = dbBuilder.parse( "soul_card_config.xml" );
+		Document doc = dbBuilder.parse( LogicServer.path + "soul_card_config.xml" );
 
 		NodeList list = doc.getElementsByTagName( "card" );
 		NodeList children;
@@ -114,7 +116,7 @@ public class CardParameterManager
 		log.info( "-----------------------加载英灵卡牌数据结束-----------------------" );
 
 		log.info( "-----------------------加载英雄卡牌数据开始-----------------------" );
-		doc = dbBuilder.parse( "hero_card_config.xml" );
+		doc = dbBuilder.parse( LogicServer.path + "hero_card_config.xml" );
 		list = doc.getElementsByTagName( "card" );
 		length = list.getLength();
 		HeroCardParameter parameter1;
