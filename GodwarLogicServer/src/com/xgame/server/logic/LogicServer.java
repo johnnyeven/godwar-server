@@ -34,6 +34,7 @@ public class LogicServer
 	public static String			gameServerIp	= null;
 	public static int				gameServerPort	= 0;
 	public static InetSocketAddress	gameServerAdd;
+	public static String path = "";
 
 	public LogicServer()
 	{
@@ -46,7 +47,7 @@ public class LogicServer
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
-		Document doc = dbBuilder.parse( "config.xml" );
+		Document doc = dbBuilder.parse( path + "config.xml" );
 
 		Node serverNode = doc.getElementsByTagName( "GameServer" ).item( 0 );
 		NodeList list = serverNode.getChildNodes();
@@ -158,6 +159,14 @@ public class LogicServer
 		System.out.println( "MMMM    MMMM   MMMMMMMM  MMMMMMMM MM   MMM   MM MMMMMMMM" );
 		System.out.println( "                 MMM MM    MM\n" );
 		System.out.println( "LogicServer\n\n" );
+
+		if(args.length > 1)
+		{
+			if(args[0].equals("--path"))
+			{
+				path = args[1];
+			}
+		}
 		
 		LogicServer me = new LogicServer();
 		try
