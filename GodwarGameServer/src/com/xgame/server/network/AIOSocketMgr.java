@@ -55,7 +55,7 @@ public class AIOSocketMgr
 			AsynchronousChannelGroup resourceGroup = AsynchronousChannelGroup
 					.withCachedThreadPool( Executors.newCachedThreadPool(), 8 );
 			server = AsynchronousServerSocketChannel.open( resourceGroup );
-			server.bind( new InetSocketAddress( HOST, PORT ), 100 );
+			server.bind( new InetSocketAddress( PORT ), 100 );
 
 			acceptHandler = new AcceptCompletionHandler();
 			readHandler = new ReadCompletionHandler();
