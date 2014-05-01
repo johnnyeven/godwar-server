@@ -14,7 +14,7 @@ public class AIOSocketMgr
 	private AsynchronousServerSocketChannel	server;
 	private AcceptCompletionHandler			acceptHandler;
 	private ReadCompletionHandler			readHandler;
-	public final static int					PORT			= 843;
+	public final static int					PORT			= 1843;
 	public static int						counter			= 0;
 
 	private static AIOSocketMgr				instance		= null;
