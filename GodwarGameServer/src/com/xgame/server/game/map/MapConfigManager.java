@@ -10,6 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.xgame.server.game.GameServer;
+
 public class MapConfigManager
 {
 	private static MapConfigManager			instance		= new MapConfigManager();
@@ -56,7 +58,7 @@ public class MapConfigManager
 	{
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dbBuilder.parse( "data/map/" + id + "/config.xml" );
+		Document doc = dbBuilder.parse( GameServer.path + "data/map/" + id + "/config.xml" );
 
 		MapConfig c = new MapConfig();
 		c.id = Integer.parseInt( doc.getElementsByTagName( "id" ).item( 0 )
