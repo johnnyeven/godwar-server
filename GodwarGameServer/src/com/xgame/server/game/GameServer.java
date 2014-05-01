@@ -90,7 +90,7 @@ public class GameServer
 
 		try
 		{
-			Thread.sleep(Long.MIN_VALUE);
+			Thread.sleep(Long.MAX_VALUE);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
