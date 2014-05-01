@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.xgame.server.cards.SoulCard;
+import com.xgame.server.logic.LogicServer;
 import com.xgame.server.logic.Player;
 
 public class SkillManager
@@ -44,7 +45,7 @@ public class SkillManager
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
-		Document doc = dbBuilder.parse( "conf/skill_config.xml" );
+		Document doc = dbBuilder.parse( LogicServer.path + "conf/skill_config.xml" );
 
 		NodeList list = doc.getElementsByTagName( "skill" );
 		Node node;
