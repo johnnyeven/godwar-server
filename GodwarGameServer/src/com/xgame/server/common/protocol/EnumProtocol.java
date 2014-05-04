@@ -50,6 +50,8 @@ public final class EnumProtocol
 	public static final int	ACTION_REQUEST_ENTER_ROOM_LOGICSERVER		= 4;
 	public static final int	ACTION_SHOW_PLAYER							= 5;
 	public static final int	ACTION_REMOVE_PLAYER						= 6;
+	public static final int	ACTION_SHOW_NPC								= 7;
+	public static final int	ACTION_REMOVE_NPC							= 8;
 	// BATTLE ROOM
 	public static final int	ACTION_INIT_ROOM_DATA						= 0;
 	public static final int	ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
@@ -152,6 +154,10 @@ public final class EnumProtocol
 	public static final int	SCENE_SHOW_PLAYER							= ACTION_SHOW_PLAYER << 8
 																				| CONTROLLER_SCENE;
 	public static final int	SCENE_REMOVE_PLAYER							= ACTION_REMOVE_PLAYER << 8
+																				| CONTROLLER_SCENE;
+	public static final int	SCENE_SHOW_NPC								= ACTION_SHOW_NPC << 8
+																				| CONTROLLER_SCENE;
+	public static final int	SCENE_REMOVE_NPC							= ACTION_REMOVE_NPC << 8
 																				| CONTROLLER_SCENE;
 	// BATTLE ROOM
 	public static final int	BATTLEROOM_INIT_ROOM						= ACTION_INIT_ROOM_DATA << 8

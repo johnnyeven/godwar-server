@@ -87,54 +87,58 @@ public class MapConfigManager
 		for(int i = 0; i<childNodes.getLength(); i++)
 		{
 			child = childNodes.item( i );
-			propertyList = child.getChildNodes();
-			parameter = new NPCParameter();
 			
-			for(int j = 0; j<propertyList.getLength(); j++)
+			if(child.getNodeName() == "npc")
 			{
-				property = propertyList.item( j );
-				if(property.getNodeName() == "prependName")
+				propertyList = child.getChildNodes();
+				parameter = new NPCParameter();
+				
+				for(int j = 0; j<propertyList.getLength(); j++)
 				{
-					parameter.prependName = property.getTextContent().trim();
+					property = propertyList.item( j );
+					if(property.getNodeName() == "prependName")
+					{
+						parameter.prependName = property.getTextContent().trim();
+					}
+					else if(property.getNodeName() == "name")
+					{
+						parameter.name = property.getTextContent().trim();
+					}
+					else if(property.getNodeName() == "level")
+					{
+						parameter.level = Integer.parseInt( property.getTextContent().trim() );
+					}
+					else if(property.getNodeName() == "health")
+					{
+						parameter.health = Integer.parseInt( property.getTextContent().trim() );
+					}
+					else if(property.getNodeName() == "mana")
+					{
+						parameter.mana = Integer.parseInt( property.getTextContent().trim() );
+					}
+					else if(property.getNodeName() == "x")
+					{
+						parameter.x = Integer.parseInt( property.getTextContent().trim() );
+					}
+					else if(property.getNodeName() == "y")
+					{
+						parameter.y = Integer.parseInt( property.getTextContent().trim() );
+					}
+					else if(property.getNodeName() == "action")
+					{
+						parameter.action = Integer.parseInt( property.getTextContent().trim() );
+					}
+					else if(property.getNodeName() == "direction")
+					{
+						parameter.direction = Integer.parseInt( property.getTextContent().trim() );
+					}
+					else if(property.getNodeName() == "script")
+					{
+						parameter.script = property.getTextContent().trim();
+					}
 				}
-				else if(property.getNodeName() == "name")
-				{
-					parameter.name = property.getTextContent().trim();
-				}
-				else if(property.getNodeName() == "level")
-				{
-					parameter.level = Integer.parseInt( property.getTextContent().trim() );
-				}
-				else if(property.getNodeName() == "health")
-				{
-					parameter.health = Integer.parseInt( property.getTextContent().trim() );
-				}
-				else if(property.getNodeName() == "mana")
-				{
-					parameter.mana = Integer.parseInt( property.getTextContent().trim() );
-				}
-				else if(property.getNodeName() == "x")
-				{
-					parameter.x = Integer.parseInt( property.getTextContent().trim() );
-				}
-				else if(property.getNodeName() == "y")
-				{
-					parameter.y = Integer.parseInt( property.getTextContent().trim() );
-				}
-				else if(property.getNodeName() == "action")
-				{
-					parameter.action = Integer.parseInt( property.getTextContent().trim() );
-				}
-				else if(property.getNodeName() == "direction")
-				{
-					parameter.direction = Integer.parseInt( property.getTextContent().trim() );
-				}
-				else if(property.getNodeName() == "script")
-				{
-					parameter.script = property.getTextContent().trim();
-				}
+				c.npcList.add( parameter );
 			}
-			c.npcList.add( parameter );
 		}
 		
 		return c;

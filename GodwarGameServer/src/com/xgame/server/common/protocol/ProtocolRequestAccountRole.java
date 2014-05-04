@@ -77,7 +77,7 @@ public class ProtocolRequestAccountRole implements IProtocol
 					
 					responseUserData( session );
 
-					ObjectManager.getInstance().addPlayer( p );
+					ObjectManager.getInstance().addObject( p );
 
 					rs.close();
 				}
