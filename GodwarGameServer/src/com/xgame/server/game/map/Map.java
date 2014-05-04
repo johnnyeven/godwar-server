@@ -18,10 +18,12 @@ import com.xgame.server.common.CoordinatePair;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.Point;
 import com.xgame.server.common.ServerPackage;
+import com.xgame.server.common.parameter.NPCParameter;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.game.GameServer;
 import com.xgame.server.game.astar.SilzAstar;
+import com.xgame.server.objects.NPC;
 import com.xgame.server.objects.Player;
 import com.xgame.server.objects.WorldObject;
 import com.xgame.server.pool.ServerPackagePool;
@@ -52,14 +54,15 @@ public class Map
 		gridContainer = new Grid[gridX][gridY];
 		negativePath = new boolean[config.blockNumHeight][config.blockNumWidth];
 		loadMap();
+		loadNPC();
 	}
 
 	private void loadMap()
 	{
 		try
 		{
-			BufferedImage img = ImageIO.read( new FileInputStream( GameServer.path + "data/map/"
-					+ id + "/road.png" ) );
+			BufferedImage img = ImageIO.read( new FileInputStream(
+					GameServer.path + "data/map/" + id + "/road.png" ) );
 			double roadScale = (double) img.getWidth() / config.width;
 			long color;
 			long alpha;
@@ -103,6 +106,42 @@ public class Map
 		{
 			e.printStackTrace();
 			return;
+		}
+	}
+
+	private void loadNPC()
+	{
+		Iterator< NPCParameter > it = config.npcList.iterator();
+		NPCParameter parameter;
+		CoordinatePair coordinate;
+		Grid g;
+		while ( it.hasNext() )
+		{
+			parameter = it.next();
+			NPC n = new NPC();
+			n.setId( parameter.id );
+			n.setPrependName( parameter.prependName );
+			n.setName( parameter.name );
+			n.setLevel( parameter.level );
+			n.setHealth( parameter.health );
+			n.setMana( parameter.mana );
+			n.setX( parameter.x );
+			n.setY( parameter.y );
+			n.setAction( parameter.action );
+			n.setDirection( parameter.direction );
+//			n.setScript( parameter.script );
+
+			coordinate = getCoordinatePair( n.getX(), n.getY() );
+
+			g = getGrid( (int) coordinate.getX(), (int) coordinate.getY() );
+			if ( g == null )
+			{
+				g = new Grid( (int) coordinate.getX(), (int) coordinate.getY() );
+				setGrid( g, (int) coordinate.getX(), (int) coordinate.getY() );
+			}
+			g.addWorldObject( n );
+			
+			log.info( "º”‘ÿNPC - <" + n.getPrependName() + ">" + n.getName() );
 		}
 	}
 
@@ -154,8 +193,8 @@ public class Map
 	public boolean remove( Player p )
 	{
 		p.getCurrentGrid().removeWorldObject( p.getGuid() );
-		updatePlayerStatus(p, false);
-		
+		updatePlayerStatus( p, false );
+
 		return true;
 	}
 

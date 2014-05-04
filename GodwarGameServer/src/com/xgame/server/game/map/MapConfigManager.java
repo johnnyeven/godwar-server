@@ -8,8 +8,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.xgame.server.common.parameter.NPCParameter;
 import com.xgame.server.game.GameServer;
 
 public class MapConfigManager
@@ -75,6 +78,65 @@ public class MapConfigManager
 				.getTextContent() );
 		c.blockSizeWidth = (int) Math.floor( c.width / c.blockNumWidth );
 		c.blockSizeHeight = (int) Math.floor( c.height / c.blockNumHeight );
+		
+		NodeList childNodes = doc.getElementsByTagName( "npcList" ).item( 0 ).getChildNodes();
+		NodeList propertyList;
+		Node child, property;
+		NPCParameter parameter;
+		
+		for(int i = 0; i<childNodes.getLength(); i++)
+		{
+			child = childNodes.item( i );
+			propertyList = child.getChildNodes();
+			parameter = new NPCParameter();
+			
+			for(int j = 0; j<propertyList.getLength(); j++)
+			{
+				property = propertyList.item( j );
+				if(property.getNodeName() == "prependName")
+				{
+					parameter.prependName = property.getTextContent().trim();
+				}
+				else if(property.getNodeName() == "name")
+				{
+					parameter.name = property.getTextContent().trim();
+				}
+				else if(property.getNodeName() == "level")
+				{
+					parameter.level = Integer.parseInt( property.getTextContent().trim() );
+				}
+				else if(property.getNodeName() == "health")
+				{
+					parameter.health = Integer.parseInt( property.getTextContent().trim() );
+				}
+				else if(property.getNodeName() == "mana")
+				{
+					parameter.mana = Integer.parseInt( property.getTextContent().trim() );
+				}
+				else if(property.getNodeName() == "x")
+				{
+					parameter.x = Integer.parseInt( property.getTextContent().trim() );
+				}
+				else if(property.getNodeName() == "y")
+				{
+					parameter.y = Integer.parseInt( property.getTextContent().trim() );
+				}
+				else if(property.getNodeName() == "action")
+				{
+					parameter.action = Integer.parseInt( property.getTextContent().trim() );
+				}
+				else if(property.getNodeName() == "direction")
+				{
+					parameter.direction = Integer.parseInt( property.getTextContent().trim() );
+				}
+				else if(property.getNodeName() == "script")
+				{
+					parameter.script = property.getTextContent().trim();
+				}
+			}
+			c.npcList.add( parameter );
+		}
+		
 		return c;
 	}
 }

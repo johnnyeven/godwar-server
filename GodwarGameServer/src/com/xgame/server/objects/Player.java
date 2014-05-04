@@ -19,7 +19,6 @@ import com.xgame.server.network.WorldSession;
 
 public class Player extends InteractiveObject
 {
-	private UUID						guid;
 	public long							roleId				= Long.MIN_VALUE;
 	public long							accountId			= Long.MIN_VALUE;
 	public int							level				= 0;
@@ -51,7 +50,6 @@ public class Player extends InteractiveObject
 
 	public Player()
 	{
-		guid = UUID.randomUUID();
 		motion = new Motion( this );
 	}
 
@@ -182,16 +180,6 @@ public class Player extends InteractiveObject
 	public void setChannel( AsynchronousSocketChannel channel )
 	{
 		this.channel = channel;
-	}
-
-	public UUID getGuid()
-	{
-		return guid;
-	}
-
-	public void setGuid( UUID guid )
-	{
-		this.guid = guid;
 	}
 
 	public int getCurrentPosition()

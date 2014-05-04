@@ -6,6 +6,19 @@
   <tileNumHeight>10</tileNumHeight>
   <blockNumWidth>160</blockNumWidth>
   <blockNumHeight>100</blockNumHeight>
-  <startTileX>90</startTileX>
-  <startTileY>80</startTileY>
+  <npcList>
+  	<npc id="110001">
+  		<prependName>风暴战将</prependName>
+		<name>加斯特的幻像</name>
+		<level>99</level>
+		<health>9999999</health>
+		<mana>9999999</mana>
+		<x>700</x>
+		<y>500</y>
+		<action>0</action>
+		<direction>0</direction>
+		<resource>assets.character.char3</resource>
+		<script></script>
+  	</npc>
+  </npcList>
 </map>
