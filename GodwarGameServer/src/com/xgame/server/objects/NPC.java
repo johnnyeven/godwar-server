@@ -7,6 +7,7 @@ import com.xgame.server.scripts.INPCScript;
 public class NPC extends WorldObject
 {
 	private int			id;
+	private String		resource;
 	private String		prependName;
 	private String		name;
 	private int			level;
@@ -29,6 +30,16 @@ public class NPC extends WorldObject
 	public void setId( int id )
 	{
 		this.id = id;
+	}
+
+	public String getResource()
+	{
+		return resource;
+	}
+
+	public void setResource( String resource )
+	{
+		this.resource = resource;
 	}
 
 	public String getPrependName()

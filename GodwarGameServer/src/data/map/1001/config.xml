@@ -7,7 +7,8 @@
   <blockNumWidth>160</blockNumWidth>
   <blockNumHeight>100</blockNumHeight>
   <npcList>
-  	<npc id="110001">
+  	<npc>
+  	    <id>110001</id>
   		<prependName>风暴战将</prependName>
 		<name>加斯特的幻像</name>
 		<level>99</level>

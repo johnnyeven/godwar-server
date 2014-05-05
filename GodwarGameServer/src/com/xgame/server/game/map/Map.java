@@ -120,6 +120,7 @@ public class Map
 			parameter = it.next();
 			NPC n = new NPC();
 			n.setId( parameter.id );
+			n.setResource( parameter.resource );
 			n.setPrependName( parameter.prependName );
 			n.setName( parameter.name );
 			n.setLevel( parameter.level );
