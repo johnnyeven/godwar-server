@@ -15,7 +15,7 @@
 		<health>9999999</health>
 		<mana>9999999</mana>
 		<x>700</x>
-		<y>500</y>
+		<y>400</y>
 		<action>0</action>
 		<direction>0</direction>
 		<resource>assets.character.char3</resource>
