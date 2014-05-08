@@ -130,7 +130,7 @@ public class AIOSocketMgr
 	public void startCompletionPort()
 	{
 		server.accept( this, acceptHandler );
-		log.info( "服务器已启动" );
+		log.info( "start receiving..." );
 	}
 
 	public void stopCompletionPort()
@@ -138,7 +138,7 @@ public class AIOSocketMgr
 		try
 		{
 			server.close();
-			log.info( "游戏服务器已关闭" );
+			log.info( "stop receiving..." );
 		}
 		catch ( IOException e )
 		{

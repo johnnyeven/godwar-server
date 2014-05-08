@@ -31,7 +31,7 @@ public class LogicServerHolderThread implements Runnable
 	@Override
 	public void run()
 	{
-		log.info( "LogicServerHolderThread线程已启动，ThreadName = "
+		log.info( "LogicServerHolderThread started, ThreadName = "
 				+ Thread.currentThread().getName() );
 		while ( !stop )
 		{
@@ -41,7 +41,7 @@ public class LogicServerHolderThread implements Runnable
 				ByteBuffer buffer = ByteBuffer.wrap( p.getData() );
 				buffer.limit( p.getLength() );
 
-				log.info( "线程捕获DatagramPacket, ip = "
+				log.info( "DatagramPacket, ip = "
 						+ p.getAddress().getHostAddress() + ", length = "
 						+ buffer.remaining() + ", ThreadName = "
 						+ Thread.currentThread().getName() );
@@ -148,7 +148,7 @@ public class LogicServerHolderThread implements Runnable
 		info.add = new InetSocketAddress( udpIp, udpPort );
 		info.load = 0;
 		LogicServerManager.getInstance().addLogicServer( id, info );
-		log.info( "LogicServer注册信息, id = " + id + ", ip = " + ip + ", port = "
+		log.info( "LogicServer registery id = " + id + ", ip = " + ip + ", port = "
 				+ port + ", upd ip = " + udpIp + ", udp port = " + udpPort );
 	}
 
@@ -176,7 +176,7 @@ public class LogicServerHolderThread implements Runnable
 				}
 			}
 		}
-		log.info( "LogicServer房间注册成功确认, room type = " + roomType + ", id = "
+		log.info( "LogicServer register confirm, room type = " + roomType + ", id = "
 				+ roomId );
 
 //		if ( roomId > 0 )
@@ -202,7 +202,6 @@ public class LogicServerHolderThread implements Runnable
 //
 //						try
 //						{
-//							//TODO 优化关闭 保持GameSession
 //							p.getSession().setKeepAlive( true );
 //							p.getChannel().shutdownOutput();
 //						}

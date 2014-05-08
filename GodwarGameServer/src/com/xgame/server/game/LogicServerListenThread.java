@@ -20,13 +20,13 @@ public class LogicServerListenThread implements Runnable
 		LogicServerConnector server = LogicServerConnector.getInstance();
 
 		DatagramPacket p = null;
-		log.info( "LogicServerListenThread线程已启动，ThreadName = " + Thread.currentThread().getName() );
+		log.info( "LogicServerListenThread started, ThreadName = " + Thread.currentThread().getName() );
 		while ( !stop )
 		{
 			p = DatagramPacketPool.getInstance().getObject();
 			server.receive( p );
 			DatagramPacketQueue.getInstance().push( p );
-			log.info( "DatagramSocket收到数据，ip = " + p.getAddress().getHostAddress() + ", length = " + p.getLength() );
+			log.info( "DatagramSocket received, ip = " + p.getAddress().getHostAddress() + ", length = " + p.getLength() );
 		}
 	}
 
