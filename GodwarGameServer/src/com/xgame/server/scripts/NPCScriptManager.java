@@ -22,7 +22,7 @@ public class NPCScriptManager
 	ScriptEngineManager					factory	= new ScriptEngineManager();
 	private static Log					log		= LogFactory
 														.getLog( NPCScriptManager.class );
-
+	private IScriptUtil					scriptUtil;
 	private Map< Integer, INPCScript >	scriptIndex;
 
 	private NPCScriptManager()
@@ -42,6 +42,14 @@ public class NPCScriptManager
 		ScriptEngine engine;
 		Invocable inv;
 
+		log.info( "[InitNPCScript] 初始化工具脚本" );
+		reader = new FileReader( GameServer.path + "data/script/util.js" );
+		engine = factory.getEngineByName( "JavaScript" );
+		engine.eval( reader );
+		inv = (Invocable) engine;
+		scriptUtil = inv.getInterface( IScriptUtil.class );
+		log.info( "[InitNPCScript] 初始化工具脚本结束" );
+
 		log.info( "[InitNPCScript] 初始化NPC脚本" );
 		for ( int i = 0; i < list.length; i++ )
 		{
@@ -54,13 +62,13 @@ public class NPCScriptManager
 			engine.eval( reader );
 			inv = (Invocable) engine;
 			scriptIndex.put( id, inv.getInterface( INPCScript.class ) );
-			
+
 			log.info( "[InitNPCScript] id = " + id );
 		}
 		log.info( "[InitNPCScript] 初始化NPC脚本结束" );
 	}
-	
-	public INPCScript get(int id)
+
+	public INPCScript get( int id )
 	{
 		return scriptIndex.get( id );
 	}
@@ -68,6 +76,11 @@ public class NPCScriptManager
 	public static NPCScriptManager getInstance()
 	{
 		return NPCScriptManagerHolder.instance;
+	}
+
+	public IScriptUtil getScriptUtil()
+	{
+		return scriptUtil;
 	}
 
 	private static class NPCScriptManagerHolder

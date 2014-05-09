@@ -58,7 +58,7 @@ public class Grid
 		if ( objectMap.containsKey( o.getGuid() ) )
 		{
 			log.warn( "addWorldObject() Grid[x=" + x + ", y=" + y
-					+ "]Key重复，未添加成功" );
+					+ "]Key duplicated" );
 			return;
 		}
 		o.setCurrentGrid( this );
@@ -71,7 +71,7 @@ public class Grid
 		{
 			return objectMap.get( guid );
 		}
-		log.warn( "getWorldObject() 不存在，UUID=" + guid.toString() );
+		log.warn( "getWorldObject() not exist UUID=" + guid.toString() );
 		return null;
 	}
 
@@ -83,7 +83,7 @@ public class Grid
 		}
 		else
 		{
-			log.warn( "getWorldObject() 不存在，UUID=" + guid.toString() );
+			log.warn( "getWorldObject() 锟斤拷锟斤拷锟节ｏ拷UUID=" + guid.toString() );
 		}
 	}
 

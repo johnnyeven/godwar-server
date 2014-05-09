@@ -26,6 +26,7 @@ import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.common.protocol.ProtocolSaveCardConfig;
 import com.xgame.server.common.protocol.ProtocolShowRoomList;
+import com.xgame.server.common.protocol.ProtocolTriggerNPC;
 import com.xgame.server.common.protocol.ProtocolUpdatePlayerReady;
 import com.xgame.server.common.protocol.ProtocolUpdatePlayerStatus;
 
@@ -125,12 +126,14 @@ public class AIOSocketMgr
 				ProtocolUpdatePlayerReady.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.MSG_SEND_PUBLIC,
 				ProtocolMessageSendPublic.class );
+		ProtocolRouter.getInstance().Bind( EnumProtocol.SCENE_TRIGGER_NPC,
+				ProtocolTriggerNPC.class );
 	}
 
 	public void startCompletionPort()
 	{
 		server.accept( this, acceptHandler );
-		log.info( "start receiving..." );
+		log.info( "game server started" );
 	}
 
 	public void stopCompletionPort()
@@ -138,7 +141,7 @@ public class AIOSocketMgr
 		try
 		{
 			server.close();
-			log.info( "stop receiving..." );
+			log.info( "game server stopped" );
 		}
 		catch ( IOException e )
 		{

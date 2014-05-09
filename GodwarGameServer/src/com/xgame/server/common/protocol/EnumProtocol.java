@@ -29,10 +29,10 @@ public final class EnumProtocol
 	public static final int	ACTION_HEART_BEAT							= 126;
 	public static final int	ACTION_HEART_BEAT_ECHO						= 127;
 	// MSG
-	public static final int	ACTION_SEND_PUBLIC							= 0;								// ¸½½ü
-	public static final int	ACTION_SEND_TEAM							= 1;								// ×é¶Ó
-	public static final int	ACTION_SEND_PRIVATE							= 2;								// ÃÜÓï
-	public static final int	ACTION_SEND_WORLD							= 3;								// ÊÀ½ç
+	public static final int	ACTION_SEND_PUBLIC							= 0;								// ï¿½ï¿½ï¿½ï¿½
+	public static final int	ACTION_SEND_TEAM							= 1;								// ï¿½ï¿½ï¿½
+	public static final int	ACTION_SEND_PRIVATE							= 2;								// ï¿½ï¿½ï¿½ï¿½
+	public static final int	ACTION_SEND_WORLD							= 3;								// ï¿½ï¿½ï¿½ï¿½
 	// BASE
 	public static final int	ACTION_REGISTER_LOGIC_SERVER				= 0;
 	public static final int	ACTION_REGISTER_LOGIC_SERVER_CONFIRM		= 1;
@@ -52,6 +52,7 @@ public final class EnumProtocol
 	public static final int	ACTION_REMOVE_PLAYER						= 6;
 	public static final int	ACTION_SHOW_NPC								= 7;
 	public static final int	ACTION_REMOVE_NPC							= 8;
+	public static final int	ACTION_TRIGGER_NPC							= 9;
 	// BATTLE ROOM
 	public static final int	ACTION_INIT_ROOM_DATA						= 0;
 	public static final int	ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
@@ -158,6 +159,8 @@ public final class EnumProtocol
 	public static final int	SCENE_SHOW_NPC								= ACTION_SHOW_NPC << 8
 																				| CONTROLLER_SCENE;
 	public static final int	SCENE_REMOVE_NPC							= ACTION_REMOVE_NPC << 8
+																				| CONTROLLER_SCENE;
+	public static final int	SCENE_TRIGGER_NPC							= ACTION_TRIGGER_NPC << 8
 																				| CONTROLLER_SCENE;
 	// BATTLE ROOM
 	public static final int	BATTLEROOM_INIT_ROOM						= ACTION_INIT_ROOM_DATA << 8

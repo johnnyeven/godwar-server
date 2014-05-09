@@ -152,7 +152,7 @@ public class Motion
 				|| ( currentTime - lastSyncPositionTime >= SYNC_POSITION_TRIGGER ) )
 		{
 			lastSyncPositionTime = currentTime;
-			log.debug( p.name + " 移动同步，移动到 x=" + p.getX() + ", y=" + p.getY() );
+			log.debug( p.name + " sync position, x=" + p.getX() + ", y=" + p.getY() );
 
 			ServerPackage pack = ServerPackagePool.getInstance().getObject();
 			pack.success = EnumProtocol.ACK_CONFIRM;

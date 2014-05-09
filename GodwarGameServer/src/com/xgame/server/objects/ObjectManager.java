@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import com.xgame.server.events.AOIEvent;
 import com.xgame.server.events.AOIEventHandler;
 import com.xgame.server.events.EventManager;
+import com.xgame.server.objects.hashmap.NPCMap;
 import com.xgame.server.objects.hashmap.PlayerMap;
 
 public class ObjectManager
@@ -31,31 +32,44 @@ public class ObjectManager
 	{
 		if ( target instanceof InteractiveObject )
 		{
-			EventManager.getInstance().addEventListener( ( (InteractiveObject) target ), AOIEvent.AOI_ENTER, AOIEventHandler.getInstance() );
-			EventManager.getInstance().addEventListener( ( (InteractiveObject) target ), AOIEvent.AOI_LEAVE, AOIEventHandler.getInstance() );
+			EventManager.getInstance().addEventListener(
+					( (InteractiveObject) target ), AOIEvent.AOI_ENTER,
+					AOIEventHandler.getInstance() );
+			EventManager.getInstance().addEventListener(
+					( (InteractiveObject) target ), AOIEvent.AOI_LEAVE,
+					AOIEventHandler.getInstance() );
 		}
-		
+
 		if ( target instanceof Player )
 		{
 			addPlayer( (Player) target );
 		}
+		else if ( target instanceof NPC )
+		{
+			addNPC( (NPC) target );
+		}
 	}
-	
-	public void addPlayer(Player target)
+
+	public void addPlayer( Player target )
 	{
 		PlayerMap.getInstance().add( target );
 	}
 
 	public Player getPlayer( UUID guid )
 	{
+		return PlayerMap.getInstance().get( guid.toString() );
+	}
+
+	public Player getPlayer( String guid )
+	{
 		return PlayerMap.getInstance().get( guid );
 	}
 
 	public Player getPlayerByName( String name )
 	{
-		Iterator< Entry< UUID, Player >> it = PlayerMap.getInstance()
+		Iterator< Entry< String, Player >> it = PlayerMap.getInstance()
 				.getIterator();
-		Entry< UUID, Player > en;
+		Entry< String, Player > en;
 		Player p;
 		while ( it.hasNext() )
 		{
@@ -70,16 +84,26 @@ public class ObjectManager
 		return null;
 	}
 
-	public Player getObject( UUID guid, Player p )
+	public void addNPC( NPC target )
 	{
-		return PlayerMap.getInstance().get( guid );
+		NPCMap.getInstance().add( target );
+	}
+
+	public NPC getNPC( UUID guid )
+	{
+		return NPCMap.getInstance().get( guid.toString() );
+	}
+
+	public NPC getNPC( String guid )
+	{
+		return NPCMap.getInstance().get( guid );
 	}
 
 	public void update( long timeDiff )
 	{
-		Iterator< Entry< UUID, Player >> it = PlayerMap.getInstance()
+		Iterator< Entry< String, Player >> it = PlayerMap.getInstance()
 				.getIterator();
-		Entry< UUID, Player > en;
+		Entry< String, Player > en;
 		Player p;
 		while ( it.hasNext() )
 		{

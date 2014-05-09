@@ -48,7 +48,7 @@ public class ReadCompletionHandler implements
 		{
 			try
 			{
-				log.info( "¶Ï¿ªÁ¬½Ó IP=" + attachment.channel.getRemoteAddress().toString() );
+				log.info( "disconnected from client, IP=" + attachment.channel.getRemoteAddress().toString() );
 			}
 			catch ( IOException e )
 			{

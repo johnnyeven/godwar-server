@@ -24,6 +24,7 @@ import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.game.GameServer;
 import com.xgame.server.game.astar.SilzAstar;
 import com.xgame.server.objects.NPC;
+import com.xgame.server.objects.ObjectManager;
 import com.xgame.server.objects.Player;
 import com.xgame.server.objects.WorldObject;
 import com.xgame.server.pool.ServerPackagePool;
@@ -92,11 +93,11 @@ public class Map
 			// {
 			// if(negativePath[i][j])
 			// {
-			// logString += "■";
+			// logString += "锟斤拷";
 			// }
 			// else
 			// {
-			// logString += "□";
+			// logString += "锟斤拷";
 			// }
 			// }
 			// log.debug(logString);
@@ -141,8 +142,9 @@ public class Map
 				setGrid( g, (int) coordinate.getX(), (int) coordinate.getY() );
 			}
 			g.addWorldObject( n );
+			ObjectManager.getInstance().addObject( n );
 			
-			log.info( "加载NPC - <" + n.getPrependName() + ">" + n.getName() );
+			log.info( "create NPC - <" + n.getPrependName() + ">" + n.getName() );
 		}
 	}
 
@@ -156,7 +158,7 @@ public class Map
 	{
 		if ( x >= gridX || y >= gridY )
 		{
-			log.error( "setGrid() 错误的Grid坐标 x=" + x + ", y=" + y + ", GridX="
+			log.error( "setGrid() coordinate error x=" + x + ", y=" + y + ", GridX="
 					+ gridX + ", GridY=" + gridY );
 			return;
 		}
@@ -167,7 +169,7 @@ public class Map
 	{
 		if ( x >= gridX || y >= gridY )
 		{
-			log.error( "getGrid() 错误的Grid坐标 x=" + x + ", y=" + y + ", GridX="
+			log.error( "getGrid() coordinate error x=" + x + ", y=" + y + ", GridX="
 					+ gridX + ", GridY=" + gridY );
 			return null;
 		}
@@ -186,7 +188,7 @@ public class Map
 		}
 		g.addWorldObject( p );
 
-		// 发送玩家初始化数据
+		// 锟斤拷锟斤拷锟斤拷页锟绞硷拷锟斤拷锟斤拷
 		sendPlayerData( p );
 		return true;
 	}
@@ -224,7 +226,7 @@ public class Map
 	{
 		if ( p.getMapId() != id )
 		{
-			log.error( "updatePlayerStatus() Player所在地图ID与本地图ID不符合" );
+			log.error( "updatePlayerStatus() Player not match" );
 			return false;
 		}
 		CoordinatePair coordinate = getCoordinatePair( p.getX(), p.getY() );
@@ -236,9 +238,7 @@ public class Map
 
 		if ( show )
 		{
-			// 同屏其他玩家可见
 			updateVisibilityShow( p, g );
-			// 可见同屏其他玩家
 			// updateOtherVisibility(p, g);
 
 			p.status = PlayerStatus.NORMAL;

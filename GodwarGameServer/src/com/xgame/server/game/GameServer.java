@@ -10,7 +10,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.mozilla.javascript.ScriptableObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,8 +17,6 @@ import org.xml.sax.SAXException;
 
 import com.xgame.server.common.database.DatabaseRouter;
 import com.xgame.server.network.AIOSocketMgr;
-import com.xgame.server.scripts.INPCScript;
-import com.xgame.server.scripts.NPCScriptContentParameter;
 import com.xgame.server.scripts.NPCScriptManager;
 
 public class GameServer
@@ -133,6 +130,12 @@ public class GameServer
 		try
 		{
 			NPCScriptManager.getInstance().initialize();
+			
+//			INPCScript script = NPCScriptManager.getInstance().get( 110001 );
+//			NativeObject obj = script.dialogue( 0 );
+//			IScriptUtil util = NPCScriptManager.getInstance().getScriptUtil();
+//			NPCScriptContentParameter p = util.convertDialogueContent( obj );
+//			System.out.print( p );
 		}
 		catch ( FileNotFoundException | ScriptException e )
 		{

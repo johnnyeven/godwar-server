@@ -24,7 +24,7 @@ public class ReadCompletionHandler implements
 	{
 		if ( result > 0 )
 		{
-			// 处理buffer
+			// 锟斤拷锟斤拷buffer
 			ByteBuffer buffer = attachment.getReadBuffer();
 			buffer.flip();
 			buffer.getInt();
@@ -46,7 +46,7 @@ public class ReadCompletionHandler implements
 		{
 			try
 			{
-				log.info( "断开连接 IP="
+				log.info( "disconnected from client, IP="
 						+ attachment.getChannel().getRemoteAddress().toString()
 						+ ", Player=" + attachment.getPlayer().name );
 			}
@@ -66,7 +66,7 @@ public class ReadCompletionHandler implements
 	{
 		try
 		{
-			log.info( "意外断开连接 IP="
+			log.info( "disconnected from client with error, IP="
 					+ attachment.getChannel().getRemoteAddress().toString()
 					+ ", Player=" + attachment.getPlayer().name );
 		}

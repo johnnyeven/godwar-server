@@ -1,6 +1,8 @@
 package com.xgame.server.scripts;
 
+import sun.org.mozilla.javascript.internal.NativeObject;
+
 public interface INPCScript
 {
-	NPCScriptContentParameter dialogue(int step);
+	NativeObject dialogue(int step);
 }

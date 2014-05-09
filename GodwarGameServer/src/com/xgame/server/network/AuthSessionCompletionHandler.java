@@ -111,7 +111,7 @@ public class AuthSessionCompletionHandler implements
 		}
 		else
 		{
-			log.error( "绑定Session协议号错误，收到的协议号为" + protocolId + ", 应该为"
+			log.error( "the protocol id is invalid, received = " + protocolId + ", required = "
 					+ EnumProtocol.INFO_BIND_SESSION );
 		}
 	}

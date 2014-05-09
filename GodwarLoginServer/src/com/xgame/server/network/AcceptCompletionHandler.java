@@ -23,7 +23,7 @@ public class AcceptCompletionHandler implements
 	{
 		try
 		{
-			log.info( "接受远程主机连接，IP: "
+			log.info( "accepted new connection, IP: "
 					+ socketChannel.getRemoteAddress().toString() );
 			socketChannel.setOption( StandardSocketOptions.TCP_NODELAY, true );
 			socketChannel
@@ -49,7 +49,7 @@ public class AcceptCompletionHandler implements
 	@Override
 	public void failed( Throwable arg0, AIOSocketMgr arg1 )
 	{
-		log.error( "远程主机连接失败, Message=" + arg0.getMessage() );
+		log.error( "error, Message=" + arg0.getMessage() );
 	}
 
 }

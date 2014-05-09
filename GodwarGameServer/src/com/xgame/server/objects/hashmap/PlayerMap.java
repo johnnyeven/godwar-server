@@ -11,13 +11,13 @@ import com.xgame.server.objects.Player;
 public class PlayerMap
 {
 	private static PlayerMap	instance;
-	private Map< UUID, Player >	hash	= new HashMap< UUID, Player >();
+	private Map< String, Player >	hash	= new HashMap< String, Player >();
 
 	private PlayerMap()
 	{
 	}
 
-	public Player get( UUID guid )
+	public Player get( String guid )
 	{
 		if ( hash.containsKey( guid ) )
 		{
@@ -28,10 +28,10 @@ public class PlayerMap
 
 	public void add( Player p )
 	{
-		hash.put( p.getGuid(), p );
+		hash.put( p.getGuid().toString(), p );
 	}
 
-	public Iterator< Entry< UUID, Player >> getIterator()
+	public Iterator< Entry< String, Player >> getIterator()
 	{
 		return hash.entrySet().iterator();
 	}

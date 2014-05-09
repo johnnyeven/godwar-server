@@ -25,7 +25,7 @@ public class AcceptCompletionHandler implements
 	{
 		try
 		{
-			log.info( "接受远程主机连接，IP: "
+			log.info( "accepted new connection, IP: "
 					+ socketChannel.getRemoteAddress().toString() );
 			socketChannel.setOption( StandardSocketOptions.TCP_NODELAY, true );
 			socketChannel
