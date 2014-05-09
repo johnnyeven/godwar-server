@@ -115,6 +115,7 @@ public class WorldSession
 	{
 		if ( player != null )
 		{
+			player.saveToDatabase();
 			player.getMap().remove( player );
 			player = null;
 		}

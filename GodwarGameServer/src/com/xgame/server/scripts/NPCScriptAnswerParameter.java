@@ -5,4 +5,5 @@ public class NPCScriptAnswerParameter
 	public String content;
 	public String action;
 	public int position;
+	public String command;
 }

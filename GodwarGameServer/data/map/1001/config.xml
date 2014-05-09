@@ -21,5 +21,19 @@
 		<resource>assets.character.char3</resource>
 		<script></script>
   	</npc>
+  	<npc>
+  	    <id>110002</id>
+  		<prependName>打不赢</prependName>
+		<name>唐虾</name>
+		<level>99</level>
+		<health>9999999</health>
+		<mana>9999999</mana>
+		<x>780</x>
+		<y>450</y>
+		<action>0</action>
+		<direction>0</direction>
+		<resource>assets.character.char2</resource>
+		<script></script>
+  	</npc>
   </npcList>
 </map>

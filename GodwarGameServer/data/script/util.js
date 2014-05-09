@@ -10,6 +10,11 @@ function convertDialogueContent(obj) {
 		if(obj.answer[i].position) {
 			answer.position = obj.answer[i].position;
 		}
+		if(obj.answer[i].command) {
+			answer.command = obj.answer[i].command;
+		} else {
+			answer.command = "";
+		}
 		content.answer.add(answer);
 	}
 	

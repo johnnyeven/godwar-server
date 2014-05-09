@@ -70,7 +70,7 @@ public class ProtocolMessageSendPublic implements IProtocol
 		if(message != null && !message.equals(""))
 		{
 
-			// ¸æËßÊÓÒ°ÄÚÆäËûÍæ¼Ò
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			Map m = session.getPlayer().getMap();
 			CoordinatePair coordinate = Map.getCoordinatePair( session
 					.getPlayer().getX(), session.getPlayer().getY() );
@@ -83,6 +83,7 @@ public class ProtocolMessageSendPublic implements IProtocol
 			Grid currentGrid;
 			Entry< UUID, WorldObject > en;
 			Player currentPlayer;
+			WorldObject target;
 
 			ServerPackage pack = ServerPackagePool.getInstance()
 					.getObject();
@@ -106,13 +107,17 @@ public class ProtocolMessageSendPublic implements IProtocol
 				while ( gridIt.hasNext() )
 				{
 					en = gridIt.next();
+					target = en.getValue();
 					
-					currentPlayer = (Player) en.getValue();
-					if ( !currentPlayer.getChannel().isOpen() )
+					if(target instanceof Player)
 					{
-						continue;
+						currentPlayer = (Player) en.getValue();
+						if ( !currentPlayer.getChannel().isOpen() )
+						{
+							continue;
+						}
+						CommandCenter.send( currentPlayer.getChannel(), pack );
 					}
-					CommandCenter.send( currentPlayer.getChannel(), pack );
 				}
 			}
 		}

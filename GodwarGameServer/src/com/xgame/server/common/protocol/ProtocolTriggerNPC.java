@@ -98,6 +98,8 @@ public class ProtocolTriggerNPC implements IProtocol
 					pack.parameter.add( new PackageItem( a.action.length(),
 							a.action ) );
 					pack.parameter.add( new PackageItem( 4, a.position ) );
+					pack.parameter.add( new PackageItem( a.command.length(),
+							a.command ) );
 				}
 
 				CommandCenter.send( session.getChannel(), pack );

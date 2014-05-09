@@ -37,9 +37,9 @@ public class Player extends InteractiveObject
 	private Motion						motion;
 	private AsynchronousSocketChannel	channel;
 	private WorldSession				session;
-	private int							currentGroup;											// Íæ¼ÒÕóÓª
-																								// 1=ºì¶Ó
-																								// 2=À¶¶Ó
+	private int							currentGroup;											// ï¿½ï¿½ï¿½ï¿½ï¿½Óª
+																								// 1=ï¿½ï¿½ï¿½
+																								// 2=ï¿½ï¿½ï¿½ï¿½
 	private int							currentPosition;
 	private int							currentCardGroup;
 	private String						lastHeroCardId		= "";
@@ -57,7 +57,7 @@ public class Player extends InteractiveObject
 	{
 		if ( roleId == Long.MIN_VALUE )
 		{
-			log.error( "loadFromDatabase() accountIdÃ»ÓÐ³õÊ¼»¯" );
+			log.error( "loadFromDatabase() accountIdÃ»ï¿½Ð³ï¿½Ê¼ï¿½ï¿½" );
 			return false;
 		}
 		try
@@ -86,13 +86,13 @@ public class Player extends InteractiveObject
 			}
 			else
 			{
-				log.error( "[loadFromDatabase] Ã»ÓÐÕÒµ½¶ÔÓ¦µÄ½ÇÉ«Êý¾Ý roleId=" + roleId );
+				log.error( "[loadFromDatabase] role not exist roleId=" + roleId );
 				return false;
 			}
 			long accountGuid = rs.getLong( "account_id" );
 			if ( accountGuid != session.getId() )
 			{
-				log.error( "[loadFromDatabase] accountIdÓëWorldSessionÊ¹ÓÃµÄaccountId²»Æ¥Åä" );
+				log.error( "[loadFromDatabase] accountId not match WorldSession's accountId" );
 				return false;
 			}
 			String gameGuid = rs.getString( "game_guid" );
@@ -133,6 +133,31 @@ public class Player extends InteractiveObject
 		}
 		return true;
 	}
+	
+	public void saveToDatabase()
+	{
+		String sql = "UPDATE `role` SET `level`=" + level + ", " +
+				"`account_cash`=" + accountCash + ", " +
+				"`direction`=" + direction + ", " +
+				"`honor`=" + honor + ", " +
+				"`energy`=" + energy + ", " +
+				"`max_energy`=" + energyMax + ", " +
+				"`map_id`=" + getMapId() + ", " +
+				"`x`=" + getX() + ", " +
+				"`y`=" + getY() +
+				" WHERE `role_id`=" + roleId;
+		try
+		{
+			PreparedStatement st = DatabaseRouter.getInstance()
+					.getConnection( "gamedb" ).prepareStatement( sql );
+			st.executeUpdate();
+			st.close();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
+	}
 
 	public void update( long timeDiff )
 	{
@@ -148,7 +173,6 @@ public class Player extends InteractiveObject
 
 	public void killPlayer()
 	{
-		// TODO ËÀÍö´¦Àí
 
 	}
 
