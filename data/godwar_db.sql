@@ -108,10 +108,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `profzone_godwarv2_gamedb`.`game_card` ;
 
 CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_card` (
+  `card_id` BIGINT NOT NULL AUTO_INCREMENT,
   `role_id` BIGINT NOT NULL,
-  `card_list` TEXT NOT NULL,
-  `hero_card_list` TEXT NOT NULL,
-  PRIMARY KEY (`role_id`))
+  `resource_id` CHAR(32) NOT NULL,
+  `name` CHAR(16) NOT NULL,
+  `attack` INT NOT NULL,
+  `def` INT NOT NULL,
+  `mdef` INT NOT NULL,
+  `health` INT NOT NULL,
+  `energy` INT NOT NULL,
+  `level` INT NOT NULL,
+  `race` TINYINT NOT NULL,
+  PRIMARY KEY (`card_id`))
 ENGINE = InnoDB;
 
 
