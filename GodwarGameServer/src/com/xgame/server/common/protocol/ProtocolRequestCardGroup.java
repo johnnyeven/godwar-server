@@ -65,7 +65,6 @@ public class ProtocolRequestCardGroup implements IProtocol
 				pack.protocolId = EnumProtocol.INFO_REQUEST_CARD_GROUP;
 
 				String groupName;
-				String cardList;
 				while ( rs.next() )
 				{
 					groupName = rs.getString( "group_name" );
@@ -73,9 +72,6 @@ public class ProtocolRequestCardGroup implements IProtocol
 							.getInt( "group_id" ) ) );
 					pack.parameter.add( new PackageItem( groupName.length(),
 							groupName ) );
-					cardList = rs.getString( "card_list" );
-					pack.parameter.add( new PackageItem( cardList.length(),
-							cardList ) );
 				}
 				CommandCenter.send( parameter.client, pack );
 			}
