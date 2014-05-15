@@ -13,12 +13,14 @@ import com.xgame.server.CommandCenter;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.common.parameter.SoulCardParameter;
 import com.xgame.server.game.GameServer;
 import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.game.map.MapManager;
 import com.xgame.server.network.WorldSession;
 import com.xgame.server.objects.ObjectManager;
 import com.xgame.server.objects.Player;
+import com.xgame.server.objects.hashmap.CardConfigMap;
 import com.xgame.server.pool.PlayerPool;
 import com.xgame.server.pool.ServerPackagePool;
 
@@ -92,21 +94,21 @@ public class ProtocolRegisterAccountRole implements IProtocol
 				rs.first();
 				long lastInsertId = rs.getLong( 1 );
 
-				// TODO ¥¥Ω®Player∂‘œÛ
+				// TODO ÔøΩÔøΩÔøΩÔøΩPlayerÔøΩÔøΩÔøΩÔøΩ
 				Player p = PlayerPool.getInstance().getObject();
 				p.roleId = lastInsertId;
 				p.setChannel( parameter.client );
 				session.setPlayer( p );
 				if ( !p.loadFromDatabase() )
 				{
-					log.error( "[RegisterAccountRole] Player.loadFromDatabase() ß∞‹" );
+					log.error( "[RegisterAccountRole] Player.loadFromDatabase() ßÔøΩÔøΩ" );
 					return;
 				}
 				initRoleDatabase( p );
 
 				if ( !MapManager.getInstance().getMap( p.getMapId() ).add( p ) )
 				{
-					log.error( "Map::add()  ß∞‹£¨Player=" + p.name );
+					log.error( "Map::add()  ßÔøΩ‹£ÔøΩPlayer=" + p.name );
 					return;
 				}
 
@@ -126,7 +128,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 	private void initRoleDatabase( Player p )
 	{
 		String sql = "INSERT INTO `game_card_group`(`role_id`, `group_name`, `card_list`)VALUES";
-		sql += "(" + p.accountId + ", 'µ⁄“ªø®◊È', '')";
+		sql += "(" + p.roleId + ", 'Á¨¨‰∏ÄÂç°ÁªÑ', '')";
 		try
 		{
 			PreparedStatement st = DatabaseRouter.getInstance()
@@ -139,14 +141,27 @@ public class ProtocolRegisterAccountRole implements IProtocol
 			e.printStackTrace();
 		}
 
-		sql = "INSERT INTO `game_card`(`role_id`, `card_list`, `hero_card_list`)VALUES";
-		sql += "(" + p.accountId + ", '" + GameServer.initSoulCardConfig
-				+ "', '" + GameServer.initHeroCardConfig + "')";
+		sql = "INSERT INTO `game_card`(`role_id`, `resource_id`, `name`, `attack`, `def`, `mdef`, `health`, `energy`, `level`, `race`)VALUES";
+		String[] soulCardList = GameServer.initSoulCardConfig.split( "," );
+		SoulCardParameter parameter;
+		for ( int i = 0; i < soulCardList.length; i++ )
+		{
+			parameter = CardConfigMap.getInstance().get( soulCardList[i] );
+			sql += "(" + p.roleId + ", '" + parameter.resourceId + "', '"
+					+ parameter.name + "', " + parameter.attack + ", "
+					+ parameter.def + ", " + parameter.mdef + ", "
+					+ parameter.health + ", " + parameter.energy + ", "
+					+ parameter.level + ", " + parameter.race + ")";
+			if ( i < soulCardList.length - 1 )
+			{
+				sql += ",";
+			}
+		}
+
 		try
 		{
 			PreparedStatement st = DatabaseRouter.getInstance()
-					.getConnection( "gamedb" )
-					.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS );
+					.getConnection( "gamedb" ).prepareStatement( sql );
 			st.executeUpdate();
 		}
 		catch ( SQLException e )

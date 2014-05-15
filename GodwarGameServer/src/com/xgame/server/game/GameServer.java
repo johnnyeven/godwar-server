@@ -16,7 +16,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.common.parameter.SoulCardParameter;
 import com.xgame.server.network.AIOSocketMgr;
+import com.xgame.server.objects.hashmap.CardConfigMap;
 import com.xgame.server.scripts.NPCScriptManager;
 
 public class GameServer
@@ -109,10 +111,32 @@ public class GameServer
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 
-		Document doc = dbBuilder.parse( path + "init_card_config.xml" );
+		Document doc = dbBuilder.parse( path + "soul_card_config.xml" );
+		Node serverNode;
+		NodeList list = doc.getElementsByTagName( "card" );
+		NodeList children;
+		SoulCardParameter parameter;
+		for(int i = 0; i<list.getLength(); i++)
+		{
+			parameter = new SoulCardParameter();
+			serverNode = list.item( i );
+			children = serverNode.getChildNodes();
+			parameter.id = children.item( 1 ).getTextContent();
+			parameter.resourceId = children.item( 3 ).getTextContent();
+			parameter.name = children.item( 5 ).getTextContent();
+			parameter.attack = Integer.parseInt( children.item( 7 ).getTextContent() );
+			parameter.def = Integer.parseInt( children.item( 9 ).getTextContent() );
+			parameter.mdef = Integer.parseInt( children.item( 11 ).getTextContent() );
+			parameter.health = Integer.parseInt( children.item( 13 ).getTextContent() );
+			parameter.energy = Integer.parseInt( children.item( 15 ).getTextContent() );
+			parameter.level = Integer.parseInt( children.item( 17 ).getTextContent() );
+			parameter.race = Integer.parseInt( children.item( 19 ).getTextContent() );
+			CardConfigMap.getInstance().add( parameter );
+		}
 
-		Node serverNode = doc.getElementsByTagName( "soul_cards" ).item( 0 );
-		NodeList list = serverNode.getChildNodes();
+		doc = dbBuilder.parse( path + "init_card_config.xml" );
+		serverNode = doc.getElementsByTagName( "soul_cards" ).item( 0 );
+		list = serverNode.getChildNodes();
 		initSoulCardConfig = list.item( 0 ).getTextContent();
 
 		serverNode = doc.getElementsByTagName( "hero_cards" ).item( 0 );
