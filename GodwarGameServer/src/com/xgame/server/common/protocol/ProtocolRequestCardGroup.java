@@ -44,13 +44,13 @@ public class ProtocolRequestCardGroup implements IProtocol
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[RequestCardGroup] AccountId = "
-				+ session.getPlayer().accountId );
+		log.info( "[RequestCardGroup] RoleId = "
+				+ session.getPlayer().roleId );
 
-		if ( session.getPlayer().accountId > 0 )
+		if ( session.getPlayer().roleId > 0 )
 		{
-			String sql = "SELECT * FROM `game_card_group` WHERE `account_id`="
-					+ session.getPlayer().accountId;
+			String sql = "SELECT * FROM `game_card_group` WHERE `role_id`="
+					+ session.getPlayer().roleId;
 
 			PreparedStatement st;
 			try

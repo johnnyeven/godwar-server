@@ -49,13 +49,12 @@ public class ProtocolRequestCardList implements IProtocol
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[RequestCardList] AccountId = "
-				+ session.getPlayer().accountId );
+		log.info( "[RequestCardList] RoleId = " + session.getPlayer().roleId );
 
 		if ( session.getPlayer().accountId > 0 )
 		{
-			String sql = "SELECT * FROM `game_card` WHERE `account_id`="
-					+ session.getPlayer().accountId;
+			String sql = "SELECT * FROM `game_card` WHERE `role_id`="
+					+ session.getPlayer().roleId;
 
 			PreparedStatement st;
 			try
@@ -69,16 +68,29 @@ public class ProtocolRequestCardList implements IProtocol
 				pack.success = EnumProtocol.ACK_CONFIRM;
 				pack.protocolId = EnumProtocol.INFO_REQUEST_CARD_LIST;
 
-				if ( rs.next() )
+				String id;
+				String name;
+				int attack, def, mdef, health, energy, level, race;
+				while ( rs.next() )
 				{
-					String cardList = rs.getString( "card_list" );
-					String heroCardList = rs.getString( "hero_card_list" );
-					String freeCardList = GameServer.freeHeroCardConfig;
-					heroCardList = mergeHeroCard( heroCardList, freeCardList );
-					pack.parameter.add( new PackageItem( cardList.length(),
-							cardList ) );
-					pack.parameter.add( new PackageItem( heroCardList.length(),
-							heroCardList ) );
+					id = rs.getString( "resource_id" );
+					name = rs.getString( "name" );
+					attack = rs.getInt( "attack" );
+					def = rs.getInt( "def" );
+					mdef = rs.getInt( "mdef" );
+					health = rs.getInt( "health" );
+					energy = rs.getInt( "energy" );
+					level = rs.getInt( "level" );
+					race = rs.getInt( "race" );
+					pack.parameter.add( new PackageItem( id.length(), id ) );
+					pack.parameter.add( new PackageItem( name.length(), name ) );
+					pack.parameter.add( new PackageItem( 4, attack ) );
+					pack.parameter.add( new PackageItem( 4, def ) );
+					pack.parameter.add( new PackageItem( 4, mdef ) );
+					pack.parameter.add( new PackageItem( 4, health ) );
+					pack.parameter.add( new PackageItem( 4, energy ) );
+					pack.parameter.add( new PackageItem( 4, level ) );
+					pack.parameter.add( new PackageItem( 4, race ) );
 				}
 				CommandCenter.send( parameter.client, pack );
 			}
@@ -87,39 +99,6 @@ public class ProtocolRequestCardList implements IProtocol
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private String mergeHeroCard( String list1, String list2 )
-	{
-		String[] strList1 = list1.split( "," );
-		String[] strList2 = list2.split( "," );
-
-		List< String > l1 = Arrays.asList( strList1 );
-		List< String > l2 = Arrays.asList( strList2 );
-		Set<String> s = new TreeSet<String>();
-		
-		s.addAll( l1 );
-		s.addAll( l2 );
-		
-		Iterator<String> it = s.iterator();
-		String tmp;
-		
-		if(it.hasNext())
-		{
-			StringBuffer buf = new StringBuffer();
-			tmp = it.next();
-			buf.append( tmp );
-			
-			while(it.hasNext())
-			{
-				tmp = it.next();
-				buf.append( "," + tmp );
-			}
-			
-			return buf.toString();
-		}
-		
-		return "";
 	}
 
 }

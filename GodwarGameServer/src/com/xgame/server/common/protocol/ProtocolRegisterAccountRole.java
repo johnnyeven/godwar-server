@@ -94,7 +94,6 @@ public class ProtocolRegisterAccountRole implements IProtocol
 				rs.first();
 				long lastInsertId = rs.getLong( 1 );
 
-				// TODO ����Player����
 				Player p = PlayerPool.getInstance().getObject();
 				p.roleId = lastInsertId;
 				p.setChannel( parameter.client );
@@ -147,7 +146,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		for ( int i = 0; i < soulCardList.length; i++ )
 		{
 			parameter = CardConfigMap.getInstance().get( soulCardList[i] );
-			sql += "(" + p.roleId + ", '" + parameter.resourceId + "', '"
+			sql += "(" + p.roleId + ", '" + parameter.id + "', '"
 					+ parameter.name + "', " + parameter.attack + ", "
 					+ parameter.def + ", " + parameter.mdef + ", "
 					+ parameter.health + ", " + parameter.energy + ", "
