@@ -92,6 +92,7 @@ public class ProtocolRequestCardList implements IProtocol
 					pack.parameter.add( new PackageItem( 4, level ) );
 					pack.parameter.add( new PackageItem( 4, race ) );
 				}
+				rs.close();
 				CommandCenter.send( parameter.client, pack );
 			}
 			catch ( SQLException e )

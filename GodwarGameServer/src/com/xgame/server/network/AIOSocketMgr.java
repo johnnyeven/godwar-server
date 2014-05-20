@@ -18,6 +18,7 @@ import com.xgame.server.common.protocol.ProtocolPlayerSelectHero;
 import com.xgame.server.common.protocol.ProtocolRegisterAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestAccountRole;
 import com.xgame.server.common.protocol.ProtocolRequestCardGroup;
+import com.xgame.server.common.protocol.ProtocolRequestCardGroupCards;
 import com.xgame.server.common.protocol.ProtocolRequestCardList;
 import com.xgame.server.common.protocol.ProtocolRequestEnterRoom;
 import com.xgame.server.common.protocol.ProtocolRequestFindPath;
@@ -128,6 +129,9 @@ public class AIOSocketMgr
 				ProtocolMessageSendPublic.class );
 		ProtocolRouter.getInstance().Bind( EnumProtocol.SCENE_TRIGGER_NPC,
 				ProtocolTriggerNPC.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.INFO_REQUEST_CARD_GROUP_CARDS,
+				ProtocolRequestCardGroupCards.class );
 	}
 
 	public void startCompletionPort()
