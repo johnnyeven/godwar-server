@@ -26,6 +26,7 @@ import com.xgame.server.common.protocol.ProtocolRequestHotkey;
 import com.xgame.server.common.protocol.ProtocolRequestRoom;
 import com.xgame.server.common.protocol.ProtocolRouter;
 import com.xgame.server.common.protocol.ProtocolSaveCardConfig;
+import com.xgame.server.common.protocol.ProtocolSaveCardGroupCards;
 import com.xgame.server.common.protocol.ProtocolShowRoomList;
 import com.xgame.server.common.protocol.ProtocolTriggerNPC;
 import com.xgame.server.common.protocol.ProtocolUpdatePlayerReady;
@@ -132,6 +133,9 @@ public class AIOSocketMgr
 		ProtocolRouter.getInstance().Bind(
 				EnumProtocol.INFO_REQUEST_CARD_GROUP_CARDS,
 				ProtocolRequestCardGroupCards.class );
+		ProtocolRouter.getInstance().Bind(
+				EnumProtocol.INFO_SAVE_CARD_GROUP_CARDS,
+				ProtocolSaveCardGroupCards.class );
 	}
 
 	public void startCompletionPort()

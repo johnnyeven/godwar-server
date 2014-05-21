@@ -119,6 +119,7 @@ CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_card` (
   `energy` INT NOT NULL,
   `level` INT NOT NULL,
   `race` TINYINT NOT NULL,
+  `skills` TEXT NOT NULL,
   PRIMARY KEY (`card_id`))
 ENGINE = InnoDB;
 

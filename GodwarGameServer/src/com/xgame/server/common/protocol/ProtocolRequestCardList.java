@@ -68,11 +68,13 @@ public class ProtocolRequestCardList implements IProtocol
 				pack.success = EnumProtocol.ACK_CONFIRM;
 				pack.protocolId = EnumProtocol.INFO_REQUEST_CARD_LIST;
 
+				long guid;
 				String id;
 				String name;
 				int attack, def, mdef, health, energy, level, race;
 				while ( rs.next() )
 				{
+					guid = rs.getLong( "card_id" );
 					id = rs.getString( "resource_id" );
 					name = rs.getString( "name" );
 					attack = rs.getInt( "attack" );
@@ -82,6 +84,7 @@ public class ProtocolRequestCardList implements IProtocol
 					energy = rs.getInt( "energy" );
 					level = rs.getInt( "level" );
 					race = rs.getInt( "race" );
+					pack.parameter.add( new PackageItem( 8, guid ) );
 					pack.parameter.add( new PackageItem( id.length(), id ) );
 					pack.parameter.add( new PackageItem( name.length(), name ) );
 					pack.parameter.add( new PackageItem( 4, attack ) );

@@ -140,7 +140,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 			e.printStackTrace();
 		}
 
-		sql = "INSERT INTO `game_card`(`role_id`, `resource_id`, `name`, `attack`, `def`, `mdef`, `health`, `energy`, `level`, `race`)VALUES";
+		sql = "INSERT INTO `game_card`(`role_id`, `resource_id`, `name`, `attack`, `def`, `mdef`, `health`, `energy`, `level`, `race`, `skills`)VALUES";
 		String[] soulCardList = GameServer.initSoulCardConfig.split( "," );
 		SoulCardParameter parameter;
 		for ( int i = 0; i < soulCardList.length; i++ )
@@ -150,7 +150,7 @@ public class ProtocolRegisterAccountRole implements IProtocol
 					+ parameter.name + "', " + parameter.attack + ", "
 					+ parameter.def + ", " + parameter.mdef + ", "
 					+ parameter.health + ", " + parameter.energy + ", "
-					+ parameter.level + ", " + parameter.race + ")";
+					+ parameter.level + ", " + parameter.race + ", '')";
 			if ( i < soulCardList.length - 1 )
 			{
 				sql += ",";

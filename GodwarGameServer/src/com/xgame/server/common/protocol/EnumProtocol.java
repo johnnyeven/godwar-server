@@ -27,6 +27,7 @@ public final class EnumProtocol
 	public static final int	ACTION_DELETE_GROUP							= 11;
 	public static final int	ACTION_SAVE_CARD_GROUP						= 12;
 	public static final int	ACTION_REQUEST_CARD_GROUP_CARDS				= 13;
+	public static final int	ACTION_SAVE_CARD_GROUP_CARDS				= 14;
 	public static final int	ACTION_HEART_BEAT							= 126;
 	public static final int	ACTION_HEART_BEAT_ECHO						= 127;
 	// MSG
@@ -117,6 +118,8 @@ public final class EnumProtocol
 	public static final int	INFO_HEART_BEAT_ECHO						= ACTION_HEART_BEAT_ECHO << 8
 																				| CONTROLLER_INFO;
 	public static final int	INFO_REQUEST_CARD_GROUP_CARDS				= ACTION_REQUEST_CARD_GROUP_CARDS << 8
+																				| CONTROLLER_INFO;
+	public static final int	INFO_SAVE_CARD_GROUP_CARDS					= ACTION_SAVE_CARD_GROUP_CARDS << 8
 																				| CONTROLLER_INFO;
 	// MSG
 	public static final int	MSG_SEND_PUBLIC								= ACTION_SEND_PUBLIC << 8

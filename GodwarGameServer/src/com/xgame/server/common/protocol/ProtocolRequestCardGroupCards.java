@@ -79,12 +79,14 @@ public class ProtocolRequestCardGroupCards implements IProtocol
 								.getConnection( "gamedb" )
 								.prepareStatement( sql );
 						rs = st.executeQuery();
-
+						
+						long guid;
 						String id;
 						String name;
 						int attack, def, mdef, health, energy, level, race;
 						while(rs.next())
 						{
+							guid = rs.getLong( "card_id" );
 							id = rs.getString( "resource_id" );
 							name = rs.getString( "name" );
 							attack = rs.getInt( "attack" );
@@ -94,6 +96,7 @@ public class ProtocolRequestCardGroupCards implements IProtocol
 							energy = rs.getInt( "energy" );
 							level = rs.getInt( "level" );
 							race = rs.getInt( "race" );
+							pack.parameter.add( new PackageItem( 8, guid ) );
 							pack.parameter.add( new PackageItem( id.length(), id ) );
 							pack.parameter.add( new PackageItem( name.length(), name ) );
 							pack.parameter.add( new PackageItem( 4, attack ) );
