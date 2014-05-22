@@ -1,4 +1,3 @@
-
 package com.xgame.server.common.protocol;
 
 import java.io.UnsupportedEncodingException;
@@ -26,8 +25,8 @@ public class ProtocolCreateGroup implements IProtocol
 	@Override
 	public void Execute( Object param1, Object param2 )
 	{
-		ProtocolPackage parameter = ( ProtocolPackage ) param1;
-		WorldSession session = ( WorldSession ) param2;
+		ProtocolPackage parameter = (ProtocolPackage) param1;
+		WorldSession session = (WorldSession) param2;
 
 		String groupName = null;
 		long timestamp = Long.MIN_VALUE;
@@ -63,13 +62,13 @@ public class ProtocolCreateGroup implements IProtocol
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[CreateGroup] AccountId=" + session.getPlayer().accountId
+		log.info( "[CreateGroup] RoleId=" + session.getPlayer().roleId
 				+ ", GroupName=" + groupName );
 
 		if ( groupName != "" )
 		{
-			String sql = "INSERT INTO `game_card_group`(`account_id`, `group_name`, `card_list`)VALUES";
-			sql += "(" + session.getPlayer().accountId + ", '" + groupName
+			String sql = "INSERT INTO `game_card_group`(`role_id`, `group_name`, `card_list`)VALUES";
+			sql += "(" + session.getPlayer().roleId + ", '" + groupName
 					+ "', '')";
 			try
 			{

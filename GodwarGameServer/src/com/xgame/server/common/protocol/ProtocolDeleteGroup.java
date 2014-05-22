@@ -50,7 +50,7 @@ public class ProtocolDeleteGroup implements IProtocol
 			}
 			i += ( length + 5 );
 		}
-		log.info( "[DeleteGroup] AccountId=" + session.getPlayer().accountId
+		log.info( "[DeleteGroup] RoleId=" + session.getPlayer().roleId
 				+ ", GroupId=" + groupId );
 
 		if ( groupId > 0 )
