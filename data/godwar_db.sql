@@ -2,6 +2,9 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+-- -----------------------------------------------------
+-- Schema profzone_godwarv2_gamedb
+-- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `profzone_godwarv2_gamedb` ;
 CREATE SCHEMA IF NOT EXISTS `profzone_godwarv2_gamedb` DEFAULT CHARACTER SET utf8 ;
 USE `profzone_godwarv2_gamedb` ;
@@ -121,6 +124,61 @@ CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_card` (
   `race` TINYINT NOT NULL,
   `skills` TEXT NOT NULL,
   PRIMARY KEY (`card_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `profzone_godwarv2_gamedb`.`game_item`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `profzone_godwarv2_gamedb`.`game_item` ;
+
+CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_item` (
+  `item_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `role_id` BIGINT NOT NULL,
+  `original_id` INT NOT NULL,
+  `name` CHAR(40) NOT NULL,
+  `comment` TEXT NOT NULL,
+  `type` TINYINT NOT NULL DEFAULT 0 COMMENT '1=�' /* comment truncated */ /*器
+2=盔甲
+3=头盔
+4=鞋子
+5=项链
+6=戒指*/,
+  `level` INT NOT NULL DEFAULT 1 COMMENT '物品等级',
+  `grade` TINYINT NOT NULL DEFAULT 0 COMMENT '0=�' /* comment truncated */ /*通
+1=蓝装
+2=绿装
+3=紫装
+4=金装*/,
+  `upgrade_level` INT NOT NULL DEFAULT 0 COMMENT '强化等级',
+  `upgrade_level_max` INT NOT NULL DEFAULT 0 COMMENT '最高强化等级',
+  `job` CHAR(20) NOT NULL DEFAULT '[]',
+  `atk_base` INT NOT NULL DEFAULT 0 COMMENT '基础物理攻击',
+  `def_base` INT NOT NULL DEFAULT 0 COMMENT '基础防御',
+  `mdef_base` INT NOT NULL DEFAULT 0 COMMENT '基础魔抗',
+  `health_max_base` INT NOT NULL DEFAULT 0 COMMENT '基础生命值',
+  `hit_base` INT NOT NULL DEFAULT 0 COMMENT '基础命中',
+  `flee_base` INT NOT NULL DEFAULT 0 COMMENT '基础闪避',
+  `atk_inc` INT NOT NULL DEFAULT 0 COMMENT '攻击加成',
+  `def_inc` INT NOT NULL DEFAULT 0 COMMENT '防御加成',
+  `mdef_inc` INT NOT NULL DEFAULT 0 COMMENT '魔抗加成',
+  `health_max_inc` INT NOT NULL DEFAULT 0 COMMENT '生命加成',
+  `hit_inc` INT NOT NULL DEFAULT 0 COMMENT '命中加成',
+  `flee_inc` INT NOT NULL DEFAULT 0 COMMENT '闪避加成',
+  `atk_upgrade` INT NOT NULL DEFAULT 0 COMMENT '强化加成',
+  `def_upgrade` INT NOT NULL DEFAULT 0,
+  `mdef_upgrade` INT NOT NULL DEFAULT 0,
+  `health_max_upgrade` INT NOT NULL DEFAULT 0,
+  `hit_upgrade` INT NOT NULL DEFAULT 0,
+  `flee_upgrade` INT NOT NULL DEFAULT 0,
+  `magic_words` TEXT NOT NULL,
+  `price` INT NOT NULL DEFAULT 0,
+  `is_equipped` TINYINT NOT NULL DEFAULT 0,
+  `is_locked` TINYINT NOT NULL DEFAULT 0,
+  `count` TINYINT NOT NULL DEFAULT 1,
+  `relative_item_id` BIGINT NOT NULL DEFAULT 0,
+  `block_position` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`item_id`))
 ENGINE = InnoDB;
 
 
