@@ -36,4 +36,23 @@
 		<script></script>
   	</npc>
   </npcList>
+  <portalList>
+      <portal>
+          <type>instance</type>
+          <x>500</x>
+          <y>400</y>
+          <resource>assets.portal.portal1</resource>
+          <rect>
+              <x>500</x>
+              <y>400</y>
+              <width>192</width>
+              <height>90</height>
+          </rect>
+          <instances>
+              <instance>1001001</instance>
+              <instance>1001002</instance>
+              <instance>1001003</instance>
+          </instances>
+      </portal>
+  </portalList>
 </map>

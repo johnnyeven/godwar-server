@@ -2,19 +2,22 @@ package com.xgame.server.game.map;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.DOMReader;
+import org.dom4j.io.SAXReader;
 
+import com.xgame.server.common.parameter.InstancePortalParameter;
+import com.xgame.server.common.parameter.MapPortalParameter;
 import com.xgame.server.common.parameter.NPCParameter;
+import com.xgame.server.common.parameter.PortalParameter;
 import com.xgame.server.game.GameServer;
 
 public class MapConfigManager
@@ -44,13 +47,15 @@ public class MapConfigManager
 		}
 		else
 		{
+			MapConfig c;
 			try
 			{
-				MapConfig c = loadMapConfig( id );
+				c = loadMapConfig( id );
 				configContainer.put( id, c );
 				return c;
 			}
-			catch ( ParserConfigurationException | SAXException | IOException e )
+			catch ( ParserConfigurationException | IOException
+					| DocumentException e )
 			{
 				e.printStackTrace();
 			}
@@ -59,107 +64,94 @@ public class MapConfigManager
 	}
 
 	private MapConfig loadMapConfig( int id )
-			throws ParserConfigurationException, SAXException, IOException
+			throws ParserConfigurationException, IOException, DocumentException
 	{
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dbBuilder.parse( GameServer.path + "data/map/" + id
+		SAXReader reader = new SAXReader();
+		Document doc = reader.read( GameServer.path + "data/map/" + id
 				+ "/config.xml" );
+		Element root = doc.getRootElement();
 
 		MapConfig c = new MapConfig();
-		c.id = Integer.parseInt( doc.getElementsByTagName( "id" ).item( 0 )
-				.getTextContent() );
-		c.width = Integer.parseInt( doc.getElementsByTagName( "width" )
-				.item( 0 ).getTextContent() );
-		c.height = Integer.parseInt( doc.getElementsByTagName( "height" )
-				.item( 0 ).getTextContent() );
-		c.blockNumWidth = Integer.parseInt( doc
-				.getElementsByTagName( "blockNumWidth" ).item( 0 )
-				.getTextContent() );
-		c.blockNumHeight = Integer.parseInt( doc
-				.getElementsByTagName( "blockNumHeight" ).item( 0 )
-				.getTextContent() );
+		c.id = Integer.parseInt( root.elementText( "id" ) );
+		c.width = Integer.parseInt( root.elementText( "width" ) );
+		c.height = Integer.parseInt( root.elementText( "height" ) );
+		c.blockNumWidth = Integer
+				.parseInt( root.elementText( "blockNumWidth" ) );
+		c.blockNumHeight = Integer.parseInt( root
+				.elementText( "blockNumHeight" ) );
 		c.blockSizeWidth = (int) Math.floor( c.width / c.blockNumWidth );
 		c.blockSizeHeight = (int) Math.floor( c.height / c.blockNumHeight );
 
-		NodeList childNodes = doc.getElementsByTagName( "npcList" ).item( 0 )
-				.getChildNodes();
-		NodeList propertyList;
-		Node child, property;
 		NPCParameter parameter;
-
-		for ( int i = 0; i < childNodes.getLength(); i++ )
+		@SuppressWarnings( "rawtypes" )
+		Iterator it;
+		Element child;
+		for ( it = root.element( "npcList" ).elementIterator( "npc" ); it
+				.hasNext(); )
 		{
-			child = childNodes.item( i );
+			child = (Element) it.next();
+			parameter = new NPCParameter();
+			parameter.id = Integer.parseInt( child.elementText( "id" ) );
+			parameter.prependName = child.elementText( "prependName" );
+			parameter.name = child.elementText( "name" );
+			parameter.level = Integer.parseInt( child.elementText( "level" ) );
+			parameter.health = Integer.parseInt( child.elementText( "health" ) );
+			parameter.mana = Integer.parseInt( child.elementText( "mana" ) );
+			parameter.x = Integer.parseInt( child.elementText( "x" ) );
+			parameter.y = Integer.parseInt( child.elementText( "y" ) );
+			parameter.action = Integer.parseInt( child.elementText( "action" ) );
+			parameter.direction = Integer.parseInt( child
+					.elementText( "direction" ) );
+			parameter.resource = child.elementText( "resource" );
+			parameter.script = child.elementText( "script" );
+			
+			c.npcList.add( parameter );
+		}
 
-			if ( child.getNodeName() == "npc" )
+		PortalParameter portal;
+		String type;
+		Element child1;
+		for ( it = root.element( "portalList" ).elementIterator( "portal" ); it
+				.hasNext(); )
+		{
+			child = (Element) it.next();
+			type = child.elementText( "type" );
+			if ( type.equals( "instance" ) )
 			{
-				propertyList = child.getChildNodes();
-				parameter = new NPCParameter();
-
-				for ( int j = 0; j < propertyList.getLength(); j++ )
-				{
-					property = propertyList.item( j );
-					if ( property.getNodeName().equals( "id" ) )
-					{
-						parameter.id = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "prependName" ) )
-					{
-						parameter.prependName = property.getTextContent()
-								.trim();
-					}
-					else if ( property.getNodeName().equals( "name" ) )
-					{
-						parameter.name = property.getTextContent().trim();
-					}
-					else if ( property.getNodeName().equals( "level" ) )
-					{
-						parameter.level = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "health" ) )
-					{
-						parameter.health = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "mana" ) )
-					{
-						parameter.mana = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "x" ) )
-					{
-						parameter.x = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "y" ) )
-					{
-						parameter.y = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "action" ) )
-					{
-						parameter.action = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "direction" ) )
-					{
-						parameter.direction = Integer.parseInt( property
-								.getTextContent().trim() );
-					}
-					else if ( property.getNodeName().equals( "resource" ) )
-					{
-						parameter.resource = property.getTextContent().trim();
-					}
-					else if ( property.getNodeName().equals( "script" ) )
-					{
-						parameter.script = property.getTextContent().trim();
-					}
-				}
-				c.npcList.add( parameter );
+				portal = new InstancePortalParameter();
 			}
+			else
+			{
+				portal = new MapPortalParameter();
+			}
+			portal.x = Integer.parseInt( child.elementText( "x" ) );
+			portal.y = Integer.parseInt( child.elementText( "y" ) );
+			portal.resourceId = child.elementText( "resource" );
+			portal.rectX = Integer.parseInt( child.element( "rect" )
+					.elementText( "x" ) );
+			portal.rectY = Integer.parseInt( child.element( "rect" )
+					.elementText( "y" ) );
+			portal.rectWidth = Integer.parseInt( child.element( "rect" )
+					.elementText( "width" ) );
+			portal.rectHeight = Integer.parseInt( child.element( "rect" )
+					.elementText( "height" ) );
+			if ( type.equals( "instance" ) )
+			{
+				InstancePortalParameter instancePortal = (InstancePortalParameter) portal;
+				for ( Iterator it1 = child.element( "instances" )
+						.elementIterator( "instance" ); it1.hasNext(); )
+				{
+					child1 = (Element) it1.next();
+					instancePortal.instanceList.add( Integer.parseInt( child1
+							.getText() ) );
+				}
+			}
+			else
+			{
+				portal = new MapPortalParameter();
+			}
+			
+			c.portalList.add( portal );
 		}
 
 		return c;

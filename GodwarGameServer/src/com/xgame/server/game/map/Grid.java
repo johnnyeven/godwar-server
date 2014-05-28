@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.xgame.server.objects.Portal;
 import com.xgame.server.objects.WorldObject;
 
 public class Grid
@@ -15,6 +16,7 @@ public class Grid
 	private int								x;
 	private int								y;
 	private HashMap< UUID, WorldObject >	objectMap;
+	private HashMap< UUID, Portal >			portalMap;
 
 	private static Log						log	= LogFactory
 														.getLog( Grid.class );
@@ -24,13 +26,12 @@ public class Grid
 		this.x = x;
 		this.y = y;
 		objectMap = new HashMap< UUID, WorldObject >();
+		portalMap = new HashMap< UUID, Portal >();
 	}
 
 	public Grid()
 	{
-		x = 0;
-		y = 0;
-		objectMap = new HashMap< UUID, WorldObject >();
+		this( 0, 0 );
 	}
 
 	public int getX()
@@ -63,6 +64,11 @@ public class Grid
 		}
 		o.setCurrentGrid( this );
 		objectMap.put( o.getGuid(), o );
+
+		if ( o instanceof Portal )
+		{
+			portalMap.put( o.getGuid(), (Portal) o );
+		}
 	}
 
 	public WorldObject getWorldObject( UUID guid )
@@ -95,6 +101,11 @@ public class Grid
 	public Iterator< Entry< UUID, WorldObject >> getWorldObjectIterator()
 	{
 		return objectMap.entrySet().iterator();
+	}
+
+	public Iterator< Entry< UUID, Portal >> getPortalIterator()
+	{
+		return portalMap.entrySet().iterator();
 	}
 
 }

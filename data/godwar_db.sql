@@ -182,6 +182,19 @@ CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_item` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `profzone_godwarv2_gamedb`.`game_instance`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `profzone_godwarv2_gamedb`.`game_instance` ;
+
+CREATE TABLE IF NOT EXISTS `profzone_godwarv2_gamedb`.`game_instance` (
+  `role_id` BIGINT NOT NULL,
+  `instance_id` BIGINT NOT NULL,
+  `level` INT NOT NULL DEFAULT 1 COMMENT '第几关',
+  PRIMARY KEY (`role_id`, `instance_id`))
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

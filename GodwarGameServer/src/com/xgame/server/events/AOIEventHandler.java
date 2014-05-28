@@ -1,5 +1,7 @@
 package com.xgame.server.events;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -7,8 +9,11 @@ import com.xgame.server.CommandCenter;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.protocol.EnumProtocol;
+import com.xgame.server.objects.InstancePortal;
+import com.xgame.server.objects.MapPortal;
 import com.xgame.server.objects.NPC;
 import com.xgame.server.objects.Player;
+import com.xgame.server.objects.Portal;
 import com.xgame.server.objects.WorldObject;
 import com.xgame.server.pool.ServerPackagePool;
 
@@ -46,6 +51,16 @@ public class AOIEventHandler implements IEventCallback
 				pack.protocolId = e.getName().equals( AOIEvent.AOI_ENTER ) ? EnumProtocol.SCENE_SHOW_NPC
 						: EnumProtocol.SCENE_REMOVE_NPC;
 			}
+			else if ( e.who instanceof InstancePortal )
+			{
+				pack.protocolId = e.getName().equals( AOIEvent.AOI_ENTER ) ? EnumProtocol.SCENE_SHOW_INSTANCE_PORTAL
+						: EnumProtocol.SCENE_REMOVE_INSTANCE_PORTAL;
+			}
+			else if ( e.who instanceof MapPortal )
+			{
+				pack.protocolId = e.getName().equals( AOIEvent.AOI_ENTER ) ? EnumProtocol.SCENE_SHOW_MAP_PORTAL
+						: EnumProtocol.SCENE_REMOVE_MAP_PORTAL;
+			}
 
 			if ( e.getName().equals( AOIEvent.AOI_ENTER ) )
 			{
@@ -71,7 +86,8 @@ public class AOIEventHandler implements IEventCallback
 				{
 					NPC n1 = (NPC) e.who;
 					pack.parameter.add( new PackageItem( 4, n1.getId() ) );
-					pack.parameter.add( new PackageItem( n1.getResource().length(), n1.getResource() ) );
+					pack.parameter.add( new PackageItem( n1.getResource()
+							.length(), n1.getResource() ) );
 					pack.parameter.add( new PackageItem( n1.getPrependName()
 							.length(), n1.getPrependName() ) );
 					pack.parameter.add( new PackageItem( n1.getName().length(),
@@ -84,6 +100,35 @@ public class AOIEventHandler implements IEventCallback
 					pack.parameter.add( new PackageItem( 4, n1.getAction() ) );
 					pack.parameter.add( new PackageItem( 8, n1.getX() ) );
 					pack.parameter.add( new PackageItem( 8, n1.getY() ) );
+				}
+				else if ( e.who instanceof InstancePortal )
+				{
+					InstancePortal portal = (InstancePortal) e.who;
+					pack.parameter.add( new PackageItem( 8, portal.getX() ) );
+					pack.parameter.add( new PackageItem( 8, portal.getY() ) );
+					pack.parameter.add( new PackageItem( portal.getResourceId()
+							.length(), portal.getResourceId() ) );
+
+					List< Integer > list = portal.getInstanceList();
+					for ( int i = 0; i < list.size(); i++ )
+					{
+						pack.parameter
+								.add( new PackageItem( 4, list.get( i ) ) );
+					}
+				}
+				else if ( e.who instanceof MapPortal )
+				{
+					MapPortal portal = (MapPortal) e.who;
+					pack.parameter.add( new PackageItem( 8, portal.getX() ) );
+					pack.parameter.add( new PackageItem( 8, portal.getY() ) );
+					pack.parameter.add( new PackageItem( portal.getResourceId()
+							.length(), portal.getResourceId() ) );
+					pack.parameter.add( new PackageItem( 4, portal
+							.getDestinationMapId() ) );
+					pack.parameter.add( new PackageItem( 4, portal
+							.getDestinationX() ) );
+					pack.parameter.add( new PackageItem( 4, portal
+							.getDestinationY() ) );
 				}
 			}
 			else

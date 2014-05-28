@@ -18,14 +18,20 @@ import com.xgame.server.common.CoordinatePair;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.Point;
 import com.xgame.server.common.ServerPackage;
+import com.xgame.server.common.parameter.InstancePortalParameter;
+import com.xgame.server.common.parameter.MapPortalParameter;
 import com.xgame.server.common.parameter.NPCParameter;
+import com.xgame.server.common.parameter.PortalParameter;
 import com.xgame.server.common.protocol.EnumProtocol;
 import com.xgame.server.enums.PlayerStatus;
 import com.xgame.server.game.GameServer;
 import com.xgame.server.game.astar.SilzAstar;
+import com.xgame.server.objects.InstancePortal;
+import com.xgame.server.objects.MapPortal;
 import com.xgame.server.objects.NPC;
 import com.xgame.server.objects.ObjectManager;
 import com.xgame.server.objects.Player;
+import com.xgame.server.objects.Portal;
 import com.xgame.server.objects.WorldObject;
 import com.xgame.server.pool.ServerPackagePool;
 
@@ -56,6 +62,7 @@ public class Map
 		negativePath = new boolean[config.blockNumHeight][config.blockNumWidth];
 		loadMap();
 		loadNPC();
+		loadPortal();
 	}
 
 	private void loadMap()
@@ -131,7 +138,7 @@ public class Map
 			n.setY( parameter.y );
 			n.setAction( parameter.action );
 			n.setDirection( parameter.direction );
-//			n.setScript( parameter.script );
+			// n.setScript( parameter.script );
 
 			coordinate = getCoordinatePair( n.getX(), n.getY() );
 
@@ -143,8 +150,46 @@ public class Map
 			}
 			g.addWorldObject( n );
 			ObjectManager.getInstance().addObject( n );
-			
+
 			log.info( "create NPC - <" + n.getPrependName() + ">" + n.getName() );
+		}
+	}
+
+	private void loadPortal()
+	{
+		Iterator< PortalParameter > it = config.portalList.iterator();
+		PortalParameter parameter;
+		InstancePortalParameter instanceParameter;
+		MapPortalParameter mapParameter;
+		InstancePortal instancePortal;
+		MapPortal mapPortal;
+		while ( it.hasNext() )
+		{
+			parameter = it.next();
+			if ( parameter instanceof InstancePortalParameter )
+			{
+				instanceParameter = (InstancePortalParameter) parameter;
+				instancePortal = new InstancePortal();
+				instancePortal.setX( instanceParameter.x );
+				instancePortal.setY( instanceParameter.y );
+				instancePortal.setResourceId( instanceParameter.resourceId );
+				instancePortal.setRange( instanceParameter.rectX,
+						instanceParameter.rectY, instanceParameter.rectWidth,
+						instanceParameter.rectHeight );
+				add( instancePortal );
+			}
+			else if ( parameter instanceof MapPortalParameter )
+			{
+				mapParameter = (MapPortalParameter) parameter;
+				mapPortal = new MapPortal();
+				mapPortal.setX( mapParameter.x );
+				mapPortal.setY( mapParameter.y );
+				mapPortal.setResourceId( mapParameter.resourceId );
+				mapPortal.setDestinationMapId( mapParameter.destinationMapId );
+				mapPortal.setDestinationX( mapParameter.destinationX );
+				mapPortal.setDestinationY( mapParameter.destinationY );
+				add( mapPortal );
+			}
 		}
 	}
 
@@ -158,8 +203,8 @@ public class Map
 	{
 		if ( x >= gridX || y >= gridY )
 		{
-			log.error( "setGrid() coordinate error x=" + x + ", y=" + y + ", GridX="
-					+ gridX + ", GridY=" + gridY );
+			log.error( "setGrid() coordinate error x=" + x + ", y=" + y
+					+ ", GridX=" + gridX + ", GridY=" + gridY );
 			return;
 		}
 		gridContainer[x][y] = g;
@@ -169,8 +214,8 @@ public class Map
 	{
 		if ( x >= gridX || y >= gridY )
 		{
-			log.error( "getGrid() coordinate error x=" + x + ", y=" + y + ", GridX="
-					+ gridX + ", GridY=" + gridY );
+			log.error( "getGrid() coordinate error x=" + x + ", y=" + y
+					+ ", GridX=" + gridX + ", GridY=" + gridY );
 			return null;
 		}
 		return gridContainer[x][y];
@@ -188,8 +233,21 @@ public class Map
 		}
 		g.addWorldObject( p );
 
-		// ������ҳ�ʼ�����
 		sendPlayerData( p );
+		return true;
+	}
+
+	public boolean add( Portal p )
+	{
+		CoordinatePair coordinate = getCoordinatePair( p.getX(), p.getY() );
+
+		Grid g = getGrid( (int) coordinate.getX(), (int) coordinate.getY() );
+		if ( g == null )
+		{
+			g = new Grid( (int) coordinate.getX(), (int) coordinate.getY() );
+			setGrid( g, (int) coordinate.getX(), (int) coordinate.getY() );
+		}
+		g.addWorldObject( p );
 		return true;
 	}
 
@@ -204,6 +262,10 @@ public class Map
 	public boolean check( Player p )
 	{
 		Grid g1 = p.getCurrentGrid();
+		if ( checkPortal( g1, p ) )
+		{
+			return true;
+		}
 		CoordinatePair coordinate = getCoordinatePair( p.getX(), p.getY() );
 		if ( g1.getX() == coordinate.getX() && g1.getY() == coordinate.getY() )
 		{
@@ -220,6 +282,37 @@ public class Map
 		g.addWorldObject( p );
 		log.debug( p.name + " change grid to x=" + g.getX() + ", y=" + g.getY() );
 		return true;
+	}
+
+	private boolean checkPortal( Grid g, Player p )
+	{
+		Iterator< Entry< UUID, Portal >> it = g.getPortalIterator();
+		Entry< UUID, Portal > en;
+		Portal portal;
+		while ( it.hasNext() )
+		{
+			en = it.next();
+			portal = en.getValue();
+
+			if ( portal.reached( p ) )
+			{
+				transferPortal( portal, p );
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void transferPortal( Portal portal, Player p )
+	{
+		if ( portal instanceof MapPortal )
+		{
+
+		}
+		else if ( portal instanceof InstancePortal )
+		{
+
+		}
 	}
 
 	public boolean updatePlayerStatus( Player p, boolean show )
