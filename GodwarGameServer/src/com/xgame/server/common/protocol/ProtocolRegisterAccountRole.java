@@ -13,6 +13,7 @@ import com.xgame.server.CommandCenter;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.common.parameter.InstanceParameter;
 import com.xgame.server.common.parameter.SoulCardParameter;
 import com.xgame.server.game.GameServer;
 import com.xgame.server.game.ProtocolPackage;
@@ -126,7 +127,20 @@ public class ProtocolRegisterAccountRole implements IProtocol
 
 	private void initRoleDatabase( Player p )
 	{
-		String sql = "INSERT INTO `game_card_group`(`role_id`, `group_name`, `card_list`)VALUES";
+		String sql = "INSERT INTO `game_instance` VALUES";
+		sql += " (" + p.roleId + ", 1001001, 1)";
+		try
+		{
+			PreparedStatement st = DatabaseRouter.getInstance()
+					.getConnection( "gamedb" ).prepareStatement( sql );
+			st.executeUpdate();
+		}
+		catch ( SQLException e )
+		{
+			e.printStackTrace();
+		}
+
+		sql = "INSERT INTO `game_card_group`(`role_id`, `group_name`, `card_list`)VALUES";
 		sql += "(" + p.roleId + ", '第一卡组', '')";
 		try
 		{
@@ -193,6 +207,13 @@ public class ProtocolRegisterAccountRole implements IProtocol
 		pack.parameter.add( new PackageItem( 4, p.getMapId() ) );
 		pack.parameter.add( new PackageItem( 8, p.getX() ) );
 		pack.parameter.add( new PackageItem( 8, p.getY() ) );
+		InstanceParameter instance;
+		for ( int i = 0; i < p.instanceList.size(); i++ )
+		{
+			instance = p.instanceList.get( i );
+			pack.parameter.add( new PackageItem( 4, instance.instanceId ) );
+			pack.parameter.add( new PackageItem( 4, instance.level ) );
+		}
 		CommandCenter.send( session.getChannel(), pack );
 	}
 

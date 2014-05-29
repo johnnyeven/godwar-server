@@ -4,13 +4,16 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.common.parameter.InstanceParameter;
 import com.xgame.server.enums.Action;
 import com.xgame.server.enums.Direction;
 import com.xgame.server.enums.PlayerStatus;
@@ -33,13 +36,14 @@ public class Player extends InteractiveObject
 	public PlayerStatus					status				= PlayerStatus.NORMAL;
 	public int							direction			= Direction.DOWN;
 	public int							action				= Action.STOP;
+	public List< InstanceParameter >	instanceList		= new ArrayList< InstanceParameter >();
 
 	private Motion						motion;
 	private AsynchronousSocketChannel	channel;
 	private WorldSession				session;
-	private int							currentGroup;											// �����Ӫ
-																								// 1=���
-																								// 2=����
+	private int							currentGroup;												// �����Ӫ
+																									// 1=���
+																									// 2=����
 	private int							currentPosition;
 	private int							currentCardGroup;
 	private String						lastHeroCardId		= "";
@@ -126,6 +130,19 @@ public class Player extends InteractiveObject
 			}
 
 			rs.close();
+
+			sql = "SELECT * FROM `game_instance` WHERE `role_id`=" + roleId;
+			st = DatabaseRouter.getInstance().getConnection( "gamedb" )
+					.prepareStatement( sql );
+			rs = st.executeQuery();
+			InstanceParameter instance;
+			while ( rs.next() )
+			{
+				instance = new InstanceParameter();
+				instance.instanceId = rs.getInt( "instance_id" );
+				instance.level = rs.getInt( "level" );
+				instanceList.add( instance );
+			}
 		}
 		catch ( SQLException e )
 		{
@@ -133,19 +150,15 @@ public class Player extends InteractiveObject
 		}
 		return true;
 	}
-	
+
 	public void saveToDatabase()
 	{
-		String sql = "UPDATE `role` SET `level`=" + level + ", " +
-				"`account_cash`=" + accountCash + ", " +
-				"`direction`=" + direction + ", " +
-				"`honor`=" + honor + ", " +
-				"`energy`=" + energy + ", " +
-				"`max_energy`=" + energyMax + ", " +
-				"`map_id`=" + getMapId() + ", " +
-				"`x`=" + getX() + ", " +
-				"`y`=" + getY() +
-				" WHERE `role_id`=" + roleId;
+		String sql = "UPDATE `role` SET `level`=" + level + ", "
+				+ "`account_cash`=" + accountCash + ", " + "`direction`="
+				+ direction + ", " + "`honor`=" + honor + ", " + "`energy`="
+				+ energy + ", " + "`max_energy`=" + energyMax + ", "
+				+ "`map_id`=" + getMapId() + ", " + "`x`=" + getX() + ", "
+				+ "`y`=" + getY() + " WHERE `role_id`=" + roleId;
 		try
 		{
 			PreparedStatement st = DatabaseRouter.getInstance()

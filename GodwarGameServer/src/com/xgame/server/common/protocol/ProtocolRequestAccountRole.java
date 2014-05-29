@@ -11,6 +11,7 @@ import com.xgame.server.CommandCenter;
 import com.xgame.server.common.PackageItem;
 import com.xgame.server.common.ServerPackage;
 import com.xgame.server.common.database.DatabaseRouter;
+import com.xgame.server.common.parameter.InstanceParameter;
 import com.xgame.server.game.ProtocolPackage;
 import com.xgame.server.game.map.MapManager;
 import com.xgame.server.network.WorldSession;
@@ -59,7 +60,6 @@ public class ProtocolRequestAccountRole implements IProtocol
 				ResultSet rs = st.executeQuery();
 				if ( rs.first() )
 				{
-					// TODO 创建Player对象
 					Player p = PlayerPool.getInstance().getObject();
 					p.roleId = rs.getLong( "role_id" );
 					p.setChannel( parameter.client );
@@ -71,7 +71,7 @@ public class ProtocolRequestAccountRole implements IProtocol
 
 					if ( !MapManager.getInstance().getMap( p.getMapId() ).add( p ) )
 					{
-						log.error( "Map::add() 失败，Player=" + p.name );
+						log.error( "Map::add() 失锟杰ｏ拷Player=" + p.name );
 						return;
 					}
 					
@@ -123,6 +123,13 @@ public class ProtocolRequestAccountRole implements IProtocol
 		pack.parameter.add( new PackageItem( 4, p.getMapId() ) );
 		pack.parameter.add( new PackageItem( 8, p.getX() ) );
 		pack.parameter.add( new PackageItem( 8, p.getY() ) );
+		InstanceParameter instance;
+		for ( int i = 0; i < p.instanceList.size(); i++ )
+		{
+			instance = p.instanceList.get( i );
+			pack.parameter.add( new PackageItem( 4, instance.instanceId ) );
+			pack.parameter.add( new PackageItem( 4, instance.level ) );
+		}
 		CommandCenter.send( session.getChannel(), pack );
 	}
 
