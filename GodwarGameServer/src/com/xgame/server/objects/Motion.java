@@ -49,7 +49,7 @@ public class Motion
 			return;
 		}
 
-		if ( path == null || path.isEmpty() || path.get( currentStep ) == null )
+		if ( path == null || currentStep >= path.size() || path.get( currentStep ) == null )
 		{
 			return;
 		}

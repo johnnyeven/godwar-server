@@ -36,6 +36,7 @@ public class Player extends InteractiveObject
 	public PlayerStatus					status				= PlayerStatus.NORMAL;
 	public int							direction			= Direction.DOWN;
 	public int							action				= Action.STOP;
+	public boolean						inPortal			= false;
 	public List< InstanceParameter >	instanceList		= new ArrayList< InstanceParameter >();
 
 	private Motion						motion;

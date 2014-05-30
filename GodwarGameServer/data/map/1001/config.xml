@@ -40,11 +40,11 @@
       <portal>
           <type>instance</type>
           <x>500</x>
-          <y>400</y>
+          <y>550</y>
           <resource>assets.portal.portal1</resource>
           <rect>
               <x>500</x>
-              <y>400</y>
+              <y>550</y>
               <width>192</width>
               <height>90</height>
           </rect>

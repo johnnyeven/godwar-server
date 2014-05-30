@@ -59,6 +59,8 @@ public final class EnumProtocol
 	public static final int	ACTION_REMOVE_INSTANCE_PORTAL				= 11;
 	public static final int	ACTION_SHOW_MAP_PORTAL						= 12;
 	public static final int	ACTION_REMOVE_MAP_PORTAL					= 13;
+	public static final int	ACTION_TRIGGER_MAP_PORTAL					= 14;
+	public static final int	ACTION_TRIGGER_INSTANCE_PORTAL				= 15;
 	// BATTLE ROOM
 	public static final int	ACTION_INIT_ROOM_DATA						= 0;
 	public static final int	ACTION_PLAYER_ENTER_ROOM_NOTICE				= 1;
@@ -179,6 +181,10 @@ public final class EnumProtocol
 	public static final int	SCENE_SHOW_MAP_PORTAL						= ACTION_SHOW_MAP_PORTAL << 8
 																				| CONTROLLER_SCENE;
 	public static final int	SCENE_REMOVE_MAP_PORTAL						= ACTION_REMOVE_MAP_PORTAL << 8
+																				| CONTROLLER_SCENE;
+	public static final int	SCENE_TRIGGER_MAP_PORTAL					= ACTION_TRIGGER_MAP_PORTAL << 8
+																				| CONTROLLER_SCENE;
+	public static final int	SCENE_TRIGGER_INSTANCE_PORTAL				= ACTION_TRIGGER_INSTANCE_PORTAL << 8
 																				| CONTROLLER_SCENE;
 	// BATTLE ROOM
 	public static final int	BATTLEROOM_INIT_ROOM						= ACTION_INIT_ROOM_DATA << 8

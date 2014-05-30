@@ -266,6 +266,7 @@ public class Map
 		{
 			return true;
 		}
+		p.inPortal = false;
 		CoordinatePair coordinate = getCoordinatePair( p.getX(), p.getY() );
 		if ( g1.getX() == coordinate.getX() && g1.getY() == coordinate.getY() )
 		{
@@ -296,23 +297,41 @@ public class Map
 
 			if ( portal.reached( p ) )
 			{
-				transferPortal( portal, p );
+				if(!p.inPortal)
+				{
+					transferPortal( portal, p );
+				}
 				return true;
 			}
 		}
+		p.inPortal = false;
 		return false;
 	}
 
 	private void transferPortal( Portal portal, Player p )
 	{
+		ServerPackage pack = ServerPackagePool.getInstance().getObject();
+		pack.success = EnumProtocol.ACK_CONFIRM;
 		if ( portal instanceof MapPortal )
 		{
-
+			MapPortal p1 = (MapPortal) portal;
+			pack.protocolId = EnumProtocol.SCENE_TRIGGER_MAP_PORTAL;
 		}
 		else if ( portal instanceof InstancePortal )
 		{
-
+			InstancePortal p1 = (InstancePortal) portal;
+			pack.protocolId = EnumProtocol.SCENE_TRIGGER_INSTANCE_PORTAL;
+			Iterator< Integer > it = p1.getInstanceList().iterator();
+			int instanceId;
+			while ( it.hasNext() )
+			{
+				instanceId = it.next();
+				pack.parameter.add( new PackageItem( 4, instanceId ) );
+			}
 		}
+
+		CommandCenter.send( p.getChannel(), pack );
+		p.inPortal = true;
 	}
 
 	public boolean updatePlayerStatus( Player p, boolean show )
@@ -332,8 +351,6 @@ public class Map
 		if ( show )
 		{
 			updateVisibilityShow( p, g );
-			// updateOtherVisibility(p, g);
-
 			p.status = PlayerStatus.NORMAL;
 		}
 		else
