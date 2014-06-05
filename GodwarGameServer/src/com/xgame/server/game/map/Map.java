@@ -176,6 +176,7 @@ public class Map
 				instancePortal.setRange( instanceParameter.rectX,
 						instanceParameter.rectY, instanceParameter.rectWidth,
 						instanceParameter.rectHeight );
+				instancePortal.setInstanceList( instanceParameter.instanceList );
 				add( instancePortal );
 			}
 			else if ( parameter instanceof MapPortalParameter )

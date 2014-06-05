@@ -17,4 +17,9 @@ public class InstancePortal extends Portal
 		return instanceList;
 	}
 
+	public void setInstanceList( List< Integer > instanceList )
+	{
+		this.instanceList = instanceList;
+	}
+
 }
